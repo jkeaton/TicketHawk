@@ -44,18 +44,99 @@ session_start();
               <ul class="nav navbar-nav">
                 <li class="active"><a href="homepage.php">Home</a></li>
                 <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="getContactUsForm.php">Contact</a></li>
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li class="dropdown-header">Nav header</li>
-                    <li><a href="#">Separated link</a></li>
-                    <li><a href="#">One more separated link</a></li>
-                  </ul>
+							<ul class="dropdown-menu" role="menu">
+								<li class="dropdown-header">
+									Sports
+								</li>
+								<li>
+									<a href="#">All Sports</a>
+								</li>
+								<li>
+									<a href="#">NBA</a>
+								</li>
+								<li>
+									<a href="#">NFL</a>
+								</li>
+								<li>
+									<a href="#">MLB</a>
+								</li>
+								<li>
+									<a href="#">MLH</a>
+								</li>
+								<li>
+									<a href="#">MLS</a>
+								</li>
+								<li>
+									<a href="#">NASCAR</a>
+								</li>
+								<li class="divider"></li>
+								<li class="dropdown-header">
+									Movies
+								</li>
+								<li>
+									<a href="#">All Movies</a>
+								</li>
+								<li>
+									<a href="#">New Releases</a>
+								</li>
+								<li>
+									<a href="#">Drama</a>
+								</li>
+								<li>
+									<a href="#">Action</a>
+								</li>
+								<li>
+									<a href="#">Horror</a>
+								</li>
+								<li>
+									<a href="#">Comedy</a>
+								</li>
+								<li>
+									<a href="#">Suspense</a>
+								</li>
+								<li class="divider"></li>
+								<li class="dropdown-header">
+									Special Events
+								</li>
+								<li>
+									<a href="#">2016 Olympics</a>
+								</li>
+								<li>
+									<a href="#">World Cup</a>
+								</li>
+								<li class="divider"></li>
+								<li class="dropdown-header">
+									Music Tour
+								</li>
+								<li>
+									<a href="#">On The Run(Jay Z & Beyonce)</a>
+								</li>
+								<li>
+									<a href="#">Rock</a>
+								</li>
+								<li>
+									<a href="#">Rap</a>
+								</li>
+								<li>
+									<a href="#">R&B</a>
+								</li>
+								<li>
+									<a href="#">Jazz</a>
+								</li>
+								<li>
+									<a href="#">Gospel</a>
+								</li>
+								<li class="divider"></li>
+								<li class="dropdown-header">
+									See All Listing
+								</li>
+								<li>
+									<a href="#">All</a>
+								</li>
+							</ul>
                 </li>
               </ul>
                 <form class="navbar-form navbar-right" method="post" action="">

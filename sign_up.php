@@ -1,7 +1,7 @@
 <!-- Connect to Database -->
 <?php
 include 'dist/config.php';
-include 'dist/opendb.php';
+// include 'dist/opendb.php';
 ?>
 
 <!DOCTYPE html>
@@ -43,13 +43,13 @@ include 'dist/opendb.php';
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
 						<li class="active">
-							<a href="#">Home</a>
+							<a href="homepage.php">Home</a>
 						</li>
 						<li>
 							<a href="#about">About</a>
 						</li>
 						<li>
-							<a href="#contact">Contact</a>
+							<a href="getContactUsForm.php">Contact</a>
 						</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Search <span class="caret"></span></a>
@@ -165,11 +165,11 @@ include 'dist/opendb.php';
 		<div class="container">
 			<div id="sign-up">
 				<h2>Sign up</h2>
-				<form class="form-horizontal" role="form">
+				<form class="form-horizontal" role="form" method="post" action="">
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="email">Name:</label>
 						<div class="col-sm-10">
-							<input type="email" class="form-control" name="newName" id="name" placeholder="Enter name">
+							<input type="text" class="form-control" name="newName" id="name" placeholder="Enter name">
 						</div>
 					</div>
 
@@ -189,88 +189,38 @@ include 'dist/opendb.php';
 						<label class="control-label col-sm-2" for="gender"style="padding-left: 8px;">Gender:</label>
 
 						<label class="radio-inline">
-							<input type="radio" name="gender" value="male" style="padding-left: 4px;">
+							<input type="radio" name="newGender" value="male" style="padding-left: 4px;">
 							Male </label>
 						<label class="radio-inline">
-							<input type="radio" name="gender" value="female">
+							<input type="radio" name="newGender" value="female">
 							Female</label>
-
 					</div>
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="age">Age:</label>
 						<div class="col-sm-10">
-							<select class="form-control" name="newAge" id="age" style="width: 100px;">
-								<option>1998</option>
-								<option>1997</option>
-								<option>1996</option>
-								<option>1995</option>
-								<option>1994</option>
-								<option>1993</option>
-								<option>1992</option>
-								<option>1991</option>
-								<option>1990</option>
-								<option>1989</option>
-								<option>1988</option>
-								<option>1987</option>
-								<option>1986</option>
-								<option>1985</option>
-								<option>1984</option>
-								<option>1983</option>
-								<option>1982</option>
-								<option>1981</option>
-								<option>1980</option>
-								<option>1979</option>
-								<option>1978</option>
-								<option>1977</option>
-								<option>1976</option>
-								<option>1975</option>
-								<option>1974</option>
-								<option>1973</option>
-								<option>1972</option>
-								<option>1971</option>
-								<option>1970</option>
-								<option>1969</option>
-								<option>1968</option>
-								<option>1967</option>
-								<option>1966</option>
-								<option>1965</option>
-								<option>1964</option>
-								<option>1963</option>
-								<option>1962</option>
-								<option>1961</option>
-								<option>1960</option>
-								<option>1959</option>
-								<option>1958</option>
-								<option>1957</option>
-								<option>1956</option>
-								<option>1955</option>
-								<option>1954</option>
-								<option>1953</option>
-								<option>1952</option>
-								<option>1951</option>
-								<option>1950</option>
-								<option>1949</option>
-								<option>1948</option>
-								<option>1947</option>
-								<option>1946</option>
-								<option>1945</option>
-								<option>1944</option>
-								<option>1943</option>
-								<option>1942</option>
-								<option>1941</option>
-								<option>1940</option>
-							</select>
+						<input class="form-control" type="number" name="newAge" id="age" />
 							<a href="#" style="padding-left: 2px; display: inline;">Why do we need this?</a>
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
-							<button type="submit" class="btn btn-default">
+							<button type="submit" class="btn btn-default" name="submit">
 								Submit
 							</button>
 						</div>
 					</div>
 				</form>
+				<?php
+				if (isset($_POST['submit'])) {
+					$_SESSION['name'] = $_POST['newName'];
+					$_SESSION['pass'] = $_POST['newPass'];
+					$_SESSION['gender'] = $_POST['newGender'];
+					$_SESSION['a_new_email'] = $_POST['newEmail'];
+					$_SESSION['age'] = $_POST['newAge'];
+					createNewAccount();
+				}
+
+				?>
 			</div>
 		</div>
 		<!-- /.main -->
