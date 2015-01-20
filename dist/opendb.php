@@ -1,5 +1,8 @@
 <?php
 // Open a Connection to the MySQL Database
-$conn = mysql_connect($dbhost, $dbuser, $dbpass) or die('Error connecting to mysql');
-mysql_select_db($dbname);
+$dbhost = 'localhost';
+$dbuser = 'admin';
+$dbpass = 'balloonrides';
+$dbname = 'tickethawk';
+$conn = mysqli_connect($dbhost, $dbuser, $dbpass,$dbname) or die('Error connecting to server');
 ?>
