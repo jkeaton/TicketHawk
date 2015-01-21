@@ -3,4 +3,3 @@ sign_up.php will add blank user input into database and generate a php notice if
 
 homepage show’s user email and password when sign in button is clicked.
 
-homepage header dosen’t properly redirect admin users

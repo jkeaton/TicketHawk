@@ -27,7 +27,17 @@ include 'dist/config.php';
 	</head>
 
 	<body role="document">
-
+					<?php
+				if (isset($_POST['submit'])){
+					$_SESSION['name'] = $_POST['newName'];
+					$_SESSION['pass'] = $_POST['newPass'];
+					$_SESSION['gender'] = $_POST['newGender'];
+					$_SESSION['a_new_email'] = $_POST['newEmail'];
+					$_SESSION['age'] = $_POST['newAge'];
+					createNewAccount();
+					}
+				
+				?>
 		<!-- Fixed navbar -->
 		<nav class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container">
@@ -54,94 +64,58 @@ include 'dist/config.php';
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Search <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
-								<li class="dropdown-header">
-									Sports
-								</li>
-								<li>
-									<a href="#">All Sports</a>
-								</li>
-								<li>
-									<a href="#">NBA</a>
-								</li>
-								<li>
-									<a href="#">NFL</a>
-								</li>
-								<li>
-									<a href="#">MLB</a>
-								</li>
-								<li>
-									<a href="#">MLH</a>
-								</li>
-								<li>
-									<a href="#">MLS</a>
-								</li>
-								<li>
-									<a href="#">NASCAR</a>
-								</li>
-								<li class="divider"></li>
-								<li class="dropdown-header">
-									Movies
-								</li>
-								<li>
-									<a href="#">All Movies</a>
-								</li>
-								<li>
-									<a href="#">New Releases</a>
-								</li>
-								<li>
-									<a href="#">Drama</a>
-								</li>
-								<li>
-									<a href="#">Action</a>
-								</li>
-								<li>
-									<a href="#">Horror</a>
-								</li>
-								<li>
-									<a href="#">Comedy</a>
-								</li>
-								<li>
-									<a href="#">Suspense</a>
-								</li>
-								<li class="divider"></li>
-								<li class="dropdown-header">
-									Special Events
-								</li>
-								<li>
-									<a href="#">2016 Olympics</a>
-								</li>
-								<li>
-									<a href="#">World Cup</a>
-								</li>
-								<li class="divider"></li>
-								<li class="dropdown-header">
-									Music Tour
-								</li>
-								<li>
-									<a href="#">On The Run(Jay Z & Beyonce)</a>
-								</li>
-								<li>
-									<a href="#">Rock</a>
-								</li>
-								<li>
-									<a href="#">Rap</a>
-								</li>
-								<li>
-									<a href="#">R&B</a>
-								</li>
-								<li>
-									<a href="#">Jazz</a>
-								</li>
-								<li>
-									<a href="#">Gospel</a>
-								</li>
-								<li class="divider"></li>
-								<li class="dropdown-header">
-									See All Listing
-								</li>
-								<li>
-									<a href="#">All</a>
-								</li>
+<table class="table" style="width: 650px;">
+								<tr>
+								<th>Sports</th>
+								<th>Movies</th>
+								<th>Events</th>
+								<th>On Tour</th>
+								<th>Theme Parks</th>
+								</tr>
+								<tr>
+									<td><a href="#">NBA</a></td>
+									<td><a href="#">New Releases</a></td>
+									<td><a href="#">World Cupr Qatar</a></td>
+									<td><a href="#">Jay Z & Beyonce (On the run)</a></td>
+									<td><a href="#">Disney World FL</a></td>
+								</tr>
+								<tr>
+									<td><a href="#">NFL</a></td>
+									<td><a href="#">Drama</a></td>
+									<td><a href="#">2016 Olympics</a></td>
+									<td><a href="#">Rock</a></td>
+									<td><a href="#">Sea World</a></td>
+								</tr>
+								<tr>
+									<td><a href="#">MLB</a></td>
+									<td><a href="#">Action</a></td>
+									<td><label></label></td>
+									<td><a href="#">R&B</a></td>
+									<td><a href="#">Six Flags GA</a></td>
+								</tr>
+								<tr>
+									<td><a href="#">MLH</a></td>
+									<td><a href="#">Horror</a></td>
+									<td><label></label></td>
+									<td><a href="#">Rap</a></td>
+									<td><a href="#">Disney Land CA</a></td>	
+								</tr>
+								<tr>
+									<td><a href="#">MLS</a></td>
+									<td><a href="#">Comedy</a></td>
+									<td><label></label></td>
+									<td><a href="#">Blues</a></td>
+									<td><label></label></td>	
+								</tr>
+								<tr>
+									<td><a href="#">NASCAR</a></td>
+									<td><a href="#">Suspense</a></td>
+									<td><label></label></td>
+									<td><a href="#">Gospel</a></td>
+									<td><label></label></td>	
+								</tr>
+								
+								</table>
 							</ul>
 						</li>
 					</ul>
@@ -165,7 +139,7 @@ include 'dist/config.php';
 		<div class="container">
 			<div id="sign-up">
 				<h2>Sign up</h2>
-				<form class="form-horizontal" role="form" method="post" action="">
+				<form class="form-horizontal" role="form" method="post" action="" id="sign_up_form">
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="email">Name:</label>
 						<div class="col-sm-10">
@@ -210,17 +184,6 @@ include 'dist/config.php';
 						</div>
 					</div>
 				</form>
-				<?php
-				if (isset($_POST['submit'])) {
-					$_SESSION['name'] = $_POST['newName'];
-					$_SESSION['pass'] = $_POST['newPass'];
-					$_SESSION['gender'] = $_POST['newGender'];
-					$_SESSION['a_new_email'] = $_POST['newEmail'];
-					$_SESSION['age'] = $_POST['newAge'];
-					createNewAccount();
-				}
-
-				?>
 			</div>
 		</div>
 		<!-- /.main -->
