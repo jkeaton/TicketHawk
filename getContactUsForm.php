@@ -12,7 +12,7 @@
 <?php
 require ("botdetect.php");
 $name = $email = $subject = $CaptchaCode = $var = $SampleCaptcha =null;
-$nameErr = $emailErr = $CaptchaCodeErr= $formErr = "";
+$nameErr = $messageErr = $emailErr = $CaptchaCodeErr= $formErr = "";
 $errors = FALSE;
 ?>
 <head>
@@ -67,6 +67,13 @@ $errors = FALSE;
 				$errors =TRUE;
 			}
 		}
+		if (empty($_POST["subject"])) {
+			$messageErr = "Message Required";
+			$errors =TRUE;
+		} 
+		else {
+			$subject = test_input($_POST['subject']);
+		}
 		if (empty($_POST['CaptchaCode'])) {
 			$CaptchaCodeErr = "Enter code";
 			$errors =TRUE;
@@ -82,7 +89,6 @@ $errors = FALSE;
 				
 			}
 		}
-		$subject = test_input($_POST['subject']);
 	}
 	if ($errors == FALSE) {
 		$to = "meddy672@gmail.com";
@@ -202,17 +208,19 @@ $errors = FALSE;
 	<form role="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" target="_self">
 		<div class="form-group">
 			<label for="name">Name:</label>
-			<input type="text" class="form-control" name="name" placeholder="Enter Name">
 			<span class="error">* <?php echo $nameErr; ?></span>
+			<input type="text" class="form-control" name="name" placeholder="Enter Name">
 		</div>
 		<div class="form-group">
 			<label for="email">Email:</label>
-			<input type="email" class="form-control" name="email" placeholder="Email Address">
 			<span class="error">* <?php echo $emailErr; ?></span>
+			<input type="email" class="form-control" name="email" placeholder="Email Address">
 		</div>
 
 		<div>
-			<textarea class="form-control" rows="5"  placeholder="Optional" name="subject"></textarea>
+			<label for="subject">Message:</label>
+			<span class="error">* <?php echo $messageErr; ?></span>
+			<textarea class="form-control" rows="5"  placeholder="Comments" name="subject"></textarea>
 		</div>
 
 		<div id="Captcha-div">
@@ -224,8 +232,8 @@ $errors = FALSE;
 		</div>
 		<div class="validationDiv">
 			<label for="name">Enter the code below:</label>
-        <input name="CaptchaCode" type="text" id="CaptchaCode" />
         <span class="error">* <?php echo $CaptchaCodeErr; ?></span>
+        <input name="CaptchaCode" type="text" id="CaptchaCode" />
       </div>
       <div id="button-div">
              <button type="submit" class="btn btn-primary" name="submit">
