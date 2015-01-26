@@ -1,8 +1,82 @@
 <!-- Connect to Database -->
 <?php
-include 'dist/config.php';
-// include 'dist/opendb.php';
-session_start();
+    include "dist/config.php";
+    include "dist/common.php";
+    $usernameErr = $passErr = "";
+    $username = $password = "";
+    $welcome_msg = "";
+
+    // Handle Login Attempt
+    if ($_SERVER["REQUEST_METHOD"] == "POST")
+    {
+        $errCount = 0;
+        if (empty($_POST["username"])) {
+            ++$errCount;
+            $usernameErr = "Username is required";
+        } else {
+            $username = test_input($_POST["username"]);
+            // only allow alpha digit characters as part of the username
+            if (!preg_match("/^[a-zA-Z0-9]*$/",$username)) {
+                ++$errCount;
+                $usernameErr = "Only letters and numbers allowed";
+            }
+        }
+        if (empty($_POST["password"])) {
+            ++$errCount;
+            $passwordErr = "Password is required";
+        } else {
+            $password = test_input($_POST["password"]);
+        }
+        if ($errCount == 0){
+            if (login($username, $password)){
+                $_SESSION['user'] = $username;
+                session_start();
+                $welcome_msg = ("Welcome " . $username);
+                if ($username == 'admin'){
+					header('Location: http://localhost/TicketHawk/admin_page.html');
+                }
+                else {
+		            header('Location: http://localhost/TicketHawk/homepage.php');
+                }
+            }
+        }
+	}
+
+    function login($_username, $_pass){
+        // Set Database connection credentials
+        global $dbhost, $dbname;
+        $dbuser = $dbpass = "";
+	    if ($_username === 'admin') {
+            $creds = db_admin();
+            $dbuser = array_values($creds)[0];
+            $dbpass = array_values($creds)[1];
+        }
+        else {
+            $creds = db_customer();
+            $dbuser = array_values($creds)[0];
+            $dbpass = array_values($creds)[1];
+        }
+        // Determine if the username entered exists in the database
+		$query = "SELECT * FROM USER WHERE username = '$_username'";
+        echo $dbuser . '@' . $dbhost . ' with pass ' . $dbpass . ' and db name =
+        ' . $dbname;
+	    $cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+	    $results = mysqli_query($cxn, $query) or die("Connection could not be established");
+        // Check to ensure that exactly 1 row is included in the results
+        if (mysql_num_rows($results) != 1){
+	        $row = mysqli_fetch_assoc($results);
+            // Now ensure that the password entered matches the one in the
+            // database by using the password_verify () method
+            if (password_verify ($_pass , $row['hashed_pass'])){
+                return true;    
+            }
+        }
+        // The only correct path hasn't been followed, so return false,
+        // indicating an invalid login attempt
+		$_SESSION['loginErr'] = "Login Error";
+        return false;
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -104,27 +178,28 @@ session_start();
 							
 							</ul>
                 </li>
-              </ul>
-             <?php
-			if (isset($_POST['submit'])) {
-				$_SESSION['email'] = $_POST['email'];
-				$_SESSION['pwd'] = $_POST['pwd'];
-				login();
-			}
-		?>
-                <form class="navbar-form navbar-right" method="post" action="">
+                <li>
                     <div class="form-group">
-                        <input type="email" name="email" placeholder="Email" class="form-control">
+                        <label><?php echo $welcome_msg; ?></label>
+                    </div>
+                </li>
+              </ul>
+                <form role="form" class="navbar-form navbar-right" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                    <div class="form-group">
+                        <input type="text" name="username" placeholder="Username" class="form-control">
                     </div>
                     <div class="form-group">
-                        <input type="password" name="pwd" placeholder="Password" class="form-control">
+                        <input type="password" name="password" placeholder="Password" class="form-control">
                     </div>
                     <button type="submit" class="btn btn-success" name="submit">Sign in</button>
                     <label id="loginInfo" style="color: red; padding-left: 4px;">
                     	<?php
-						if (isset($_SESSION['loginErr'])) {echo $_SESSION['loginErr'];
-						}
-					?></label>
+						    if (isset($_SESSION['loginErr']))
+                            {
+                                echo $_SESSION['loginErr'];
+						    }
+					    ?>
+                    </label>
                 </form>
             </div><!--/.nav-collapse -->            
           </div>

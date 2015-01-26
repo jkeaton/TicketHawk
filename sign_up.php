@@ -1,6 +1,7 @@
 <!-- Connect to Database -->
 <?php
-    include 'dist/config.php';
+    include "dist/config.php";
+    include "dist/common.php";
     // include 'dist/opendb.php';
     $usernameErr = $fnameErr = $lnameErr = $streetErr = $cityErr = $stateErr = $zipcodeErr = $emailErr = $passwordErr = "";
     $username = $fname = $lname = $street = $city = $state = $zipcode = $email = $password = $hashed_pass = "";
@@ -131,6 +132,18 @@
         if ($errCount == 0){
             createNewAccount($username, $fname, $lname, $street, $city, $state, $zipcode, $email, $hashed_pass);       
         }
+    }
+    
+    function createNewAccount($_username, $_fname, $_lname, $_street, $_city, $_state, $_zipcode, $_email, $_password) {
+        $dbuser = 'customer';
+        $dbpass = 'userpassword';
+        $dbhost = 'localhost';
+        $dbname = 'tickethawk';
+        $cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+        $query = "INSERT INTO USER
+        (username, fname, lname, street_address, city, state, zipcode, email, hashed_pass)
+        VALUES ('$_username', '$_fname', '$_lname', '$_street', '$_city', '$_state', '$_zipcode', '$_email', '$_password')";
+        $results = mysqli_query($cxn, $query) or die($query);
     }
 ?>
 
