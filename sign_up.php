@@ -55,7 +55,7 @@
             // only allow alpha digit characters as part of the street address
             if (!preg_match("/^[a-zA-Z0-9 ]*$/",$street)) {
                 ++$errCount;
-                $streetErr = "Only letters and numbers allowed";
+                $streetErr = "Only letters, numbers and spaces are allowed";
             }
         }
         
@@ -92,7 +92,7 @@
         } else {
             $zipcode = test_input($_POST["zipcode"]);
             // only allow digit characters as part of the zipcode
-            if (!preg_match("/^[a-zA-Z0-9]*$/",$zipcode)) {
+            if (!preg_match("/^[0-9]*$/",$zipcode)) {
                 ++$errCount;
                 $zipcodeErr = "Only numbers allowed";
             }
