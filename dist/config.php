@@ -45,16 +45,16 @@ function login() {
 	}
 }
 
-function createNewAccount() {
+function createNewAccount($_username, $_fname, $_lname, $_street, $_city, $_state, $_zipcode, $_email, $_password) {
 	$dbuser = 'customer';
 	$dbpass = 'userpassword';
 	$dbhost = 'localhost';
 	$dbname = 'tickethawk';
 	$cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-	$query = "INSERT INTO Accounts (name,email,password,gender,age) VALUES('".$_SESSION['name']."','".$_SESSION['a_new_email']."',
-	'".$_SESSION['pass']."','".$_SESSION['gender']."','".$_SESSION['age']."')";
-	$results = mysqli_query($cxn, $query) or die("Connection could not be established");
-	
+	$query = "INSERT INTO USER
+    (username, fname, lname, street_address, city, state, zipcode, email, hashed_pass)
+    VALUES ('$_username', '$_fname', '$_lname', '$_street', '$_city', '$_state', '$_zipcode', '$_email', '$_password')";
+	$results = mysqli_query($cxn, $query) or die($query);
 }
 
 function test_input($data) {
