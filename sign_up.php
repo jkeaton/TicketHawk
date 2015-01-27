@@ -1,6 +1,5 @@
 <!-- Connect to Database -->
 <?php
-    include "dist/config.php";
     include "dist/common.php";
     // include 'dist/opendb.php';
     $usernameErr = $fnameErr = $lnameErr = $streetErr = $cityErr = $stateErr = $zipcodeErr = $emailErr = $passwordErr = "";
@@ -18,6 +17,10 @@
             if (!preg_match("/^[a-zA-Z0-9]*$/",$username)) {
                 ++$errCount;
                 $usernameErr = "Only letters and numbers allowed";
+            }
+            if (!availableUser($username)){
+                ++$errCount;
+                $usernameErr = "Username is unavailable, please choose another";
             }
         }
     
@@ -130,7 +133,7 @@
 
         // If no errors occured, create a user and store it in the database
         if ($errCount == 0){
-            createNewAccount($username, $fname, $lname, $street, $city, $state, $zipcode, $email, $hashed_pass);       
+            createNewAccount($username, $fname, $lname, $street, $city, $state, $zipcode, $email, $hashed_pass);
         }
     }
     

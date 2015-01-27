@@ -1,6 +1,5 @@
 <!-- Connect to Database -->
 <?php
-    include "dist/config.php";
     include "dist/common.php";
     $usernameErr = $passErr = "";
     $username = $password = "";
@@ -63,7 +62,7 @@
 	    $cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 	    $results = mysqli_query($cxn, $query) or die("Connection could not be established");
         // Check to ensure that exactly 1 row is included in the results
-        if (mysql_num_rows($results) != 1){
+        if (mysqli_num_rows($results) != 1){
 	        $row = mysqli_fetch_assoc($results);
             // Now ensure that the password entered matches the one in the
             // database by using the password_verify () method
