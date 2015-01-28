@@ -32,7 +32,7 @@
                 session_start();
                 $welcome_msg = ("Welcome " . $username);
                 if ($username == 'admin'){
-					header('Location: http://localhost/TicketHawk/admin_page.html');
+					header('Location: http://localhost/TicketHawk/admin_page.php');
                 }
                 else {
 		            header('Location: http://localhost/TicketHawk/homepage.php');
@@ -90,6 +90,8 @@
         <link href="dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Carousel Customization -->
         <link href="dist/css/carousel.css" rel="stylesheet">
+        <!-- Custom Style sheet for moving the body down below nav bar -->
+        <link href="dist/css/custom.css" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

@@ -163,6 +163,8 @@
 		<link href="dist/css/sign-up.css" rel="stylesheet">
 		<!-- Carousel Customization -->
 		<link href="dist/css/carousel.css" rel="stylesheet">
+        <!-- Custom Style sheet for moving the body down below nav bar -->
+        <link href="dist/css/custom.css" rel="stylesheet">
 
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
