@@ -70,7 +70,6 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Event ID</th>
                             <th>Event Name</th>
                             <th>Date</th>
                             <th>Time</th>
@@ -83,13 +82,12 @@
                         <?php
                             while ($row = mysqli_fetch_assoc($results)) {
                                 echo "<tr>";
-                                echo "<td>".$row['event_id']."</td>";
                                 echo "<td>".$row['eventname']."</td>";
                                 echo "<td>".$row['date']."</td>";
                                 echo "<td>".$row['time']."</td>";
                                 echo "<td>".$row['location']."</td>";
                                 echo "<td>".$row['venue']."</td>";
-                                echo "<td>".$row['price']."</td>";
+                                echo "<td>".sprintf("%01.2f", $row['price'])."</td>";
                                 echo "<td>".$row['ticket_qty']."</td>";
                                 echo "</tr>";
                             }
