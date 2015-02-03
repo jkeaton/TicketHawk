@@ -250,7 +250,6 @@ function createEvent($_eventName, $_eventDate,$_eventTime,$_eventLocation,$_even
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Event ID</th>
                             <th>Event Name</th>
                             <th>Date</th>
                             <th>Time</th>
@@ -260,22 +259,22 @@ function createEvent($_eventName, $_eventDate,$_eventTime,$_eventLocation,$_even
                             <th>Ticket Quantity</th>
                         </tr>
                     </thead>
-                        <?php
+                    <?php
+
 						while ($row = mysqli_fetch_assoc($results)) {
 							echo "<tr>";
-							echo "<td>" . $row['eventid'] . "</td>";
 							echo "<td>" . $row['eventname'] . "</td>";
 							echo "<td>" . $row['date'] . "</td>";
 							echo "<td>" . $row['time'] . "</td>";
 							echo "<td>" . $row['location'] . "</td>";
 							echo "<td>" . $row['venue'] . "</td>";
-							echo "<td>" . $row['price'] . "</td>";
+							echo "<td>".sprintf("%01.2f", $row['price'])."</td>";
 							echo "<td>" . $row['ticket_qty'] . "</td>";
 							echo '<td><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
 							echo "<td><input type='button' name='delete' value='Delete'/></td>";
 							echo "</tr>";
 						}
-                        ?>
+	              	?>
                 </table>
         </div>
         <h3>Add Events</h3>
