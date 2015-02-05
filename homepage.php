@@ -50,44 +50,6 @@
             }
         }
 	}
-
-    function login($_username, $_pass){
-        // Set Database connection credentials
-        global $dbhost, $dbname;
-        $dbuser = $dbpass = $_SESSION['loginErr'] = "";
-	    if ($_username === 'admin') {
-            $creds = db_admin();
-            $dbuser = array_values($creds)[0];
-            $dbpass = array_values($creds)[1];
-        }
-        else {
-            $creds = db_customer();
-            $dbuser = array_values($creds)[0];
-            $dbpass = array_values($creds)[1];
-        }
-        // Determine if the username entered exists in the database
-		$query = "SELECT * FROM USER WHERE username = '$_username'";
-	    $cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-	    $results = mysqli_query($cxn, $query) or die("Connection could not be established");
-        // Check to ensure that exactly 1 row is included in the results
-        if (mysqli_num_rows($results) == 1){
-	        $row = mysqli_fetch_assoc($results);
-            // Now ensure that the password entered matches the one in the
-            // database by using the password_verify () method
-            if (password_verify ($_pass , $row['hashed_pass'])){
-                return true;    
-            }
-        }
-        // The only correct path hasn't been followed, so return false,
-        // indicating an invalid login attempt
-
-        // If the user has tried to login to a different user account
-        // unsuccessfully, they are logged out of their current user and the
-        // session is ended.
-        soft_logout();
-        return false;
-    }
-
 ?>
 
 <!DOCTYPE html>

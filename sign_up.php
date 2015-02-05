@@ -1,11 +1,23 @@
 <!-- Connect to Database -->
 <?php
+    session_start();
     include "dist/common.php";
     // include 'dist/opendb.php';
     $usernameErr = $fnameErr = $lnameErr = $streetErr = $cityErr = $stateErr = $zipcodeErr = $emailErr = $passwordErr = "";
     $username = $fname = $lname = $street = $city = $state = $zipcode = $email = $password = $hashed_pass = "";
+    $welcome_msg = "";
+
+    // If the current session includes a valid user, display the welcome label
+    if (isset($_SESSION['user'])){
+        $welcome_msg = ("Welcome " . $_SESSION['user']);
+    }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Handle logout attempt
+        if (isset($_POST['logout'])){
+            return logout();
+        }
+
         $errCount = 0;
         // Get username
         if (empty($_POST["username"])) {
@@ -265,7 +277,7 @@
 							</ul>
 						</li>
 					</ul>
-					<form class="navbar-form navbar-right">
+					<form class="navbar-form navbar-nav">
 						<div class="form-group">
 							<input type="text" placeholder="Email" class="form-control">
 						</div>
@@ -276,6 +288,19 @@
 							Sign in
 						</button>
 					</form>
+                    <ul class="nav navbar-nav navbar-right">
+                    <?php
+                        if (isset($_SESSION['user']))
+                        {
+                            echo "<li class=\"navbar-left\">
+                            <a>".$welcome_msg."</a></li><form role=\"form\"
+                            class=\"navbar-form navbar-right\" method=\"post\"
+                            action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\"><button
+                            type=\"submit\" class=\"btn btn-success\"
+                            name=\"logout\">Log Out</button></form>";
+                        }
+                    ?>
+                    </ul>
 				</div><!--/.nav-collapse -->
 			</div>
 		</nav>
