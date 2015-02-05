@@ -133,7 +133,10 @@
 
         // If no errors occured, create a user and store it in the database
         if ($errCount == 0){
-            createNewAccount($username, $fname, $lname, $street, $city, $state, $zipcode, $email, $hashed_pass);
+            if (createNewAccount($username, $fname, $lname, $street, $city,
+                $state, $zipcode, $email, $hashed_pass)){
+		        header('Location: http://localhost/TicketHawk/homepage.php');
+            }
         }
     }
     
@@ -147,6 +150,7 @@
         (username, fname, lname, street_address, city, state, zipcode, email, hashed_pass)
         VALUES ('$_username', '$_fname', '$_lname', '$_street', '$_city', '$_state', '$_zipcode', '$_email', '$_password')";
         $results = mysqli_query($cxn, $query) or die($query);
+        return true;
     }
 ?>
 

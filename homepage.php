@@ -1,13 +1,27 @@
 <!-- Connect to Database -->
 <?php
+    session_start();
+    // Clear the session login error variable
+    $_SESSION['loginErr'] = "";
     include "dist/common.php";
     $usernameErr = $passErr = "";
-    $username = $password = "";
-    $welcome_msg = "";
+    $username = $password = $welcome_msg = "";
+
+    // If the current session includes a valid user, display the welcome label
+    if (isset($_SESSION['user'])){
+        $welcome_msg = ("Welcome " . $_SESSION['user']);
+    }
 
     // Handle Login Attempt
     if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
+        // Handle logout attempt
+        if (isset($_POST['logout'])){
+            session_unset(); 
+            session_destroy();
+            header('Location: http://localhost/TicketHawk/homepage.php');
+            return;
+        }
         $errCount = 0;
         if (empty($_POST["username"])) {
             ++$errCount;
@@ -29,8 +43,7 @@
         if ($errCount == 0){
             if (login($username, $password)){
                 $_SESSION['user'] = $username;
-                session_start();
-                $welcome_msg = ("Welcome " . $username);
+                $welcome_msg = ("Welcome " . $_SESSION['user']);
                 if ($username == 'admin'){
 					header('Location: http://localhost/TicketHawk/admin_page.php');
                 }
@@ -57,12 +70,10 @@
         }
         // Determine if the username entered exists in the database
 		$query = "SELECT * FROM USER WHERE username = '$_username'";
-        echo $dbuser . '@' . $dbhost . ' with pass ' . $dbpass . ' and db name =
-        ' . $dbname;
 	    $cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 	    $results = mysqli_query($cxn, $query) or die("Connection could not be established");
         // Check to ensure that exactly 1 row is included in the results
-        if (mysqli_num_rows($results) != 1){
+        if (mysqli_num_rows($results) == 1){
 	        $row = mysqli_fetch_assoc($results);
             // Now ensure that the password entered matches the one in the
             // database by using the password_verify () method
@@ -179,11 +190,6 @@
 							
 							</ul>
                 </li>
-                <li>
-                    <div class="form-group">
-                        <label><?php echo $welcome_msg; ?></label>
-                    </div>
-                </li>
               </ul>
                 <form role="form" class="navbar-form navbar-right" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <div class="form-group">
@@ -202,6 +208,19 @@
 					    ?>
                     </label>
                 </form>
+                <ul class="nav navbar-nav">
+                <?php
+                    if (isset($_SESSION['user']))
+                    {
+                        echo "<li class=\"navbar-right\">
+                        <a>".$welcome_msg."</a></li><form role=\"form\"
+                        class=\"navbar-form navbar-right\" method=\"post\"
+                        action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\"><button
+                        type=\"submit\" class=\"btn btn-success\"
+                        name=\"logout\">Log Out</button></form>";
+                    }
+                ?>
+                </ul>
             </div><!--/.nav-collapse -->            
           </div>
         </nav>

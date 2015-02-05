@@ -1,6 +1,6 @@
 <!-- Connect to Database -->
 <?php
-//phpinfo();
+session_start();
 include "dist/common.php";
 global $dbhost, $dbname;
 $creds = db_admin();
@@ -9,7 +9,8 @@ $dbpass = array_values($creds)[1];
 $cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 $query = "SELECT * FROM EVENT";
 $results = mysqli_query($cxn, $query) or die("Connection could not be established");
-$welcome_msg = "";
+$username = $_SESSION['user'];
+$welcome_msg = ("Welcome " . $username);
 
 $eventName = $eventDate = $eventTime = $eventLocation = $eventVenue = $eventPrice = $ticketQuantity = $eventImg = $target_dir = "";
 $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "";
@@ -200,17 +201,11 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="admin_page.php">Events</a></li>
-                        <!-- <li>
-                            <div class="form-group">
-                                <label><?php echo $welcome_msg; ?></label>
-                            </div>
-                        </li> -->
-                                            
                         <li><a href="#">Users</a></li>
                     </ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="navbar-right">
-							<a>Hello</a>
+							<a><?php echo $welcome_msg; ?></a>
 						</li>
 					</ul>
                 </div><!--/.nav-collapse -->            
