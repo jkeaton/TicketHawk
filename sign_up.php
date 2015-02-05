@@ -284,7 +284,7 @@
 						<div class="form-group">
 							<input type="password" placeholder="Password" class="form-control">
 						</div>
-						<button type="submit" class="btn btn-success" name="submit">
+						<button type="submit" class="btn btn-primary" name="submit">
 							Sign in
 						</button>
 					</form>
@@ -296,7 +296,7 @@
                             <a>".$welcome_msg."</a></li><form role=\"form\"
                             class=\"navbar-form navbar-right\" method=\"post\"
                             action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\"><button
-                            type=\"submit\" class=\"btn btn-success\"
+                            type=\"submit\" class=\"btn btn-primary\"
                             name=\"logout\">Log Out</button></form>";
                         }
                     ?>

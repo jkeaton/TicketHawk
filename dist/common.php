@@ -71,6 +71,12 @@
             // Now ensure that the password entered matches the one in the
             // database by using the password_verify () method
             if (password_verify ($_pass , $row['hashed_pass'])){
+	            if ($_username === 'admin') {
+                    $_SESSION['valid_admin'] = true; 
+                }
+                else {
+                    $_SESSION['valid_admin'] = false; 
+                }
                 return true;    
             }
         }

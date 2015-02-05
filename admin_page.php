@@ -207,6 +207,7 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
+                        <li class="active"><a href="homepage.php">Home</a></li>
                         <li class="active"><a href="admin_page.php">Events</a></li>
                         <li><a href="#">Users</a></li>
                     </ul>
@@ -219,7 +220,7 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
                             class=\"navbar-left\"><form role=\"form\"
                             class=\"navbar-form navbar-left\" method=\"post\"
                             action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\"><button
-                            type=\"submit\" class=\"btn btn-success\"
+                            type=\"submit\" class=\"btn btn-primary\"
                             name=\"logout\">Log Out</button></form></li>";
                         }
                     ?>

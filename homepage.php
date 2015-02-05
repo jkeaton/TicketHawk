@@ -91,7 +91,19 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="homepage.php">Home</a></li>
+                <?php
+                    if (isset($_SESSION['valid_admin'])){
+                        if ($_SESSION['valid_admin']){
+                            echo "<li class=\"active\"><a href=\"admin_page.php\">My Page</a></li>";
+                        }
+                        else {
+                            echo "<li class=\"active\"><a href=\"homepage.php\">Home</a></li>";
+                        }
+                    }
+                    else{
+                        echo "<li class=\"active\"><a href=\"homepage.php\">Home</a></li>";
+                    }
+                ?>
                 <li><a href="#about">About</a></li>
                 <li><a href="getContactUsForm.php">Contact</a></li>
                 <li class="dropdown">
@@ -161,7 +173,7 @@
                     <div class="form-group">
                         <input type="password" name="password" placeholder="Password" class="form-control">
                     </div>
-                    <button type="submit" class="btn btn-success" name="submit">Sign in</button>
+                    <button type="submit" class="btn btn-primary" name="submit">Sign in</button>
                     <label id="loginInfo" style="color: red; padding-left: 4px;">
                     	<?php
 						    if (isset($_SESSION['loginErr']))
@@ -179,7 +191,7 @@
                         <a>".$welcome_msg."</a></li><form role=\"form\"
                         class=\"navbar-form navbar-right\" method=\"post\"
                         action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\"><button
-                        type=\"submit\" class=\"btn btn-success\"
+                        type=\"submit\" class=\"btn btn-primary\"
                         name=\"logout\">Log Out</button></form>";
                     }
                 ?>
@@ -216,7 +228,7 @@
               <p>We offer special deals to all Ticket Hawk Members.</p>
               <p> The best seats for a lower price</p>
               <h3>Ticket Hawk</h3>
-              <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Learn more</a></p>
+              <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
             </div>
           </div>
         </div>
@@ -226,7 +238,7 @@
             <div class="carousel-caption">
               <h1>One more for good measure.</h1>
               <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+              <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
             </div>
           </div>
         </div>
@@ -237,7 +249,7 @@
             <div class="carousel-caption">
               <h1>All of your favorite palaces.</h1>
               <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+              <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
             </div>
           </div>
         </div>
@@ -248,7 +260,7 @@
             <div class="carousel-caption">
               <h1>Events you cant miss.</h1>
               <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+              <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
             </div>
           </div>
         </div>
@@ -259,7 +271,7 @@
             <div class="carousel-caption">
               <h1>Sign up and receive the best deal out.</h1>
               <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+              <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
             </div>
           </div>
         </div>
