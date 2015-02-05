@@ -123,6 +123,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 	}
 
 }
+
+// Handle logout attempt
+elseif ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
+    return logout();
+}
+
 function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_eventVenue, $_eventPrice, $_ticketQuantity, $_eventImg) {
 	$dbuser = 'admin';
 	$dbpass = 'balloonrides';
@@ -134,6 +140,7 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
 		VALUES('$_eventName', '$_eventDate', '$_eventTime', '$_eventLocation', '$_eventVenue', '$_eventPrice', '$_ticketQuantity', '$_eventImg')";
 	$results = mysqli_query($cxn, $query) or die("Could not perform request");
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -203,11 +210,20 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
                         <li class="active"><a href="admin_page.php">Events</a></li>
                         <li><a href="#">Users</a></li>
                     </ul>
-					<ul class="nav navbar-nav navbar-right">
-						<li class="navbar-right">
-							<a><?php echo $welcome_msg; ?></a>
-						</li>
-					</ul>
+                    <ul class="nav navbar-nav navbar-right">
+                    <?php
+                        if (isset($_SESSION['user']))
+                        {
+                            echo "<li class=\"navbar-left\">
+                            <a>".$welcome_msg."</a></li><li
+                            class=\"navbar-left\"><form role=\"form\"
+                            class=\"navbar-form navbar-left\" method=\"post\"
+                            action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\"><button
+                            type=\"submit\" class=\"btn btn-success\"
+                            name=\"logout\">Log Out</button></form></li>";
+                        }
+                    ?>
+                    </ul>
                 </div><!--/.nav-collapse -->            
             </div>
         </nav>

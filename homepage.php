@@ -2,7 +2,7 @@
 <?php
     session_start();
     // Clear the session login error variable
-    $_SESSION['loginErr'] = "";
+    //$_SESSION['loginErr'] = "";
     include "dist/common.php";
     $usernameErr = $passErr = "";
     $username = $password = $welcome_msg = "";
@@ -17,10 +17,7 @@
     {
         // Handle logout attempt
         if (isset($_POST['logout'])){
-            session_unset(); 
-            session_destroy();
-            header('Location: http://localhost/TicketHawk/homepage.php');
-            return;
+            return logout();
         }
         $errCount = 0;
         if (empty($_POST["username"])) {
@@ -57,7 +54,7 @@
     function login($_username, $_pass){
         // Set Database connection credentials
         global $dbhost, $dbname;
-        $dbuser = $dbpass = "";
+        $dbuser = $dbpass = $_SESSION['loginErr'] = "";
 	    if ($_username === 'admin') {
             $creds = db_admin();
             $dbuser = array_values($creds)[0];
@@ -83,7 +80,11 @@
         }
         // The only correct path hasn't been followed, so return false,
         // indicating an invalid login attempt
-		$_SESSION['loginErr'] = "Login Error";
+
+        // If the user has tried to login to a different user account
+        // unsuccessfully, they are logged out of their current user and the
+        // session is ended.
+        soft_logout();
         return false;
     }
 
@@ -191,7 +192,7 @@
 							</ul>
                 </li>
               </ul>
-                <form role="form" class="navbar-form navbar-right" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <form role="form" class="navbar-form navbar-nav" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <div class="form-group">
                         <input type="text" name="username" placeholder="Username" class="form-control">
                     </div>
@@ -208,11 +209,11 @@
 					    ?>
                     </label>
                 </form>
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav navbar-right">
                 <?php
                     if (isset($_SESSION['user']))
                     {
-                        echo "<li class=\"navbar-right\">
+                        echo "<li class=\"navbar-left\">
                         <a>".$welcome_msg."</a></li><form role=\"form\"
                         class=\"navbar-form navbar-right\" method=\"post\"
                         action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\"><button
