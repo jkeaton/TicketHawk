@@ -1,3 +1,21 @@
 body { 
     padding-top: 50px; 
 }
+#button-div {
+    margin-top: 5px;
+}
+#sign-up{
+	width: 400px;
+}
+#main-container{
+    width:400px;
+}
+.error {
+    color: red;
+}
+#Captcha-div {
+    margin-top: 8px;
+}
+#CaptchaCode {
+    margin-top: 5px;
+}

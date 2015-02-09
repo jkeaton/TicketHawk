@@ -1,11 +1,22 @@
 <!-- Connect to Database -->
 <?php
+    session_start();
     include "dist/common.php";
-    // include 'dist/opendb.php';
     $usernameErr = $fnameErr = $lnameErr = $streetErr = $cityErr = $stateErr = $zipcodeErr = $emailErr = $passwordErr = "";
     $username = $fname = $lname = $street = $city = $state = $zipcode = $email = $password = $hashed_pass = "";
+    $welcome_msg = "";
+
+    // If the current session includes a valid user, display the welcome label
+    if (isset($_SESSION['user'])){
+        $welcome_msg = ("Welcome " . $_SESSION['user']);
+    }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Handle logout attempt
+        if (isset($_POST['logout'])){
+            return logout();
+        }
+
         $errCount = 0;
         // Get username
         if (empty($_POST["username"])) {
@@ -133,7 +144,10 @@
 
         // If no errors occured, create a user and store it in the database
         if ($errCount == 0){
-            createNewAccount($username, $fname, $lname, $street, $city, $state, $zipcode, $email, $hashed_pass);
+            if (createNewAccount($username, $fname, $lname, $street, $city,
+                $state, $zipcode, $email, $hashed_pass)){
+		        header('Location: http://localhost/TicketHawk/homepage.php');
+            }
         }
     }
     
@@ -147,6 +161,7 @@
         (username, fname, lname, street_address, city, state, zipcode, email, hashed_pass)
         VALUES ('$_username', '$_fname', '$_lname', '$_street', '$_city', '$_state', '$_zipcode', '$_email', '$_password')";
         $results = mysqli_query($cxn, $query) or die($query);
+        return true;
     }
 ?>
 
@@ -160,9 +175,6 @@
 
 		<!-- Bootstrap -->
 		<link href="dist/css/bootstrap.min.css" rel="stylesheet">
-		<link href="dist/css/sign-up.css" rel="stylesheet">
-		<!-- Carousel Customization -->
-		<link href="dist/css/carousel.css" rel="stylesheet">
         <!-- Custom Style sheet for moving the body down below nav bar -->
         <link href="dist/css/custom.css" rel="stylesheet">
 
@@ -172,11 +184,6 @@
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
-        <style>
-            .error {
-                color: red;
-            }
-	    </style>
 	</head>
 
 	<body role="document">
@@ -261,17 +268,30 @@
 							</ul>
 						</li>
 					</ul>
-					<form class="navbar-form navbar-right">
+					<form class="navbar-form navbar-nav">
 						<div class="form-group">
 							<input type="text" placeholder="Email" class="form-control">
 						</div>
 						<div class="form-group">
 							<input type="password" placeholder="Password" class="form-control">
 						</div>
-						<button type="submit" class="btn btn-success" name="submit">
+						<button type="submit" class="btn btn-primary" name="submit">
 							Sign in
 						</button>
 					</form>
+                    <ul class="nav navbar-nav navbar-right">
+                    <?php
+                        if (isset($_SESSION['user']))
+                        {
+                            echo "<li class=\"navbar-left\">
+                            <a>".$welcome_msg."</a></li><form role=\"form\"
+                            class=\"navbar-form navbar-right\" method=\"post\"
+                            action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\"><button
+                            type=\"submit\" class=\"btn btn-danger\"
+                            name=\"logout\">Log Out</button></form>";
+                        }
+                    ?>
+                    </ul>
 				</div><!--/.nav-collapse -->
 			</div>
 		</nav>
@@ -379,7 +399,7 @@
                         <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
                     </div>
 					<div class="form-group">
-					    <button type="submit" class="btn btn-default" name="submit">
+					    <button type="submit" class="btn btn-primary" name="submit">
 						    Submit
 						</button>
 					</div>

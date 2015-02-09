@@ -1,6 +1,6 @@
 <!-- Connect to Database -->
 <?php
-//phpinfo();
+session_start();
 include "dist/common.php";
 global $dbhost, $dbname;
 $creds = db_admin();
@@ -9,7 +9,8 @@ $dbpass = array_values($creds)[1];
 $cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 $query = "SELECT * FROM EVENT";
 $results = mysqli_query($cxn, $query) or die("Connection could not be established");
-$welcome_msg = "";
+$username = $_SESSION['user'];
+$welcome_msg = ("Welcome " . $username);
 
 $eventName = $eventDate = $eventTime = $eventLocation = $eventVenue = $eventPrice = $ticketQuantity = $eventImg = $target_dir = "";
 $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "";
@@ -122,6 +123,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 	}
 
 }
+
+// Handle logout attempt
+elseif ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
+    return logout();
+}
+
 function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_eventVenue, $_eventPrice, $_ticketQuantity, $_eventImg) {
 	$dbuser = 'admin';
 	$dbpass = 'balloonrides';
@@ -133,6 +140,7 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
 		VALUES('$_eventName', '$_eventDate', '$_eventTime', '$_eventLocation', '$_eventVenue', '$_eventPrice', '$_ticketQuantity', '$_eventImg')";
 	$results = mysqli_query($cxn, $query) or die("Could not perform request");
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -147,8 +155,6 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
         <!-- Bootstrap -->
         <link href="dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Carousel Customization -->
-        <link href="dist/css/carousel.css" rel="stylesheet">
-        <!-- Custom Style sheet for moving the body down below nav bar -->
         <link href="dist/css/custom.css" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -196,24 +202,28 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="homepage.php">Ticket Hawk</a>
+                    <a class="navbar-brand" href="#">Ticket Hawk</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
+                        <li class="active"><a href="homepage.php">Home</a></li>
                         <li class="active"><a href="admin_page.php">Events</a></li>
-                        <!-- <li>
-                            <div class="form-group">
-                                <label><?php echo $welcome_msg; ?></label>
-                            </div>
-                        </li> -->
-                                            
                         <li><a href="#">Users</a></li>
                     </ul>
-					<ul class="nav navbar-nav navbar-right">
-						<li class="navbar-right">
-							<a>Hello</a>
-						</li>
-					</ul>
+                    <ul class="nav navbar-nav navbar-right">
+                    <?php
+                        if (isset($_SESSION['user']))
+                        {
+                            echo "<li class=\"navbar-left\">
+                            <a>".$welcome_msg."</a></li><li
+                            class=\"navbar-left\"><form role=\"form\"
+                            class=\"navbar-form navbar-left\" method=\"post\"
+                            action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\"><button
+                            type=\"submit\" class=\"btn btn-danger\"
+                            name=\"logout\">Log Out</button></form></li>";
+                        }
+                    ?>
+                    </ul>
                 </div><!--/.nav-collapse -->            
             </div>
         </nav>

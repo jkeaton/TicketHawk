@@ -1,13 +1,24 @@
 <!-- Connect to Database -->
 <?php
+    session_start();
+    // Clear the session login error variable
+    //$_SESSION['loginErr'] = "";
     include "dist/common.php";
     $usernameErr = $passErr = "";
-    $username = $password = "";
-    $welcome_msg = "";
+    $username = $password = $welcome_msg = "";
+
+    // If the current session includes a valid user, display the welcome label
+    if (isset($_SESSION['user'])){
+        $welcome_msg = ("Welcome " . $_SESSION['user']);
+    }
 
     // Handle Login Attempt
     if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
+        // Handle logout attempt
+        if (isset($_POST['logout'])){
+            return logout();
+        }
         $errCount = 0;
         if (empty($_POST["username"])) {
             ++$errCount;
@@ -29,8 +40,7 @@
         if ($errCount == 0){
             if (login($username, $password)){
                 $_SESSION['user'] = $username;
-                session_start();
-                $welcome_msg = ("Welcome " . $username);
+                $welcome_msg = ("Welcome " . $_SESSION['user']);
                 if ($username == 'admin'){
 					header('Location: http://localhost/TicketHawk/admin_page.php');
                 }
@@ -40,42 +50,6 @@
             }
         }
 	}
-
-    function login($_username, $_pass){
-        // Set Database connection credentials
-        global $dbhost, $dbname;
-        $dbuser = $dbpass = "";
-	    if ($_username === 'admin') {
-            $creds = db_admin();
-            $dbuser = array_values($creds)[0];
-            $dbpass = array_values($creds)[1];
-        }
-        else {
-            $creds = db_customer();
-            $dbuser = array_values($creds)[0];
-            $dbpass = array_values($creds)[1];
-        }
-        // Determine if the username entered exists in the database
-		$query = "SELECT * FROM USER WHERE username = '$_username'";
-        echo $dbuser . '@' . $dbhost . ' with pass ' . $dbpass . ' and db name =
-        ' . $dbname;
-	    $cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-	    $results = mysqli_query($cxn, $query) or die("Connection could not be established");
-        // Check to ensure that exactly 1 row is included in the results
-        if (mysqli_num_rows($results) != 1){
-	        $row = mysqli_fetch_assoc($results);
-            // Now ensure that the password entered matches the one in the
-            // database by using the password_verify () method
-            if (password_verify ($_pass , $row['hashed_pass'])){
-                return true;    
-            }
-        }
-        // The only correct path hasn't been followed, so return false,
-        // indicating an invalid login attempt
-		$_SESSION['loginErr'] = "Login Error";
-        return false;
-    }
-
 ?>
 
 <!DOCTYPE html>
@@ -117,7 +91,19 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="homepage.php">Home</a></li>
+                <?php
+                    if (isset($_SESSION['valid_admin'])){
+                        if ($_SESSION['valid_admin']){
+                            echo "<li class=\"active\"><a href=\"admin_page.php\">My Page</a></li>";
+                        }
+                        else {
+                            echo "<li class=\"active\"><a href=\"homepage.php\">Home</a></li>";
+                        }
+                    }
+                    else{
+                        echo "<li class=\"active\"><a href=\"homepage.php\">Home</a></li>";
+                    }
+                ?>
                 <li><a href="#about">About</a></li>
                 <li><a href="getContactUsForm.php">Contact</a></li>
                 <li class="dropdown">
@@ -179,20 +165,15 @@
 							
 							</ul>
                 </li>
-                <li>
-                    <div class="form-group">
-                        <label><?php echo $welcome_msg; ?></label>
-                    </div>
-                </li>
               </ul>
-                <form role="form" class="navbar-form navbar-right" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <form role="form" class="navbar-form navbar-nav" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <div class="form-group">
                         <input type="text" name="username" placeholder="Username" class="form-control">
                     </div>
                     <div class="form-group">
                         <input type="password" name="password" placeholder="Password" class="form-control">
                     </div>
-                    <button type="submit" class="btn btn-success" name="submit">Sign in</button>
+                    <button type="submit" class="btn btn-primary" name="submit">Sign in</button>
                     <label id="loginInfo" style="color: red; padding-left: 4px;">
                     	<?php
 						    if (isset($_SESSION['loginErr']))
@@ -202,6 +183,19 @@
 					    ?>
                     </label>
                 </form>
+                <ul class="nav navbar-nav navbar-right">
+                <?php
+                    if (isset($_SESSION['user']))
+                    {
+                        echo "<li class=\"navbar-left\">
+                        <a>".$welcome_msg."</a></li><form role=\"form\"
+                        class=\"navbar-form navbar-right\" method=\"post\"
+                        action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\"><button
+                        type=\"submit\" class=\"btn btn-danger\"
+                        name=\"logout\">Log Out</button></form>";
+                    }
+                ?>
+                </ul>
             </div><!--/.nav-collapse -->            
           </div>
         </nav>
@@ -234,7 +228,7 @@
               <p>We offer special deals to all Ticket Hawk Members.</p>
               <p> The best seats for a lower price</p>
               <h3>Ticket Hawk</h3>
-              <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Learn more</a></p>
+              <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
             </div>
           </div>
         </div>
@@ -244,7 +238,7 @@
             <div class="carousel-caption">
               <h1>One more for good measure.</h1>
               <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+              <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
             </div>
           </div>
         </div>
@@ -255,7 +249,7 @@
             <div class="carousel-caption">
               <h1>All of your favorite palaces.</h1>
               <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+              <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
             </div>
           </div>
         </div>
@@ -266,7 +260,7 @@
             <div class="carousel-caption">
               <h1>Events you cant miss.</h1>
               <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+              <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
             </div>
           </div>
         </div>
@@ -277,7 +271,7 @@
             <div class="carousel-caption">
               <h1>Sign up and receive the best deal out.</h1>
               <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
+              <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
             </div>
           </div>
         </div>
