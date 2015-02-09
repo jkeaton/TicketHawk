@@ -138,11 +138,12 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
 <!DOCTYPE html>
 <html lang="en">
     <head>
+    	
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Ticket Hawk</title>
-
+		<link href="jquery-ui.css" rel="stylesheet">
         <!-- Bootstrap -->
         <link href="dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Carousel Customization -->
@@ -256,6 +257,7 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
 
 						echo "</tr>";
 					}
+					$query = "REMOVE FROM EVENT WHERE date = "
 	              	?>
                 </table>
         </div>
@@ -320,7 +322,7 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
 					<form role="form" class="form-inline" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 						<div class="form-group" >
 							<label for="id-num">Delete By Date:</label>
-							<input type="date"  class="form-control" name="delete-by-date"/>
+							<input  class="form-control" id="datepicker" name="datetime"/>
 							<button type="submit" name="deleteBydate"  class="btn btn-default"/>Delete</button>
 						</div>	
 					</form>
@@ -343,8 +345,13 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
 
 			</div>
 		</div>
-
+		<script>
+		$( "#datepicker" ).datepicker({
+	inline: true
+});
+</script>
     </body>
+    
 </html>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
