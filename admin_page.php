@@ -154,8 +154,6 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
         <!-- Bootstrap -->
         <link href="dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Carousel Customization -->
-        <link href="dist/css/carousel.css" rel="stylesheet">
-        <!-- Custom Style sheet for moving the body down below nav bar -->
         <link href="dist/css/custom.css" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -220,7 +218,7 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
                             class=\"navbar-left\"><form role=\"form\"
                             class=\"navbar-form navbar-left\" method=\"post\"
                             action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\"><button
-                            type=\"submit\" class=\"btn btn-primary\"
+                            type=\"submit\" class=\"btn btn-danger\"
                             name=\"logout\">Log Out</button></form></li>";
                         }
                     ?>

@@ -82,7 +82,7 @@
 	}
 ?>
 <head>
-	<title>Bootstrap Example</title>
+	<title>Ticket Hawk</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -195,7 +195,7 @@
                             <a>".$welcome_msg."</a></li><form role=\"form\"
                             class=\"navbar-form navbar-right\" method=\"post\"
                             action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\"><button
-                            type=\"submit\" class=\"btn btn-primary\"
+                            type=\"submit\" class=\"btn btn-danger\"
                             name=\"logout\">Log Out</button></form>";
                         }
                     ?>
@@ -207,7 +207,7 @@
 
 <div class="container">
     <div id="main-container">
-        <h2>Contact Us</h2>
+        <h2>Contact us</h2>
         <form role="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" target="_self">
             <div class="form-group">
                 <label for="name">Name:</label>

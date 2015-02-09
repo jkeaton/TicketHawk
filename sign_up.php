@@ -287,7 +287,7 @@
                             <a>".$welcome_msg."</a></li><form role=\"form\"
                             class=\"navbar-form navbar-right\" method=\"post\"
                             action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\"><button
-                            type=\"submit\" class=\"btn btn-primary\"
+                            type=\"submit\" class=\"btn btn-danger\"
                             name=\"logout\">Log Out</button></form>";
                         }
                     ?>
@@ -399,7 +399,7 @@
                         <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
                     </div>
 					<div class="form-group">
-					    <button type="submit" class="btn btn-default" name="submit">
+					    <button type="submit" class="btn btn-primary" name="submit">
 						    Submit
 						</button>
 					</div>
