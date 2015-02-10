@@ -253,21 +253,21 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
                     </thead>
                     <?php
 
-					while ($row = mysqli_fetch_assoc($results)) {
-						echo "<tr>";
-						echo "<td>" . $row['eventid'] . "</td>";
-						echo "<td>" . $row['eventname'] . "</td>";
-						echo "<td>" . $row['date'] . "</td>";
-						echo "<td>" . $row['time'] . "</td>";
-						echo "<td>" . $row['location'] . "</td>";
-						echo "<td>" . $row['venue'] . "</td>";
-						echo "<td>" . sprintf("%01.2f", $row['price']) . "</td>";
-						echo "<td>" . $row['ticket_qty'] . "</td>";
-						echo '<td><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
+                        while ($row = mysqli_fetch_assoc($results)) {
+                            echo "<tr>";
+                            echo "<td>" . $row['eventid'] . "</td>";
+                            echo "<td>" . $row['eventname'] . "</td>";
+                            echo "<td>" . $row['date'] . "</td>";
+                            echo "<td>" . $row['time'] . "</td>";
+                            echo "<td>" . $row['location'] . "</td>";
+                            echo "<td>" . $row['venue'] . "</td>";
+                            echo "<td>" . sprintf("%01.2f", $row['price']) . "</td>";
+                            echo "<td>" . $row['ticket_qty'] . "</td>";
+                            echo '<td><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
 
-						echo "</tr>";
-					}
-					$query = "REMOVE FROM EVENT WHERE date = "
+                            echo "</tr>";
+                        }
+                        $query = "REMOVE FROM EVENT WHERE date = "
 	              	?>
                 </table>
         </div>
