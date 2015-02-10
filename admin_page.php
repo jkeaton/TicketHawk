@@ -378,6 +378,7 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
             </form>
         </div>
     </body>
+    
 </html>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
