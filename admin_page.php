@@ -251,21 +251,21 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
                     </thead>
                     <?php
 
-					while ($row = mysqli_fetch_assoc($results)) {
-						echo "<tr>";
-						echo "<td>" . $row['eventid'] . "</td>";
-						echo "<td>" . $row['eventname'] . "</td>";
-						echo "<td>" . $row['date'] . "</td>";
-						echo "<td>" . $row['time'] . "</td>";
-						echo "<td>" . $row['location'] . "</td>";
-						echo "<td>" . $row['venue'] . "</td>";
-						echo "<td>" . sprintf("%01.2f", $row['price']) . "</td>";
-						echo "<td>" . $row['ticket_qty'] . "</td>";
-						echo '<td><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
+                        while ($row = mysqli_fetch_assoc($results)) {
+                            echo "<tr>";
+                            echo "<td>" . $row['eventid'] . "</td>";
+                            echo "<td>" . $row['eventname'] . "</td>";
+                            echo "<td>" . $row['date'] . "</td>";
+                            echo "<td>" . $row['time'] . "</td>";
+                            echo "<td>" . $row['location'] . "</td>";
+                            echo "<td>" . $row['venue'] . "</td>";
+                            echo "<td>" . sprintf("%01.2f", $row['price']) . "</td>";
+                            echo "<td>" . $row['ticket_qty'] . "</td>";
+                            echo '<td><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
 
-						echo "</tr>";
-					}
-					$query = "REMOVE FROM EVENT WHERE date = "
+                            echo "</tr>";
+                        }
+                        $query = "REMOVE FROM EVENT WHERE date = "
 	              	?>
                 </table>
         </div>
@@ -276,88 +276,105 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
                 <h3 class="panel-title">Add Events</h3>
             </div>
            
-			<form role="form" method="post" class="form-inline" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
-				<div class="form-group" id="col-1" style="">
-					<label for="event-name">Event Name:</label>
-					<span class="error">* <?php echo $eventNameErr; ?></span>
-					<input type="text" class="form-control" id="event-name" placeholder="Event Name" name="eventName" required>
-					<label for="date">Date:</label>
-					<span class="error">* <?php echo $eventDateErr; ?></span>
-					<input type="date" class="form-control" id="date" placeholder="Enter Date" name="eventDate" required>
-					<label for="time">Time:</label>
-					<span class="error">* <?php echo $eventTimeErr; ?></span>
-					<input type="time" class="form-control" id="time" placeholder="Enter time" name="eventTime" required>
-					<label for="location">Location:</label>
-					<span class="error">* <?php echo $eventLocationErr; ?></span>
-					<input type="text" class="form-control" id="location" placeholder="Enter Location" name="eventLocation"required>
-				</div>
-				<div class="form-group" id="col-2" style=" margin-top: 10px;">
-					<label for="venue">Venue:</label>
-					<span class="error">* <?php echo $eventVenueErr; ?></span>
-					<input type="text" class="form-control" id="venue" placeholder="Enter Venue" name="eventVenue" required>
-					<label for="price">Price:</label>
-					<span class="error">* <?php echo $eventPriceErr; ?></span>
-					<input type="number" class="form-control" id="price" placeholder="Enter Price" name="eventPrice" required>
-					<label for="ticket-amount">Ticket Quantity:</label>
-					<span class="error">* <?php echo $ticketQuantityErr; ?></span>
-					<input type="number" class="form-control" id="ticket-amount" placeholder="Ticket Quantity" name="ticketQuantity" required>
-					<label for="event-img">Event Image:</label>
-					<span class="error">* <?php echo $eventImgErr; ?></span>
-					<input type="file" class="form-control" id="event-img" name="eventImg" required>
-				</div>
-				<div class="form-group" id="button-div" style="margin-top: 5px;">
-				<button type="submit" class="btn btn-default" name="submit">
-					Submit
-				</button>
-				</div>
-			</form>
-			</div>
+			<form role="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-6 form-group">
+                            <label for="event-name">Event Name:</label>
+                            <span class="error">* <?php echo $eventNameErr; ?></span>
+                            <input type="text" class="form-control" id="event-name" placeholder="Event Name" name="eventName" required>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label for="venue">Venue:</label>
+                            <span class="error">* <?php echo $eventVenueErr; ?></span>
+                            <input type="text" class="form-control" id="venue" placeholder="Enter Venue" name="eventVenue" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="date">Date:</label>
+                            <span class="error">* <?php echo $eventDateErr; ?></span>
+                            <input type="date" class="form-control" id="date" placeholder="Enter Date" name="eventDate" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="price">Price:</label>
+                            <span class="error">* <?php echo $eventPriceErr; ?></span>
+                            <input type="number" class="form-control" id="price" placeholder="Enter Price" name="eventPrice" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="time">Time:</label>
+                            <span class="error">* <?php echo $eventTimeErr; ?></span>
+                            <input type="time" class="form-control" id="time" placeholder="Enter time" name="eventTime" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="ticket-amount">Ticket Quantity:</label>
+                            <span class="error">* <?php echo $ticketQuantityErr; ?></span>
+                            <input type="number" class="form-control" id="ticket-amount" placeholder="Ticket Quantity" name="ticketQuantity" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="location">Location:</label>
+                            <span class="error">* <?php echo $eventLocationErr; ?></span>
+                            <input type="text" class="form-control" id="location" placeholder="Enter Location" name="eventLocation"required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="event-img">Event Image:</label>
+                            <span class="error">* <?php echo $eventImgErr; ?></span>
+                            <input type="file" id="event-img" name="eventImg" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group" id="button-div" style="margin-top: 5px;">
+                            <button type="submit" class="btn btn-primary" name="submit">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
 			
-			<div class=" panel panel-default" id="second-panel">
-					<div class="panel-heading">
-						<h3 class="panel-title">Delete Events</h3>
-					</div>
-					<div style="float: left; display: inline-block;">
-					<form role="form" class="form-inline" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-						<div class="form-group">
-							<label for="id-num">Delete By ID:</label>
-							<input type="number"  class="form-control" name="delete-by-id"/>
-							<button type="submit" name="deleteById"  class="btn btn-default"/>Delete</button>
-						</div>	
-					</form>
-					</div>
-					<div style=" display: inline-block;">
-					<form role="form" class="form-inline" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-						<div class="form-group" >
-							<label for="id-num">Delete By Date:</label>
-							<input  class="form-control" id="datepicker" name="datetime"/>
-							<button type="submit" name="deleteBydate"  class="btn btn-default"/>Delete</button>
-						</div>	
-					</form>
-					</div>
-				</div>
-
-			
-           <div class="panel panel-default" id="third-panel">
-				<div class="panel-heading">
-					<h3 class="panel-title">Modify Events</h3>
-				</div>
-				<form class="form-inline" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-					<div class="form-group">
-						<label for="id-num">Select ID:</label>
-						<input type="number"  class="form-control" name="select-by-id"/>
-						<button type="submit" name="selectById"  class="btn btn-default"/>
-						Select</button>
-					</div>
-				</form>
-
-			</div>
-		</div>
-		<script>
-		$( "#datepicker" ).datepicker({
-	inline: true
-});
-</script>
+        <div class=" panel panel-default" id="second-panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">Delete Events</h3>
+            </div>
+            <div style="float: left; display: inline-block;">
+                <form role="form" class="form-inline" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                    <div class="form-group">
+                        <label for="id-num">Delete By ID:</label>
+                        <input type="number"  class="form-control" name="delete-by-id"/>
+                        <button type="submit" name="deleteById"  class="btn btn-default"/>Delete</button>
+                    </div>	
+                </form>
+            </div>
+            <div style=" display: inline-block;">
+                <form role="form" class="form-inline" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                    <div class="form-group" >
+                        <label for="id-num">Delete By Date:</label>
+                        <input type="date"  class="form-control" name="delete-by-date"/>
+                        <button type="submit" name="deleteBydate"  class="btn btn-default"/>Delete</button>
+                    </div>	
+                </form>
+            </div>
+        </div>
+	
+        <div class="panel panel-default" id="third-panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">Modify Events</h3>
+            </div>
+            <form class="form-inline" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <div class="form-group">
+                    <label for="id-num">Select ID:</label>
+                    <input type="number"  class="form-control" name="select-by-id"/>
+                    <button type="submit" name="selectById"  class="btn btn-default"/>
+                        Select
+                    </button>
+                </div>
+            </form>
+        </div>
     </body>
     
 </html>
