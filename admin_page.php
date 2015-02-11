@@ -23,10 +23,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 		$eventNameErr = "Event name is required";
 	} else {
 		$eventName = test_input($_POST["eventName"]);
-		// if (!preg_match("/^[a-zA-Z0-9]*$/",$eventName)) {
-		// ++$errCount;
-		// $eventNameErr = "Only letters and numbers allowed";
-		// }
+		if (!preg_match("/^[a-zA-Z0-9 ]*$/",$eventName)) {
+		++$errCount;
+		$eventNameErr = "Only letters and numbers allowed";
+		}
 	}
 	if (empty($_POST["eventDate"])) {
 		++$errCount;
@@ -98,11 +98,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 		++$errCount;
 		$eventImgErr = "Event Image is required";
 	} else {
-		$name = $_FILES['eventImg']['name'];
-		$size = $_FILES['eventImg']['size'];
-		$type = $_FILES['eventImg']['type'];
-		$tmp_name = $_FILES['eventImg']['tmp_name'];
-		$error = $_FILES['eventImg']['error'];
+		$name = mysqli_real_escape_string($_FILES['eventImg']['name']);
+		$type = mysqli_real_escape_string($_FILES['eventImg']['type']);
+		$tmp_name = mysqli_real_escape_string($_FILES['eventImg']['tmp_name']);
 		//$test = upload_tmp_dir;
 		// $target_dir = "upload_tmp_dir'";
 		$target_file = $target_dir . basename($_FILES['eventImg']['tmp_name']);
