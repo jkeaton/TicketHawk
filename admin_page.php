@@ -12,6 +12,7 @@ $results = mysqli_query($cxn, $query) or die("Connection could not be establishe
 $username = $_SESSION['user'];
 $welcome_msg = ("Welcome " . $username);
 
+$deleteDate="";
 $eventName = $eventDate = $eventTime = $eventLocation = $eventVenue = $eventPrice = $ticketQuantity = $eventImg = $target_dir = "";
 $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "";
 $eventImg1 = FALSE;
@@ -137,6 +138,21 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
 	$query = "INSERT INTO EVENT(eventname, date, time, location, venue, price, ticket_qty, img) 
 		VALUES('$_eventName', '$_eventDate', '$_eventTime', '$_eventLocation', '$_eventVenue', '$_eventPrice', '$_ticketQuantity', '$_eventImg')";
 	$results = mysqli_query($cxn, $query) or die("Could not perform request");
+}
+
+function deleteByDate()
+{
+	$dbuser = 'admin';
+	$dbpass = 'balloonrides';
+	$dbhost = 'localhost';
+	$dbname = 'tickethawk';
+	$cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+	$query = "REMOVE FROM EVENT WHERE date = '".$_POST['delete-by-date']."' ";
+	$results = mysqli_query($cxn, $query);
+}
+
+if (isset($_POST['deleteBydate'])) {
+	deleteByDate();
 }
 
 ?>
@@ -265,7 +281,6 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
 
                             echo "</tr>";
                         }
-                        $query = "REMOVE FROM EVENT WHERE date = "
 	              	?>
                 </table>
         </div>
