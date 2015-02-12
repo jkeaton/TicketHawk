@@ -140,21 +140,31 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
 	$results = mysqli_query($cxn, $query) or die("Could not perform request");
 }
 
-function deleteByDate()
-{
+function deleteByDate(){
 	$dbuser = 'admin';
 	$dbpass = 'balloonrides';
 	$dbhost = 'localhost';
 	$dbname = 'tickethawk';
 	$cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-	$query = "REMOVE FROM EVENT WHERE date = '".$_POST['delete-by-date']."' ";
+	$query = "DELETE FROM EVENT WHERE date = '".$_POST['delete-by-date']."' ";
 	$results = mysqli_query($cxn, $query);
 }
 
 if (isset($_POST['deleteBydate'])) {
 	deleteByDate();
 }
-
+	if (isset($_POST['select-by-id'])) {
+	deleteById();
+}
+function deleteById(){
+	$dbuser = 'admin';
+	$dbpass = 'balloonrides';
+	$dbhost = 'localhost';
+	$dbname = 'tickethawk';
+	$cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+	$query = "DELETE FROM EVENT WHERE eventid = '".$_POST['select-by-id']."' ";
+	$results = mysqli_query($cxn, $query);
+	}
 ?>
 
 <!DOCTYPE html>
@@ -371,7 +381,14 @@ if (isset($_POST['deleteBydate'])) {
                         <label for="id-num">Delete By Date:</label>
                         <input type="date"  class="form-control" name="delete-by-date"/>
                         <button type="submit" name="deleteBydate"  class="btn btn-default"/>Delete</button>
-                    </div>	
+                    </div>
+					<div class="form-group">
+							<label for="id-num">Archive By Date:</label>
+							<input type="number"  class="form-control" name="archive"/>
+							<button type="submit" name="archive-btn"  class="btn btn-default"/>
+							Archive
+							</button>
+					</div>	
                 </form>
             </div>
         </div>
