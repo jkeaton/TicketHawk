@@ -13,6 +13,7 @@ $results = mysqli_query($cxn, $query) or die("Connection could not be establishe
 $username = $_SESSION['user'];
 $welcome_msg = ("Welcome " . $username);
 
+$deleteDate="";
 $eventName = $eventDate = $eventTime = $eventLocation = $eventVenue = $eventPrice = $ticketQuantity = $eventImg = $target_dir = "";
 $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "";
 $eventImg1 = FALSE;
@@ -110,11 +111,9 @@ function validateFields(){
 		++$errCount;
 		$eventImgErr = "Event Image is required";
 	} else {
-		$name = $_FILES['eventImg']['name'];
-		$size = $_FILES['eventImg']['size'];
-		$type = $_FILES['eventImg']['type'];
-		$tmp_name = $_FILES['eventImg']['tmp_name'];
-		$error = $_FILES['eventImg']['error'];
+		$name = mysqli_real_escape_string($_FILES['eventImg']['name']);
+		$type = mysqli_real_escape_string($_FILES['eventImg']['type']);
+		$tmp_name = mysqli_real_escape_string($_FILES['eventImg']['tmp_name']);
 		//$test = upload_tmp_dir;
 		// $target_dir = "upload_tmp_dir'";
 		$target_file = $target_dir . basename($_FILES['eventImg']['tmp_name']);
@@ -148,6 +147,31 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
 	$results = mysqli_query($cxn, $query) or die("Could not perform request");
 }
 
+function deleteByDate(){
+	$dbuser = 'admin';
+	$dbpass = 'balloonrides';
+	$dbhost = 'localhost';
+	$dbname = 'tickethawk';
+	$cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+	$query = "DELETE FROM EVENT WHERE date = '".$_POST['delete-by-date']."' ";
+	$results = mysqli_query($cxn, $query);
+}
+
+if (isset($_POST['deleteBydate'])) {
+	deleteByDate();
+}
+	if (isset($_POST['select-by-id'])) {
+	deleteById();
+}
+function deleteById(){
+	$dbuser = 'admin';
+	$dbpass = 'balloonrides';
+	$dbhost = 'localhost';
+	$dbname = 'tickethawk';
+	$cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+	$query = "DELETE FROM EVENT WHERE eventid = '".$_POST['select-by-id']."' ";
+	$results = mysqli_query($cxn, $query);
+	}
 ?>
 
 <!DOCTYPE html>
@@ -300,7 +324,6 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
 
                             echo "</tr>";
                         }
-                        $query = "REMOVE FROM EVENT WHERE date = "
 	              	?>
                 </table>
         </div>
@@ -402,7 +425,14 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
                         <label for="id-num">Delete By Date:</label>
                         <input type="date"  class="form-control" name="delete-by-date"/>
                         <button type="submit" name="deleteBydate"  class="btn btn-default"/>Delete</button>
-                    </div>	
+                    </div>
+					<div class="form-group">
+							<label for="id-num">Archive By Date:</label>
+							<input type="number"  class="form-control" name="archive"/>
+							<button type="submit" name="archive-btn"  class="btn btn-default"/>
+							Archive
+							</button>
+					</div>	
                 </form>
             </div>
         </div>
