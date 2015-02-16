@@ -2,7 +2,6 @@
 <?php
 session_start();
 include "dist/common.php";
-bounce();
 global $dbhost, $dbname;
 $creds = db_admin();
 $dbuser = array_values($creds)[0];
@@ -13,33 +12,21 @@ $results = mysqli_query($cxn, $query) or die("Connection could not be establishe
 $username = $_SESSION['user'];
 $welcome_msg = ("Welcome " . $username);
 
-$deleteDate="";
 $eventName = $eventDate = $eventTime = $eventLocation = $eventVenue = $eventPrice = $ticketQuantity = $eventImg = $target_dir = "";
 $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "";
 $eventImg1 = FALSE;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
-    // Handle insert event attempt
-    if (isset($_POST['submit'])) {
-        validateFields();
-    }
-    // Handle logout attempt
-    elseif (isset($_POST['logout'])){
-        return logout();
-    }
-}
-
-function validateFields(){
-    $errCount = 0;
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
+	$errCount = 0;
 	if (empty($_POST["eventName"])) {
 		++$errCount;
 		$eventNameErr = "Event name is required";
 	} else {
 		$eventName = test_input($_POST["eventName"]);
-		if (!preg_match("/^[a-zA-Z0-9 ]*$/",$eventName)) {
-		    ++$errCount;
-            $eventNameErr = "Only letters, numbers and spaces allowed";
-        }
+		// if (!preg_match("/^[a-zA-Z0-9]*$/",$eventName)) {
+		// ++$errCount;
+		// $eventNameErr = "Only letters and numbers allowed";
+		// }
 	}
 	if (empty($_POST["eventDate"])) {
 		++$errCount;
@@ -111,9 +98,11 @@ function validateFields(){
 		++$errCount;
 		$eventImgErr = "Event Image is required";
 	} else {
-		$name = mysqli_real_escape_string($_FILES['eventImg']['name']);
-		$type = mysqli_real_escape_string($_FILES['eventImg']['type']);
-		$tmp_name = mysqli_real_escape_string($_FILES['eventImg']['tmp_name']);
+		$name = $_FILES['eventImg']['name'];
+		$size = $_FILES['eventImg']['size'];
+		$type = $_FILES['eventImg']['type'];
+		$tmp_name = $_FILES['eventImg']['tmp_name'];
+		$error = $_FILES['eventImg']['error'];
 		//$test = upload_tmp_dir;
 		// $target_dir = "upload_tmp_dir'";
 		$target_file = $target_dir . basename($_FILES['eventImg']['tmp_name']);
@@ -135,6 +124,11 @@ function validateFields(){
 
 }
 
+// Handle logout attempt
+elseif ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
+    return logout();
+}
+
 function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_eventVenue, $_eventPrice, $_ticketQuantity, $_eventImg) {
 	$dbuser = 'admin';
 	$dbpass = 'balloonrides';
@@ -147,51 +141,20 @@ function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_e
 	$results = mysqli_query($cxn, $query) or die("Could not perform request");
 }
 
-function deleteByDate(){
-	$dbuser = 'admin';
-	$dbpass = 'balloonrides';
-	$dbhost = 'localhost';
-	$dbname = 'tickethawk';
-	$cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-	$query = "DELETE FROM EVENT WHERE date = '".$_POST['delete-by-date']."' ";
-	$results = mysqli_query($cxn, $query);
-}
-
-if (isset($_POST['deleteBydate'])) {
-	deleteByDate();
-}
-	if (isset($_POST['select-by-id'])) {
-	deleteById();
-}
-function deleteById(){
-	$dbuser = 'admin';
-	$dbpass = 'balloonrides';
-	$dbhost = 'localhost';
-	$dbname = 'tickethawk';
-	$cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-	$query = "DELETE FROM EVENT WHERE eventid = '".$_POST['select-by-id']."' ";
-	$results = mysqli_query($cxn, $query);
-	}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
     <head>
-    	
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Ticket Hawk</title>
-		<link href="jquery-ui.css" rel="stylesheet">
+
         <!-- Bootstrap -->
         <link href="dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="dist/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
         <!-- Carousel Customization -->
         <link href="dist/css/custom.css" rel="stylesheet">
-        <!-- Datepicker stylesheet -->
-        <link href="dist/css/datepicker.css" rel="stylesheet">
-        <link href="dist/css/bootstrap-timepicker.css" rel="stylesheet">
-        
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -199,27 +162,6 @@ function deleteById(){
             <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-
-        <!-- jquery js -->
-   	    <script src="dist/js/main.js"></script>
-        <script src="dist/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="dist/bootstrap/js/transition.js"></script>
-        <script type="text/javascript" src="dist/bootstrap/js/collapse.js"></script>
-        <script src="dist/js/moment.js"></script>
-        <script src="dist/js/moment-with-locales.js"></script>
-        <script src="dist/js/docs.min.js"></script>
-        <script src="dist/js/bootstrap-datepicker.js"></script>
-        <script src="dist/js/bootstrap-timepicker.js"></script>
-        <script type="text/javascript">
-            $(function () {
-                $('.datepicker').datepicker()
-            });
-        </script>
-        <script type="text/javascript">
-            $(function () {
-                $('.timepicker').timepicker()
-            });
-        </script>
         
         <style>
 			#events-ready {
@@ -310,20 +252,20 @@ function deleteById(){
                     </thead>
                     <?php
 
-                        while ($row = mysqli_fetch_assoc($results)) {
-                            echo "<tr>";
-                            echo "<td>" . $row['eventid'] . "</td>";
-                            echo "<td>" . $row['eventname'] . "</td>";
-                            echo "<td>" . $row['date'] . "</td>";
-                            echo "<td>" . $row['time'] . "</td>";
-                            echo "<td>" . $row['location'] . "</td>";
-                            echo "<td>" . $row['venue'] . "</td>";
-                            echo "<td>" . sprintf("%01.2f", $row['price']) . "</td>";
-                            echo "<td>" . $row['ticket_qty'] . "</td>";
-                            echo '<td><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
+					while ($row = mysqli_fetch_assoc($results)) {
+						echo "<tr>";
+						echo "<td>" . $row['eventid'] . "</td>";
+						echo "<td>" . $row['eventname'] . "</td>";
+						echo "<td>" . $row['date'] . "</td>";
+						echo "<td>" . $row['time'] . "</td>";
+						echo "<td>" . $row['location'] . "</td>";
+						echo "<td>" . $row['venue'] . "</td>";
+						echo "<td>" . sprintf("%01.2f", $row['price']) . "</td>";
+						echo "<td>" . $row['ticket_qty'] . "</td>";
+						echo '<td><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
 
-                            echo "</tr>";
-                        }
+						echo "</tr>";
+					}
 	              	?>
                 </table>
         </div>
@@ -337,52 +279,10 @@ function deleteById(){
 			<form role="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="form-group">
+                        <div class="col-xs-6 form-group">
                             <label for="event-name">Event Name:</label>
                             <span class="error">* <?php echo $eventNameErr; ?></span>
                             <input type="text" class="form-control" id="event-name" placeholder="Event Name" name="eventName" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-6 col-sm-3 form-group">
-                            <label for=event-"date">Date:</label>
-                            <span class="error">* <?php echo $eventDateErr; ?></span>
-                            <div class='input-group input-ammend' id='event-date' name="eventDate" required>
-                                <input type='text' class="datepicker
-                                form-control" />
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-sm-3 form-group">
-                            <label for="time">Time:</label>
-                            <span class="error">* <?php echo $eventTimeErr; ?></span>
-                            <div class="input-group input-ammend" id='time'>
-                                <input type="text" class="form-control input-small bootstrap-timepicker timepicker" placeholder="Enter Time" name="eventTime" required>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-sm-3 form-group">
-                            <label for="price">Price:</label>
-                            <span class="error">* <?php echo $eventPriceErr; ?></span>
-                            <input type="text" class="form-control" id="price" placeholder="Enter Price" name="eventPrice" required>
-                        </div>
-                        <div class="col-xs-6 col-sm-3 form-group">
-                            <label for="ticket-amount">Ticket Quantity:</label>
-                            <span class="error">* <?php echo $ticketQuantityErr; ?></span>
-                            <input type="number" class="form-control" id="ticket-amount" placeholder="Ticket Quantity" name="ticketQuantity" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                            <label for="location">Location:</label>
-                            <span class="error">* <?php echo $eventLocationErr; ?></span>
-                            <input type="text" class="form-control" id="location" placeholder="Enter Location" name="eventLocation"required>
                         </div>
                         <div class="col-xs-6 form-group">
                             <label for="venue">Venue:</label>
@@ -392,10 +292,41 @@ function deleteById(){
                     </div>
                     <div class="row">
                         <div class="col-md-6 form-group">
+                            <label for="date">Date:</label>
+                            <span class="error">* <?php echo $eventDateErr; ?></span>
+                            <input type="date" class="form-control" id="date" placeholder="Enter Date" name="eventDate" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="price">Price:</label>
+                            <span class="error">* <?php echo $eventPriceErr; ?></span>
+                            <input type="number" class="form-control" id="price" placeholder="Enter Price" name="eventPrice" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="time">Time:</label>
+                            <span class="error">* <?php echo $eventTimeErr; ?></span>
+                            <input type="time" class="form-control" id="time" placeholder="Enter time" name="eventTime" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="ticket-amount">Ticket Quantity:</label>
+                            <span class="error">* <?php echo $ticketQuantityErr; ?></span>
+                            <input type="number" class="form-control" id="ticket-amount" placeholder="Ticket Quantity" name="ticketQuantity" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="location">Location:</label>
+                            <span class="error">* <?php echo $eventLocationErr; ?></span>
+                            <input type="text" class="form-control" id="location" placeholder="Enter Location" name="eventLocation"required>
+                        </div>
+                        <div class="col-md-6 form-group">
                             <label for="event-img">Event Image:</label>
                             <span class="error">* <?php echo $eventImgErr; ?></span>
                             <input type="file" id="event-img" name="eventImg" required>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6 form-group" id="button-div" style="margin-top: 5px;">
                             <button type="submit" class="btn btn-primary" name="submit">
                                 Submit
@@ -425,14 +356,7 @@ function deleteById(){
                         <label for="id-num">Delete By Date:</label>
                         <input type="date"  class="form-control" name="delete-by-date"/>
                         <button type="submit" name="deleteBydate"  class="btn btn-default"/>Delete</button>
-                    </div>
-					<div class="form-group">
-							<label for="id-num">Archive By Date:</label>
-							<input type="number"  class="form-control" name="archive"/>
-							<button type="submit" name="archive-btn"  class="btn btn-default"/>
-							Archive
-							</button>
-					</div>	
+                    </div>	
                 </form>
             </div>
         </div>
@@ -452,6 +376,8 @@ function deleteById(){
             </form>
         </div>
     </body>
-    
 </html>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="dist/js/bootstrap.min.js"></script>
+<script src="dist/js/docs.min.js"></script>

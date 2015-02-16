@@ -89,4 +89,15 @@
         soft_logout();
         return false;
     }
+
+    function bounce(){
+        if (!isset($_SESSION['valid_admin'])) {
+            header('Location: http://localhost/TicketHawk/homepage.php');    
+            return;
+        }
+        if ($_SESSION['valid_admin'] === false){
+            header('Location: http://localhost/TicketHawk/homepage.php');    
+            return;
+        }
+    }
 ?>
