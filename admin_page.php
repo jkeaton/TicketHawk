@@ -348,8 +348,7 @@ function deleteById(){
                             <label for=event-"date">Date:</label>
                             <span class="error">* <?php echo $eventDateErr; ?></span>
                             <div class='input-group input-ammend' id='event-date' name="eventDate" required>
-                                <input type='text' class="datepicker
-                                form-control" />
+                                <input type='text' class="datepicker form-control" />
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -359,7 +358,7 @@ function deleteById(){
                             <label for="time">Time:</label>
                             <span class="error">* <?php echo $eventTimeErr; ?></span>
                             <div class="input-group input-ammend" id='time'>
-                                <input type="text" class="form-control input-small bootstrap-timepicker timepicker" placeholder="Enter Time" name="eventTime" required>
+                                <input type="text" class="form-control input-small timepicker bootstrap-timepicker" placeholder="Enter Time" name="eventTime" required>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-time"></span>
                                 </span>
