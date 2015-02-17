@@ -18,9 +18,13 @@
     $welcome_msg = ("Welcome " . $username);
 
     $deleteDate="";
-    $eventName = $eventDate = $eventTime = $eventLocation = $eventVenue =
-    $eventPrice = $ticketQuantity = $eventImg = $target_dir = $dateToDB = $timeToDB = "";
-    $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "";
+
+    // Set Max Sizes
+    $maxSizeBlob = 65535;
+
+    $eventName = $eventDate = $eventTime = $eventLocation = $eventVenue = $eventPrice = $ticketQuantity = $eventImg = $target_dir = $dateToDB = $timeToDB = "";
+    $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "*";
+
     $eventImg1 = FALSE;
 
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -36,6 +40,8 @@
 
     function validateFields(){
         global $cxn;
+        global $eventNameErr, $eventDateErr, $eventTimeErr, $eventLocationErr, $eventVenueErr, $eventPriceErr, $ticketQuantityErr, $eventImgErr, $maxSizeBlob;
+        $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "";
         $errCount = 0;
         if (empty($_POST["eventName"])) {
             ++$errCount;
@@ -135,9 +141,14 @@
         } else {
             $imgData = mysqli_real_escape_string($cxn, file_get_contents($_FILES['eventImg']['tmp_name']));
             $imgType = mysqli_real_escape_string($cxn, $_FILES['eventImg']['type']);
+            $imgSize = mysqli_real_escape_string($cxn, $_FILES['eventImg']['size']);
             if (!substr($imgType, 0, 5) == "image"){
                 ++$errCount;
                 $eventImgErr = "File type must be 'image'";
+            }
+            elseif ($imgSize > $maxSizeBlob){
+                ++$errCount;
+                $eventImgErr = "Max file size is 65,535 bytes";
             }
             else {
                 $eventImg = $imgData;    
@@ -343,14 +354,14 @@
                     <div class="row">
                         <div class="form-group">
                             <label for="event-name">Event Name:</label>
-                            <span class="error">* <?php echo $eventNameErr; ?></span>
+                            <span class="error"><?php echo $eventNameErr; ?></span>
                             <input type="text" class="form-control" id="event-name" placeholder="Event Name" name="eventName" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-6 col-sm-3 form-group">
                             <label for=event-"date">Date:</label>
-                            <span class="error">* <?php echo $eventDateErr; ?></span>
+                            <span class="error"><?php echo $eventDateErr; ?></span>
                             <div class='input-group input-ammend' id='event-date'>
                                 <input type='date' class="datepicker form-control" placeholder="Event Date" name='eventDate' required/>
                                 <span class="input-group-addon">
@@ -360,7 +371,7 @@
                         </div>
                         <div class="col-xs-6 col-sm-3 form-group">
                             <label for="time">Time:</label>
-                            <span class="error">* <?php echo $eventTimeErr; ?></span>
+                            <span class="error"><?php echo $eventTimeErr; ?></span>
                             <div class="input-group input-ammend" id='time'>
                                 <input type="time" class="form-control timepicker bootstrap-timepicker" placeholder="Enter Time" name="eventTime" required>
                                 <span class="input-group-addon">
@@ -370,12 +381,12 @@
                         </div>
                         <div class="col-xs-6 col-sm-3 form-group">
                             <label for="price">Price:</label>
-                            <span class="error">* <?php echo $eventPriceErr; ?></span>
+                            <span class="error"><?php echo $eventPriceErr; ?></span>
                             <input type="text" class="form-control" id="price" placeholder="Enter Price" name="eventPrice" required>
                         </div>
                         <div class="col-xs-6 col-sm-3 form-group">
                             <label for="ticket-amount">Ticket Quantity:</label>
-                            <span class="error">* <?php echo $ticketQuantityErr; ?></span>
+                            <span class="error"><?php echo $ticketQuantityErr; ?></span>
                             <input type="number" class="form-control" id="ticket-amount" placeholder="Ticket Quantity" name="ticketQuantity" required>
                         </div>
                     </div>
@@ -384,19 +395,19 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="location">Location:</label>
-                            <span class="error">* <?php echo $eventLocationErr; ?></span>
+                            <span class="error"><?php echo $eventLocationErr; ?></span>
                             <input type="text" class="form-control" id="location" placeholder="Enter Location" name="eventLocation"required>
                         </div>
                         <div class="col-xs-6 form-group">
                             <label for="venue">Venue:</label>
-                            <span class="error">* <?php echo $eventVenueErr; ?></span>
+                            <span class="error"><?php echo $eventVenueErr; ?></span>
                             <input type="text" class="form-control" id="venue" placeholder="Enter Venue" name="eventVenue" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="event-img">Event Image:</label>
-                            <span class="error">* <?php echo $eventImgErr; ?></span>
+                            <span class="error"><?php echo $eventImgErr; ?></span>
                             <input type="file" id="event-img" name="eventImg" required>
                         </div>
                         <div class="col-md-6 form-group" id="button-div" style="margin-top: 5px;">

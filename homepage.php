@@ -39,6 +39,9 @@
         for ($i = 0; $i < (count($events)/3); ++$i){
             $out .= '<div class="row">';
             for ($j = 0; $j < 3; ++$j){
+                if (($i*3)+$j >= count($events)){
+                    break;
+                }
                 $out .= ('<div class="col-lg-4"><img class="img-circle" src="data:image/jpeg;base64,'.base64_encode($events[($i*3)+$j]['img']).'" style="width: 140px; height: 140px"><h2>'.$events[($i*3)+$j]['eventname'].'</h2><p><a class="btn btn-primary" href="#" role="button">View Details &raquo;</a></p></div>');  
             }
             $out .= '</div>';
