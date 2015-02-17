@@ -1,190 +1,181 @@
 <!-- Connect to Database -->
 <?php
-session_start();
-include "dist/common.php";
-bounce();
-global $dbhost, $dbname;
-$creds = db_admin();
-$dbuser = array_values($creds)[0];
-$dbpass = array_values($creds)[1];
-$cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-$query = "SELECT * FROM EVENT";
-$results = mysqli_query($cxn, $query) or die("Connection could not be established");
-$username = $_SESSION['user'];
-$welcome_msg = ("Welcome " . $username);
+    session_start();
+    include "dist/common.php";
+    bounce();
 
-$deleteDate="";
-$eventName = $eventDate = $eventTime = $eventLocation = $eventVenue =
-$eventPrice = $ticketQuantity = $eventImg = $target_dir = $dateToDB = $timeToDB = "";
-$eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "";
-$eventImg1 = FALSE;
+    // Create the connection to the database to be reused
+    global $dbhost, $dbname;
+    $creds = db_admin();
+    $dbuser = array_values($creds)[0];
+    $dbpass = array_values($creds)[1];
+    $cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
-    // Handle insert event attempt
-    if (isset($_POST['submit'])) {
-        validateFields();
-    }
-    // Handle logout attempt
-    elseif (isset($_POST['logout'])){
-        return logout();
-    }
-}
+    // Fetch the Events from the database
+    $query = "SELECT * FROM EVENT";
+    $results = mysqli_query($cxn, $query) or die("Connection could not be established");
+    $username = $_SESSION['user'];
+    $welcome_msg = ("Welcome " . $username);
 
-function validateFields(){
-    global $cxn;
-    $errCount = 0;
-	if (empty($_POST["eventName"])) {
-		++$errCount;
-		$eventNameErr = "Event name is required";
-	} else {
-		$eventName = test_input($_POST["eventName"]);
-		if (!preg_match("/^[a-zA-Z0-9 ]*$/",$eventName)) {
-		    ++$errCount;
-            $eventNameErr = "Only letters, numbers and spaces allowed";
+    $deleteDate="";
+    $eventName = $eventDate = $eventTime = $eventLocation = $eventVenue =
+    $eventPrice = $ticketQuantity = $eventImg = $target_dir = $dateToDB = $timeToDB = "";
+    $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "";
+    $eventImg1 = FALSE;
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST"){
+        // Handle insert event attempt
+        if (isset($_POST['submit'])) {
+            validateFields();
         }
-	}
-	if (empty($_POST["eventDate"])) {
-		++$errCount;
-		$eventDateErr = "Event date is required";
-	} else {
-		$eventDate = test_input($_POST["eventDate"]);
-        $eventDate = DateTime::createFromFormat('m/d/Y', $eventDate);
-        $dateToDB = $eventDate->format("Y-m-d");
-        $year = (int) ($eventDate->format("Y"));
-        $month = (int) ($eventDate->format("m"));
-        $day = (int) ($eventDate->format("d"));
-        if (!checkdate ($month , $day , $year )){
-		    ++$errCount;
-		    $eventDateErr = "Invalid Date";
-		}
-	}
+        // Handle logout attempt
+        elseif (isset($_POST['logout'])){
+            return logout();
+        }
+    }
 
-	if (empty($_POST["eventTime"])) {
-		++$errCount;
-		$eventTimeErr = "Event time is required";
-	} else {
-		$eventTime = test_input($_POST["eventTime"]);
-        if (!strtotime($eventTime)){
-		    ++$errCount;
-		    $eventTimeErr = "Invalid Time";
-		}
-        else {
-            if (!date('H:i:s', strtotime($eventTime))){
+    function validateFields(){
+        global $cxn;
+        $errCount = 0;
+        if (empty($_POST["eventName"])) {
+            ++$errCount;
+            $eventNameErr = "Event name is required";
+        } else {
+            $eventName = test_input($_POST["eventName"]);
+            if (!preg_match("/^[a-zA-Z0-9 ]*$/",$eventName)) {
+                ++$errCount;
+                $eventNameErr = "Only letters, numbers and spaces allowed";
+            }
+        }
+        if (empty($_POST["eventDate"])) {
+            ++$errCount;
+            $eventDateErr = "Event date is required";
+        } else {
+            $eventDate = test_input($_POST["eventDate"]);
+            $eventDate = DateTime::createFromFormat('m/d/Y', $eventDate);
+            $dateToDB = $eventDate->format("Y-m-d");
+            $year = (int) ($eventDate->format("Y"));
+            $month = (int) ($eventDate->format("m"));
+            $day = (int) ($eventDate->format("d"));
+            if (!checkdate ($month , $day , $year )){
+                ++$errCount;
+                $eventDateErr = "Invalid Date";
+            }
+        }
+
+        if (empty($_POST["eventTime"])) {
+            ++$errCount;
+            $eventTimeErr = "Event time is required";
+        } else {
+            $eventTime = test_input($_POST["eventTime"]);
+            if (!strtotime($eventTime)){
                 ++$errCount;
                 $eventTimeErr = "Invalid Time";
             }
             else {
-                $timeToDB = date('H:i:s', strtotime($eventTime));
+                if (!date('H:i:s', strtotime($eventTime))){
+                    ++$errCount;
+                    $eventTimeErr = "Invalid Time";
+                }
+                else {
+                    $timeToDB = date('H:i:s', strtotime($eventTime));
+                }
             }
         }
-	}
 
-	if (empty($_POST["eventLocation"])) {
-		++$errCount;
-		$eventLocationErr = "Event Location is required";
-	} else {
-		$eventLocation = test_input($_POST["eventLocation"]);
-	}
-
-	if (empty($_POST["eventVenue"])) {
-		++$errCount;
-		$eventVenueErr = "Event Venue is required";
-	} else {
-		$eventVenue = test_input($_POST["eventVenue"]);
-	}
-
-	if (empty($_POST["eventPrice"])) {
-		++$errCount;
-		$eventPriceErr = "Event Price is required";
-	} else {
-		$eventPrice = test_input($_POST["eventPrice"]);
-        if (!is_numeric ($eventPrice)){
+        if (empty($_POST["eventLocation"])) {
             ++$errCount;
-            $eventPriceErr = "Invalid Price";
+            $eventLocationErr = "Event Location is required";
+        } else {
+            $eventLocation = test_input($_POST["eventLocation"]);
         }
-		elseif (!preg_match("/^[0-9\.]*$/",$eventPrice)) {
-		    ++$errCount;
-		    $eventPriceErr = "Only numbers and decimal points allowed";
-        }
-        else {
-            $eventPrice = floatval ($eventPrice);
-        }
-	}
 
-	if (empty($_POST["ticketQuantity"])) {
-		++$errCount;
-		$ticketQuantityErr = "Invalid Quantity";
-	} else {
-		$ticketQuantity = test_input($_POST["ticketQuantity"]);
-        if (!is_numeric ($ticketQuantity)){
+        if (empty($_POST["eventVenue"])) {
+            ++$errCount;
+            $eventVenueErr = "Event Venue is required";
+        } else {
+            $eventVenue = test_input($_POST["eventVenue"]);
+        }
+
+        if (empty($_POST["eventPrice"])) {
+            ++$errCount;
+            $eventPriceErr = "Event Price is required";
+        } else {
+            $eventPrice = test_input($_POST["eventPrice"]);
+            if (!is_numeric ($eventPrice)){
+                ++$errCount;
+                $eventPriceErr = "Invalid Price";
+            }
+            elseif (!preg_match("/^[0-9\.]*$/",$eventPrice)) {
+                ++$errCount;
+                $eventPriceErr = "Only numbers and decimal points allowed";
+            }
+            else {
+                $eventPrice = floatval ($eventPrice);
+            }
+        }
+
+        if (empty($_POST["ticketQuantity"])) {
             ++$errCount;
             $ticketQuantityErr = "Invalid Quantity";
+        } else {
+            $ticketQuantity = test_input($_POST["ticketQuantity"]);
+            if (!is_numeric ($ticketQuantity)){
+                ++$errCount;
+                $ticketQuantityErr = "Invalid Quantity";
+            }
+            else{
+                $ticketQuantity = (int) ($ticketQuantity);
+            }
         }
-        else{
-            $ticketQuantity = (int) ($ticketQuantity);
+
+        if (empty($_FILES["eventImg"])) {
+            ++$errCount;
+            $eventImgErr = "Event Image is required";
+        } else {
+            $imgData = mysqli_real_escape_string($cxn, file_get_contents($_FILES['eventImg']['tmp_name']));
+            $imgType = mysqli_real_escape_string($cxn, $_FILES['eventImg']['type']);
+            if (!substr($imgType, 0, 5) == "image"){
+                ++$errCount;
+                $eventImgErr = "File type must be 'image'";
+            }
+            else {
+                $eventImg = $imgData;    
+            }
         }
-	}
 
-	if (empty($_FILES["eventImg"])) {
-		++$errCount;
-		$eventImgErr = "Event Image is required";
-	} else {
-		$imgData = mysqli_real_escape_string($cxn, file_get_contents($_FILES['eventImg']['tmp_name']));
-		$imgType = mysqli_real_escape_string($cxn, $_FILES['eventImg']['type']);
-        if (!substr($imgType, 0, 5) == "image"){
-		    ++$errCount;
-		    $eventImgErr = "File type must be 'image'";
+        if ($errCount == 0) {
+            createEvent($eventName, $dateToDB, $timeToDB, $eventLocation, $eventVenue, $eventPrice, $ticketQuantity, $eventImg);
+            /* Clear the POST array so we don't insert duplicate events */
+            $_POST = array();
+            header('Location: http://localhost/TicketHawk/admin_page.php');
         }
-        else {
-            $eventImg = $imgData;    
-        }
-	}
+    }
 
-	if ($errCount == 0) {
-		createEvent($eventName, $dateToDB, $timeToDB, $eventLocation, $eventVenue, $eventPrice, $ticketQuantity, $eventImg);
-        /* Clear the POST array so we don't insert duplicate events */
-        $_POST = array();
-	    header('Location: http://localhost/TicketHawk/admin_page.php');
-	}
-}
+    function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_eventVenue, $_eventPrice, $_ticketQuantity, $_eventImg) {
+        global $cxn;
+        $query = "INSERT INTO EVENT(eventname, date, time, location, venue, price, ticket_qty, img) 
+            VALUES('$_eventName', '$_eventDate', '$_eventTime', '$_eventLocation', '$_eventVenue', '$_eventPrice', '$_ticketQuantity', '$_eventImg')";
+        $results = mysqli_query($cxn, $query) or die("Could not perform request");
+    }
 
-function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_eventVenue, $_eventPrice, $_ticketQuantity, $_eventImg) {
-	$dbuser = 'admin';
-	$dbpass = 'balloonrides';
-	$dbhost = 'localhost';
-	$dbname = 'tickethawk';
-	$cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+    function deleteByDate(){
+        global $cxn;
+        $query = "DELETE FROM EVENT WHERE date = '".$_POST['delete-by-date']."' ";
+        $results = mysqli_query($cxn, $query);
+    }
 
-	$query = "INSERT INTO EVENT(eventname, date, time, location, venue, price, ticket_qty, img) 
-		VALUES('$_eventName', '$_eventDate', '$_eventTime', '$_eventLocation', '$_eventVenue', '$_eventPrice', '$_ticketQuantity', '$_eventImg')";
-	$results = mysqli_query($cxn, $query) or die("Could not perform request");
-}
-
-function deleteByDate(){
-	$dbuser = 'admin';
-	$dbpass = 'balloonrides';
-	$dbhost = 'localhost';
-	$dbname = 'tickethawk';
-	$cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-	$query = "DELETE FROM EVENT WHERE date = '".$_POST['delete-by-date']."' ";
-	$results = mysqli_query($cxn, $query);
-}
-
-if (isset($_POST['deleteBydate'])) {
-	deleteByDate();
-}
-	if (isset($_POST['select-by-id'])) {
-	deleteById();
-}
-function deleteById(){
-	$dbuser = 'admin';
-	$dbpass = 'balloonrides';
-	$dbhost = 'localhost';
-	$dbname = 'tickethawk';
-	$cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-	$query = "DELETE FROM EVENT WHERE eventid = '".$_POST['select-by-id']."' ";
-	$results = mysqli_query($cxn, $query);
-	}
+    if (isset($_POST['deleteBydate'])) {
+        deleteByDate();
+    }
+        if (isset($_POST['select-by-id'])) {
+        deleteById();
+    }
+    function deleteById(){
+        global $cxn;
+        $query = "DELETE FROM EVENT WHERE eventid = '".$_POST['select-by-id']."' ";
+        $results = mysqli_query($cxn, $query);
+    }
 ?>
 
 <!DOCTYPE html>
