@@ -14,7 +14,8 @@ $username = $_SESSION['user'];
 $welcome_msg = ("Welcome " . $username);
 
 $deleteDate="";
-$eventName = $eventDate = $eventTime = $eventLocation = $eventVenue = $eventPrice = $ticketQuantity = $eventImg = $target_dir = "";
+$eventName = $eventDate = $eventTime = $eventLocation = $eventVenue =
+$eventPrice = $ticketQuantity = $eventImg = $target_dir = $dateToDB = "";
 $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "";
 $eventImg1 = FALSE;
 
@@ -46,10 +47,15 @@ function validateFields(){
 		$eventDateErr = "Event date is required";
 	} else {
 		$eventDate = test_input($_POST["eventDate"]);
-		// if (!filter_var($eventDate, FILTER_VALIDATE_EMAIL)) {
-		// ++$errCount;
-		// $eventDateErr = "Invalid Format";
-		// }
+        $eventDate = DateTime::createFromFormat('m/d/Y', $eventDate);
+        $dateToDB = $eventDate->format("Y-m-d");
+        $year = (int) ($eventDate->format("Y"));
+        $month = (int) ($eventDate->format("m"));
+        $day = (int) ($eventDate->format("d"));
+        if (!checkdate ($month , $day , $year )){
+		    ++$errCount;
+		    $eventDateErr = "Invalid Date";
+		}
 	}
 
 	if (empty($_POST["eventTime"])) {
@@ -130,7 +136,7 @@ function validateFields(){
 	}
 
 	if ($errCount == 0) {
-		createEvent($eventName, $eventDate, $eventTime, $eventLocation, $eventVenue, $eventPrice, $ticketQuantity, $eventImg);
+		createEvent($eventName, $dateToDB, $eventTime, $eventLocation, $eventVenue, $eventPrice, $ticketQuantity, $eventImg);
 	}
 
 }
@@ -347,8 +353,8 @@ function deleteById(){
                         <div class="col-xs-6 col-sm-3 form-group">
                             <label for=event-"date">Date:</label>
                             <span class="error">* <?php echo $eventDateErr; ?></span>
-                            <div class='input-group input-ammend' id='event-date' name="eventDate" required>
-                                <input type='text' class="datepicker form-control" />
+                            <div class='input-group input-ammend' id='event-date'>
+                                <input type='date' class="datepicker form-control" placeholder="Event Date" name='eventDate' required/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -358,7 +364,7 @@ function deleteById(){
                             <label for="time">Time:</label>
                             <span class="error">* <?php echo $eventTimeErr; ?></span>
                             <div class="input-group input-ammend" id='time'>
-                                <input type="text" class="form-control input-small timepicker bootstrap-timepicker" placeholder="Enter Time" name="eventTime" required>
+                                <input type="time" class="form-control timepicker bootstrap-timepicker" placeholder="Enter Time" name="eventTime" required>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-time"></span>
                                 </span>
