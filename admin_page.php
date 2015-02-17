@@ -15,7 +15,7 @@ $welcome_msg = ("Welcome " . $username);
 
 $deleteDate="";
 $eventName = $eventDate = $eventTime = $eventLocation = $eventVenue =
-$eventPrice = $ticketQuantity = $eventImg = $target_dir = $dateToDB = "";
+$eventPrice = $ticketQuantity = $eventImg = $target_dir = $dateToDB = $timeToDB = "";
 $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "";
 $eventImg1 = FALSE;
 
@@ -31,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 
 function validateFields(){
+    global $cxn;
     $errCount = 0;
 	if (empty($_POST["eventName"])) {
 		++$errCount;
@@ -63,10 +64,19 @@ function validateFields(){
 		$eventTimeErr = "Event time is required";
 	} else {
 		$eventTime = test_input($_POST["eventTime"]);
-		// if (!filter_var($eventTime, FILTER_VALIDATE_EMAIL)) {
-		// ++$errCount;
-		// $eventTimeErr = "Only numbers allowed";
-		// }
+        if (!strtotime($eventTime)){
+		    ++$errCount;
+		    $eventTimeErr = "Invalid Time";
+		}
+        else {
+            if (!date('H:i:s', strtotime($eventTime))){
+                ++$errCount;
+                $eventTimeErr = "Invalid Time";
+            }
+            else {
+                $timeToDB = date('H:i:s', strtotime($eventTime));
+            }
+        }
 	}
 
 	if (empty($_POST["eventLocation"])) {
@@ -74,10 +84,6 @@ function validateFields(){
 		$eventLocationErr = "Event Location is required";
 	} else {
 		$eventLocation = test_input($_POST["eventLocation"]);
-		// if (!preg_match("/^[a-zA-Z0-9]*$/",$eventLocation)) {
-		// ++$errCount;
-		// $eventLocationErr = "Only letters and numbers allowed";
-		// }
 	}
 
 	if (empty($_POST["eventVenue"])) {
@@ -85,10 +91,6 @@ function validateFields(){
 		$eventVenueErr = "Event Venue is required";
 	} else {
 		$eventVenue = test_input($_POST["eventVenue"]);
-		// if (!preg_match("/^[a-zA-Z0-9]*$/",$eventVenue)) {
-		// ++$errCount;
-		// $eventVenueErr = "Only letters and numbers allowed";
-		// }
 	}
 
 	if (empty($_POST["eventPrice"])) {
@@ -96,49 +98,54 @@ function validateFields(){
 		$eventPriceErr = "Event Price is required";
 	} else {
 		$eventPrice = test_input($_POST["eventPrice"]);
-		// if (!preg_match("/^[a-zA-Z0-9]*$/",$eventPrice)) {
-		// ++$errCount;
-		// $eventPriceErr = "Only letters and numbers allowed";
-		// }
+        if (!is_numeric ($eventPrice)){
+            ++$errCount;
+            $eventPriceErr = "Invalid Price";
+        }
+		elseif (!preg_match("/^[0-9\.]*$/",$eventPrice)) {
+		    ++$errCount;
+		    $eventPriceErr = "Only numbers and decimal points allowed";
+        }
+        else {
+            $eventPrice = floatval ($eventPrice);
+        }
 	}
 
 	if (empty($_POST["ticketQuantity"])) {
 		++$errCount;
-		$ticketQuantity = "Set number of tickets";
+		$ticketQuantityErr = "Invalid Quantity";
 	} else {
 		$ticketQuantity = test_input($_POST["ticketQuantity"]);
-		// if (!preg_match("/^[a-zA-Z0-9]*$/",$ticketQuantity)) {
-		// ++$errCount;
-		// $ticketQuantityErr = "Only numbers allowed";
-		// }
+        if (!is_numeric ($ticketQuantity)){
+            ++$errCount;
+            $ticketQuantityErr = "Invalid Quantity";
+        }
+        else{
+            $ticketQuantity = (int) ($ticketQuantity);
+        }
 	}
 
 	if (empty($_FILES["eventImg"])) {
 		++$errCount;
 		$eventImgErr = "Event Image is required";
 	} else {
-		$name = mysqli_real_escape_string($_FILES['eventImg']['name']);
-		$type = mysqli_real_escape_string($_FILES['eventImg']['type']);
-		$tmp_name = mysqli_real_escape_string($_FILES['eventImg']['tmp_name']);
-		//$test = upload_tmp_dir;
-		// $target_dir = "upload_tmp_dir'";
-		$target_file = $target_dir . basename($_FILES['eventImg']['tmp_name']);
-
-		//move_uploaded_file($_FILES['eventImg'], "uploads/'".$_FILES['eventImg']['tmp_name']."'");
-		if (file_exists($target_file)) {
-
-			if (move_uploaded_file($_FILES['eventImg']['tmp_name'], $target_file)) {
-				$eventImg = $target_file;
-			}
-		} else {
-			$eventImgErr = "Image Not uploaded";
-		}
+		$imgData = mysqli_real_escape_string($cxn, file_get_contents($_FILES['eventImg']['tmp_name']));
+		$imgType = mysqli_real_escape_string($cxn, $_FILES['eventImg']['type']);
+        if (!substr($imgType, 0, 5) == "image"){
+		    ++$errCount;
+		    $eventImgErr = "File type must be 'image'";
+        }
+        else {
+            $eventImg = $imgData;    
+        }
 	}
 
 	if ($errCount == 0) {
-		createEvent($eventName, $dateToDB, $eventTime, $eventLocation, $eventVenue, $eventPrice, $ticketQuantity, $eventImg);
+		createEvent($eventName, $dateToDB, $timeToDB, $eventLocation, $eventVenue, $eventPrice, $ticketQuantity, $eventImg);
+        /* Clear the POST array so we don't insert duplicate events */
+        $_POST = array();
+	    header('Location: http://localhost/TicketHawk/admin_page.php');
 	}
-
 }
 
 function createEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_eventVenue, $_eventPrice, $_ticketQuantity, $_eventImg) {
