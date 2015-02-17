@@ -13,6 +13,38 @@
     $cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
     $query = "SELECT * FROM EVENT";
     $results = mysqli_query($cxn, $query) or die("Connection could not be established");
+    $events = array();
+    storeEventRows();
+
+    /**
+     * Fetches the EVENT rows from the database and stores them in an array for
+     * us to use when displaying the rows of 3 at the bottom of the page.
+     */
+    function storeEventRows(){
+        global $events, $results;
+        $index = 0;
+        while ($row = mysqli_fetch_assoc($results)) {
+            $events[$index] = $row;
+            ++$index;
+        }
+    }
+    /**
+     * Generates the Event displays in rows of 3. Calculates the number of rows
+     * needed and generates the html needed to display each event in the row in
+     * which it belongs.
+     */
+    function getEventDisplays(){
+        global $events;
+        $out = "";
+        for ($i = 0; $i < (count($events)/3); ++$i){
+            $out .= '<div class="row">';
+            for ($j = 0; $j < 3; ++$j){
+                $out .= ('<div class="col-lg-4"><img class="img-circle" src="data:image/jpeg;base64,'.base64_encode($events[($i*3)+$j]['img']).'" style="width: 140px; height: 140px"><h2>'.$events[($i*3)+$j]['eventname'].'</h2><p><a class="btn btn-primary" href="#" role="button">View Details &raquo;</a></p></div>');  
+            }
+            $out .= '</div>';
+        }
+        return $out;   
+    }
 
     // If the current session includes a valid user, display the welcome label
     if (isset($_SESSION['user'])){
@@ -308,26 +340,9 @@
     <div class="container marketing">
         <h1>Order Event Tickets Now!</h1>
         <!-- Here, display all the events in rows of 3 -->
-        <div class="row">
-            <div class="col-lg-4">
-                <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" style="width: 140px; height: 140px;">
-                <h2>Heading</h2>
-                <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
-                <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-            </div><!-- /.col-lg-4 -->
-            <div class="col-lg-4">
-                <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" style="width: 140px; height: 140px;">
-                <h2>Heading</h2>
-                <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
-                <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-            </div><!-- /.col-lg-4 -->
-            <div class="col-lg-4">
-                <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" style="width: 140px; height: 140px;">
-                <h2>Heading</h2>
-                <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-            </div><!-- /.col-lg-4 -->
-        </div><!-- /.row -->
+        <?php
+            echo getEventDisplays();
+        ?>
     </div>
 </body>
 </html>
