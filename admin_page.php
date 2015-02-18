@@ -172,7 +172,29 @@ function deleteById(){
 	$query = "DELETE FROM EVENT WHERE eventid = '".$_POST['select-by-id']."' ";
 	$results = mysqli_query($cxn, $query);
 	}
+	if (isset($_POST['filter']) && isset($_POST['date-1']) && isset($_POST['date-2'])) {
+
+	$dbuser = 'admin';
+	$dbpass = 'balloonrides';
+	$dbhost = 'localhost';
+	$dbname = 'tickethawk';
+	$cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+	$query = "SELECT * FROM EVENT WHERE date BETWEEN '".$_POST['date-1']."' AND '".$_POST['date-2']."'";
+	$results = mysqli_query($cxn, $query)or die(mysqli_error($cxn));
+	}
+	// if (isset($_POST['modify']) && isset($_POST['modEvent'])) {
+	// $dbuser = 'admin';
+	// $dbpass = 'balloonrides';
+	// $dbhost = 'localhost';
+	// $dbname = 'tickethawk';
+	// $cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+	// $query = "SELECT * FROM EVENT WHERE eventid = '".$_POST[modEvent]."'";
+	// $results = mysqli_query($cxn, $query)or die(mysqli_error($cxn));
+	// echo "";
+	// }
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -191,7 +213,8 @@ function deleteById(){
         <!-- Datepicker stylesheet -->
         <link href="dist/css/datepicker.css" rel="stylesheet">
         <link href="dist/css/bootstrap-timepicker.css" rel="stylesheet">
-        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -220,6 +243,22 @@ function deleteById(){
                 $('.timepicker').timepicker()
             });
         </script>
+		<script>
+	$('#d1').datepicker({
+		format : 'yyyy-mm-dd'
+	});
+		</script>
+		<script>
+			$('#d2').datepicker({
+				format : 'yyyy-mm-dd'
+			});
+		</script>
+		<style type="text/css">
+    .bs-example{
+    	margin: 20px;
+    }
+</style>
+        
         
         <style>
 			#events-ready {
@@ -334,7 +373,7 @@ function deleteById(){
                 <h3 class="panel-title">Add Events</h3>
             </div>
            
-			<form role="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
+			<form role="form"  method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="form-group">
@@ -396,11 +435,11 @@ function deleteById(){
                             <span class="error">* <?php echo $eventImgErr; ?></span>
                             <input type="file" id="event-img" name="eventImg" required>
                         </div>
-                        <div class="col-md-6 form-group" id="button-div" style="margin-top: 5px;">
+                        <a name="addEvent"><div class="col-md-6 form-group" id="button-div" style="margin-top: 5px;">
                             <button type="submit" class="btn btn-primary" name="submit">
                                 Submit
                             </button>
-                        </div>
+                        </div></a>
                     </div>
                 </div>
             </form>
@@ -415,7 +454,7 @@ function deleteById(){
                     <div class="form-group">
                         <label for="id-num">Delete By ID:</label>
                         <input type="number"  class="form-control" name="delete-by-id"/>
-                        <button type="submit" name="deleteById"  class="btn btn-default"/>Delete</button>
+                        <button type="submit" name="deleteById"  class="btn btn-danger"/>Delete</button>
                     </div>	
                 </form>
             </div>
@@ -423,35 +462,135 @@ function deleteById(){
                 <form role="form" class="form-inline" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <div class="form-group" >
                         <label for="id-num">Delete By Date:</label>
-                        <input type="date"  class="form-control" name="delete-by-date"/>
-                        <button type="submit" name="deleteBydate"  class="btn btn-default"/>Delete</button>
-                    </div>
-					<div class="form-group">
-							<label for="id-num">Archive By Date:</label>
-							<input type="number"  class="form-control" name="archive"/>
-							<button type="submit" name="archive-btn"  class="btn btn-default"/>
-							Archive
-							</button>
-					</div>	
+                        <input type="text"  class="datepicker form-control" name="delete-by-date" data-date-format="yyyy-mm-dd"/>
+                        <button type="submit" name="deleteBydate"  class="btn btn-danger"/>Delete</button>
+                    </div>	
                 </form>
             </div>
         </div>
-	
-        <div class="panel panel-default" id="third-panel">
+		<!-- Filter -->
+       <div class=" panel panel-default" id="second-panel">
             <div class="panel-heading">
+                <h3 class="panel-title">Filter Events</h3>
+            </div>
+            
+			<form class="form-inline" role="form" method="post">
+					<div class="form-group">
+						<label for="date-1">Date 1:</label>
+						<input type="text" class=" datepicker form-control" id="d1" name="date-1" data-date-format="yyyy-mm-dd" />
+					</div>
+					<div class="form-group">
+						<label for="date-2">Date 2:</label>
+						<input type="text" class="datepicker form-control" id="d2" name="date-2" data-date-format="yyyy-mm-dd" />
+					</div>
+					<button type="submit" class="btn btn-default" name="filter">
+						Submit
+					</button>
+					<a href="#myModal" class="btn btn-default" data-toggle="modal"style="margin-left:490px;" >Modify</a>
+				</form>
+
+				
+				
+				
+        </div>
+            
+    <!-- Modal HTML -->
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Confirmation</h4>
+                </div>
+                <div class="modal-body">
+							 <div class="panel panel-default" id="events-in">
+        	
+        	<div class="panel-heading">
                 <h3 class="panel-title">Modify Events</h3>
             </div>
-            <form class="form-inline" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                <div class="form-group">
-                    <label for="id-num">Select ID:</label>
-                    <input type="number"  class="form-control" name="select-by-id"/>
-                    <button type="submit" name="selectById"  class="btn btn-default"/>
-                        Select
-                    </button>
+           
+			<form role="form"  method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="event-name">Event Name:</label>
+                            <span class="error">* <?php echo $eventNameErr; ?></span>
+                            <input type="text" class="form-control" id="event-name" placeholder="Event Name" name="eventName" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-3 form-group">
+                            <label for=event-"date">Date:</label>
+                            <span class="error">* <?php echo $eventDateErr; ?></span>
+                            <div class='input-group input-ammend' id='event-date' name="eventDate" required>
+                                <input type='text' class="datepicker
+                                form-control" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-3 form-group">
+                            <label for="time">Time:</label>
+                            <span class="error">* <?php echo $eventTimeErr; ?></span>
+                            <div class="input-group input-ammend" id='time'>
+                                <input type="text" class="form-control input-small bootstrap-timepicker timepicker" placeholder="Enter Time" name="eventTime" required>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-3 form-group">
+                            <label for="price">Price:</label>
+                            <span class="error">* <?php echo $eventPriceErr; ?></span>
+                            <input type="text" class="form-control" id="price" placeholder="Enter Price" name="eventPrice" required>
+                        </div>
+                        <div class="col-xs-6 col-sm-3 form-group">
+                            <label for="ticket-amount">Ticket Quantity:</label>
+                            <span class="error">* <?php echo $ticketQuantityErr; ?></span>
+                            <input type="number" class="form-control" id="ticket-amount" placeholder="Ticket Quantity" name="ticketQuantity" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="location">Location:</label>
+                            <span class="error">* <?php echo $eventLocationErr; ?></span>
+                            <input type="text" class="form-control" id="location" placeholder="Enter Location" name="eventLocation"required>
+                        </div>
+                        <div class="col-xs-6 form-group">
+                            <label for="venue">Venue:</label>
+                            <span class="error">* <?php echo $eventVenueErr; ?></span>
+                            <input type="text" class="form-control" id="venue" placeholder="Enter Venue" name="eventVenue" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="event-img">Event Image:</label>
+                            <span class="error">* <?php echo $eventImgErr; ?></span>
+                            <input type="file" id="event-img" name="eventImg" required>
+                        </div>
+                        <a name="addEvent"><div class="col-md-6 form-group" id="button-div" style="margin-top: 5px;">
+                        </div></a>
+                    </div>
                 </div>
             </form>
         </div>
-    </body>
+                    <label></label>
+                    <p class="text-warning"><small>If you don't save, your changes will be lost.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>     
+        
+        
+      </div>
+   </body>
     
 </html>
-

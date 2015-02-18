@@ -73,9 +73,14 @@
             <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+<script type="text/javascript">
+	function onLoad(){
+		alert("Hello World");
+	}
+</script>
     </head>
 
-    <body role="document">
+    <body role="document" onload="onLoad()">
 
         <!-- Fixed navbar -->
         <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -211,7 +216,7 @@
       </ol>
       <div class="carousel-inner" role="listbox">
         <div class="item active">
-          <img src="http://p1.pichost.me/i/59/1835974.jpg" alt="First slide">
+          <img src="http://p1.pichost.me/i/59/1835974.jpg" alt="First slide" id="img1"> 
           <div class="container">
             <div class="carousel-caption">
               <h1>All The Tickets You Need!</h1>
