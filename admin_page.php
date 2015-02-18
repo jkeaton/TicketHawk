@@ -414,7 +414,7 @@
                             <label for=event-"date">Date:</label>
                             <span class="error"><?php echo $eventDateErr; ?></span>
                             <div class='input-group input-ammend' id='event-date'>
-                                <input type='date' class="datepicker form-control" placeholder="Event Date" name='eventDate' required/>
+                                <input type='text' class="datepicker form-control" placeholder="Event Date" name='eventDate' required/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -424,7 +424,7 @@
                             <label for="time">Time:</label>
                             <span class="error"><?php echo $eventTimeErr; ?></span>
                             <div class="input-group input-ammend" id='time'>
-                                <input type="time" class="form-control timepicker bootstrap-timepicker" placeholder="Enter Time" name="eventTime" required>
+                                <input type="text" class="form-control timepicker bootstrap-timepicker" placeholder="Enter Time" name="eventTime" required>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-time"></span>
                                 </span>
