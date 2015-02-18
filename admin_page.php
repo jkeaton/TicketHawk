@@ -260,6 +260,42 @@
 			#third-panel .form-group{
 				padding: 10px;
 			}
+            .td_id, .th_id {
+                overflow: hidden;
+                width: 3%;  
+            }
+            .td_name, .th_name {
+                overflow: hidden;
+                width: 19%;  
+            }
+            .td_date, .th_date {
+                overflow: hidden;
+                width: 8%;  
+            }
+            .td_time, .th_time {
+                overflow: hidden;
+                width: 7%;  
+            }
+            .td_loc, .th_loc {
+                overflow: hidden;
+                width: 19%;  
+            }
+            .td_venue, .th_venue {
+                overflow: hidden;
+                width: 19%;  
+            }
+            .td_price, .th_price {
+                overflow: hidden;
+                width: 7%;  
+            }
+            .td_qty, .th_qty {
+                overflow: hidden;
+                width: 8%;  
+            }
+            .td_img, .th_img {
+                overflow: hidden;
+                width: 10%;  
+            }
         </style>
     </head>
 
@@ -301,48 +337,53 @@
         </nav>
         </br>
         <div class="container">
-        	 <h3>Listed Events</h3>
-        <div class="panel panel-default" id="events-ready">
+        	 <h3>Control Panel</h3>
+        <div class="panel panel-default">
             <!-- Default panel contents -->
             <div class="panel-heading">
-                <h3 class="panel-title">ListedEvents</h3>
+                <h3 class="panel-title">Listed Events</h3>
             </div>
-
-            <!-- Table -->
+            <div class="panel">
+                <!-- Table -->
                 <table class="table">
                     <thead>
                         <tr>
-                        	<th>Event I.D.</th>
-                            <th>Event Name</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Location</th>
-                            <th>Venue</th>
-                            <th>Price</th>
-                            <th>Ticket Quantity</th>
-                            <th>Event Image</th>
+                        	<th class="th_id">ID</th>
+                            <th class="th_name">Name</th>
+                            <th class="th_date">Date</th>
+                            <th class="th_time">Time</th>
+                            <th class="th_loc">Location</th>
+                            <th class="th_venue">Venue</th>
+                            <th class="th_price">Price</th>
+                            <th class="th_qty">Ticket Qty</th>
+                            <th class="th_img">Image</th>
                         </tr>
                     </thead>
+                </table>
+            </div>
+            <div class="panel" id="events-ready">
+                <table class="table">
+                    <tbody>
                     <?php
-
                         while ($row = mysqli_fetch_assoc($results)) {
                             echo "<tr>";
-                            echo "<td>" . $row['eventid'] . "</td>";
-                            echo "<td>" . $row['eventname'] . "</td>";
-                            echo "<td>" . $row['date'] . "</td>";
-                            echo "<td>" . $row['time'] . "</td>";
-                            echo "<td>" . $row['location'] . "</td>";
-                            echo "<td>" . $row['venue'] . "</td>";
-                            echo "<td>" . sprintf("%01.2f", $row['price']) . "</td>";
-                            echo "<td>" . $row['ticket_qty'] . "</td>";
-                            echo '<td><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
-
+                            echo '<td class="td_id">' . $row['eventid'] . "</td>";
+                            echo '<td class="td_name">' . $row['eventname'] . "</td>";
+                            echo '<td class="td_date">' . $row['date'] . "</td>";
+                            echo '<td class="td_time">' . $row['time'] . "</td>";
+                            echo '<td class="td_loc">' . $row['location'] . "</td>";
+                            echo '<td class="td_venue">' . $row['venue'] . "</td>";
+                            echo '<td class="td_price">' . sprintf("%01.2f", $row['price']) . "</td>";
+                            echo '<td class="td_qty">' . $row['ticket_qty'] . "</td>";
+                            echo '<td class="td_img"><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
                             echo "</tr>";
                         }
 	              	?>
+                    </tbody>
+                    </div>
                 </table>
+            </div>
         </div>
-        <h3>Control Panel</h3>
         <div class="panel panel-default" id="events-in">
         	
         	<div class="panel-heading">
