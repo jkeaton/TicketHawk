@@ -41,7 +41,7 @@
     function validateFields(){
         global $cxn;
         global $eventNameErr, $eventDateErr, $eventTimeErr, $eventLocationErr, $eventVenueErr, $eventPriceErr, $ticketQuantityErr, $eventImgErr, $maxSizeBlob;
-        $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "";
+        $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "*";
         $errCount = 0;
         if (empty($_POST["eventName"])) {
             ++$errCount;
@@ -59,13 +59,19 @@
         } else {
             $eventDate = test_input($_POST["eventDate"]);
             $eventDate = DateTime::createFromFormat('m/d/Y', $eventDate);
-            $dateToDB = $eventDate->format("Y-m-d");
-            $year = (int) ($eventDate->format("Y"));
-            $month = (int) ($eventDate->format("m"));
-            $day = (int) ($eventDate->format("d"));
-            if (!checkdate ($month , $day , $year )){
+            if (!$eventDate){
                 ++$errCount;
                 $eventDateErr = "Invalid Date";
+            }
+            else {
+                $dateToDB = $eventDate->format("Y-m-d");
+                $year = (int) ($eventDate->format("Y"));
+                $month = (int) ($eventDate->format("m"));
+                $day = (int) ($eventDate->format("d"));
+                if (!checkdate ($month , $day , $year )){
+                    ++$errCount;
+                    $eventDateErr = "Invalid Date";
+                }
             }
         }
 
@@ -114,7 +120,7 @@
             }
             elseif (!preg_match("/^[0-9\.]*$/",$eventPrice)) {
                 ++$errCount;
-                $eventPriceErr = "Only numbers and decimal points allowed";
+                $eventPriceErr = "Only digits and a radix point";
             }
             else {
                 $eventPrice = floatval ($eventPrice);
@@ -129,6 +135,10 @@
             if (!is_numeric ($ticketQuantity)){
                 ++$errCount;
                 $ticketQuantityErr = "Invalid Quantity";
+            }
+            elseif (!preg_match("/^[0-9]*$/",$ticketQuantity)) {
+                ++$errCount;
+                $ticketQuantityErr = "Only positive integers";
             }
             else{
                 $ticketQuantity = (int) ($ticketQuantity);
@@ -428,7 +438,7 @@
                         <div class="col-xs-6 col-sm-3 form-group">
                             <label for="ticket-amount">Ticket Quantity:</label>
                             <span class="error"><?php echo $ticketQuantityErr; ?></span>
-                            <input type="number" class="form-control" id="ticket-amount" placeholder="Ticket Quantity" name="ticketQuantity" required>
+                            <input type="text" class="form-control" id="ticket-amount" placeholder="Ticket Quantity" name="ticketQuantity" required>
                         </div>
                     </div>
                     <div class="row">
