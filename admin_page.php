@@ -186,55 +186,19 @@
         $results = mysqli_query($cxn, $query);
     }
 
-<<<<<<< HEAD
-if (isset($_POST['deleteBydate'])) {
-	deleteByDate();
-}
-	if (isset($_POST['select-by-id'])) {
-	deleteById();
-}
-function deleteById(){
-	$dbuser = 'admin';
-	$dbpass = 'balloonrides';
-	$dbhost = 'localhost';
-	$dbname = 'tickethawk';
-	$cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-	$query = "DELETE FROM EVENT WHERE eventid = '".$_POST['select-by-id']."' ";
-	$results = mysqli_query($cxn, $query);
-	}
-	if (isset($_POST['filter']) && isset($_POST['date-1']) && isset($_POST['date-2'])) {
-
-	$dbuser = 'admin';
-	$dbpass = 'balloonrides';
-	$dbhost = 'localhost';
-	$dbname = 'tickethawk';
-	$cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-	$query = "SELECT * FROM EVENT WHERE date BETWEEN '".$_POST['date-1']."' AND '".$_POST['date-2']."'";
-	$results = mysqli_query($cxn, $query)or die(mysqli_error($cxn));
-	}
-	// if (isset($_POST['modify']) && isset($_POST['modEvent'])) {
-	// $dbuser = 'admin';
-	// $dbpass = 'balloonrides';
-	// $dbhost = 'localhost';
-	// $dbname = 'tickethawk';
-	// $cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-	// $query = "SELECT * FROM EVENT WHERE eventid = '".$_POST[modEvent]."'";
-	// $results = mysqli_query($cxn, $query)or die(mysqli_error($cxn));
-	// echo "";
-	// }
-=======
-    if (isset($_POST['deleteBydate'])) {
-        deleteByDate();
-    }
-        if (isset($_POST['select-by-id'])) {
-        deleteById();
-    }
     function deleteById(){
         global $cxn;
         $query = "DELETE FROM EVENT WHERE eventid = '".$_POST['select-by-id']."' ";
         $results = mysqli_query($cxn, $query);
     }
->>>>>>> 587b62958c5e094a56a9f1b8b2cc464f924af832
+	
+    if (isset($_POST['deleteBydate'])) {
+        deleteByDate();
+    }
+    if (isset($_POST['select-by-id'])) {
+        deleteById();
+    }
+	
 ?>
 
 
