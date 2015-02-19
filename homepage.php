@@ -15,6 +15,7 @@
     $results = mysqli_query($cxn, $query) or die("Connection could not be established");
     $events = array();
     storeEventRows();
+    // Comment to add bootstrap in a commit
 
     /**
      * Fetches the EVENT rows from the database and stores them in an array for
