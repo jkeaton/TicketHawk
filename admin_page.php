@@ -407,6 +407,7 @@
                             echo '<td class="td_price">' . sprintf("%01.2f", $row['price']) . "</td>";
                             echo '<td class="td_qty">' . $row['ticket_qty'] . "</td>";
                             echo '<td class="td_img"><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
+							echo "<td><a href='#myModal' class='btn btn-warning' data-toggle='modal'>Modify</a></td>";
                             echo "</tr>";
                         }
 	              	?>
@@ -533,7 +534,7 @@
 					<button type="submit" class="btn btn-default" name="filter">
 						Submit
 					</button>
-					<a href="#myModal" class="btn btn-default" data-toggle="modal"style="margin-left:490px;" >Modify</a>
+			
 				</form>
 
 				
