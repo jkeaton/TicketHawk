@@ -191,6 +191,12 @@
         $query = "DELETE FROM EVENT WHERE eventid = '".$_POST['select-by-id']."' ";
         $results = mysqli_query($cxn, $query);
     }
+
+    function filterByDate(){
+        global $cxn;
+        $query = "SELECT * FROM EVENT WHERE date BETWEEN '".$_POST['date-1']."' AND '".$_POST['date-2']."'";
+        $results = mysqli_query($cxn, $query)or die(mysqli_error($cxn));
+    }
 	
     if (isset($_POST['deleteBydate'])) {
         deleteByDate();
@@ -198,7 +204,9 @@
     if (isset($_POST['select-by-id'])) {
         deleteById();
     }
-	
+    if (isset($_POST['filter']) && isset($_POST['date-1']) && isset($_POST['date-2'])) {
+        filterByDate();
+    }
 ?>
 
 
