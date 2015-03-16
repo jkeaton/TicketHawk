@@ -6,6 +6,7 @@
 
     // Create the connection to the database to be reused
     global $dbhost, $dbname;
+	//$results = NULL;
     $creds = db_admin();
     $dbuser = array_values($creds)[0];
     $dbpass = array_values($creds)[1];
@@ -188,12 +189,12 @@
 
     function deleteById(){
         global $cxn;
-        $query = "DELETE FROM EVENT WHERE eventid = '".$_POST['select-by-id']."' ";
+        $query = "DELETE FROM EVENT WHERE eventid = '".$_POST['delete-by-id']."' ";
         $results = mysqli_query($cxn, $query);
     }
 
     function filterByDate(){
-        global $cxn;
+		global $cxn, $results;
         $query = "SELECT * FROM EVENT WHERE date BETWEEN '".$_POST['date-1']."' AND '".$_POST['date-2']."'";
         $results = mysqli_query($cxn, $query)or die(mysqli_error($cxn));
     }
@@ -201,7 +202,7 @@
     if (isset($_POST['deleteBydate'])) {
         deleteByDate();
     }
-    if (isset($_POST['select-by-id'])) {
+    if (isset($_POST['deleteById'])) {
         deleteById();
     }
     if (isset($_POST['filter']) && isset($_POST['date-1']) && isset($_POST['date-2'])) {
@@ -241,11 +242,13 @@
         <!-- jquery js -->
    	    <script src="dist/js/main.js"></script>
         <script src="dist/bootstrap/dist/js/bootstrap.min.js"></script>
+        <!-- Missing -->
         <script type="text/javascript" src="dist/bootstrap/js/transition.js"></script>
         <script type="text/javascript" src="dist/bootstrap/js/collapse.js"></script>
+        <script src="dist/js/docs.min.js"></script>
+        <!--End Missing -->
         <script src="dist/js/moment.js"></script>
         <script src="dist/js/moment-with-locales.js"></script>
-        <script src="dist/js/docs.min.js"></script>
         <script src="dist/js/bootstrap-datepicker.js"></script>
         <script src="dist/js/bootstrap-timepicker.js"></script>
         <script type="text/javascript">
@@ -265,6 +268,11 @@
 		</script>
 		<script>
 			$('#d2').datepicker({
+				format : 'yyyy-mm-dd'
+			});
+		</script>
+		<script>
+			$('#d3').datepicker({
 				format : 'yyyy-mm-dd'
 			});
 		</script>
@@ -396,6 +404,7 @@
                             <th class="th_price">Price</th>
                             <th class="th_qty">Ticket Qty</th>
                             <th class="th_img">Image</th>
+                            <th class="th_img">Modify Event</th>
                         </tr>
                     </thead>
                 </table>
@@ -518,7 +527,7 @@
                 <form role="form" class="form-inline" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <div class="form-group" >
                         <label for="id-num">Delete By Date:</label>
-                        <input type="text"  class="datepicker form-control" name="delete-by-date" data-date-format="yyyy-mm-dd"/>
+                        <input type="text"  class="datepicker form-control" name="delete-by-date" id="d3" data-date-format="yyyy-mm-dd"/>
                         <button type="submit" name="deleteBydate"  class="btn btn-danger"/>Delete</button>
                     </div>	
                 </form>
@@ -533,7 +542,7 @@
 			<form class="form-inline" role="form" method="post">
 					<div class="form-group">
 						<label for="date-1">Date 1:</label>
-						<input type="text" class=" datepicker form-control" id="d1" name="date-1" data-date-format="yyyy-mm-dd" />
+						<input type="text" class="datepicker form-control" id="d1" name="date-1" data-date-format="yyyy-mm-dd" />
 					</div>
 					<div class="form-group">
 						<label for="date-2">Date 2:</label>
@@ -578,9 +587,8 @@
                         <div class="col-xs-6 col-sm-3 form-group">
                             <label for=event-"date">Date:</label>
                             <span class="error">* <?php echo $eventDateErr; ?></span>
-                            <div class='input-group input-ammend' id='event-date' name="eventDate" required>
-                                <input type='text' class="datepicker
-                                form-control" />
+                            <div class='input-group input-ammend' id='event-date' name="eventDate">
+                                <input type='text' class="datepicker form-control" required>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
