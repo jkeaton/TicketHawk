@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 03, 2015 at 01:44 AM
+-- Generation Time: Mar 23, 2015 at 07:24 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -19,8 +19,68 @@ SET time_zone = "+00:00";
 --
 -- Database: `TicketHawk`
 --
-CREATE DATABASE IF NOT EXISTS `TicketHawk` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `TicketHawk`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Addresses`
+--
+
+CREATE TABLE IF NOT EXISTS `Addresses` (
+`ID` int(11) NOT NULL,
+  `ContactID` int(11) NOT NULL,
+  `Address` varchar(120) NOT NULL,
+  `Address2` varchar(120) DEFAULT NULL,
+  `City` varchar(60) NOT NULL,
+  `State` varchar(5) NOT NULL,
+  `Zip` varchar(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Company`
+--
+
+CREATE TABLE IF NOT EXISTS `Company` (
+`ID` int(11) NOT NULL,
+  `Name` varchar(60) NOT NULL,
+  `AddressID` int(11) DEFAULT NULL,
+  `PhoneID` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `CompanyLinkToContacts`
+--
+
+CREATE TABLE IF NOT EXISTS `CompanyLinkToContacts` (
+  `CompanyID` int(11) NOT NULL,
+  `ContactID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Contact`
+--
+
+CREATE TABLE IF NOT EXISTS `Contact` (
+`ID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Email`
+--
+
+CREATE TABLE IF NOT EXISTS `Email` (
+`ID` int(11) NOT NULL,
+  `ContactID` int(11) NOT NULL,
+  `Email` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -28,7 +88,6 @@ USE `TicketHawk`;
 -- Table structure for table `EVENT`
 --
 
-DROP TABLE IF EXISTS `EVENT`;
 CREATE TABLE IF NOT EXISTS `EVENT` (
 `eventid` int(11) NOT NULL,
   `eventname` varchar(30) NOT NULL,
@@ -51,10 +110,70 @@ INSERT INTO `EVENT` (`eventid`, `eventname`, `date`, `time`, `location`, `venue`
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `Event2`
+--
+CREATE TABLE IF NOT EXISTS `Event2` (
+`eventID` int(11)
+,`eventname` varchar(60)
+,`date` date
+,`time` time
+,`location` varchar(201)
+,`price` decimal(7,2)
+,`ticket_qty` int(11)
+,`img` blob
+);
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `EventTable`
+--
+
+CREATE TABLE IF NOT EXISTS `EventTable` (
+`ID` int(11) NOT NULL,
+  `Name` varchar(60) NOT NULL,
+  `Date` date NOT NULL,
+  `Time` time DEFAULT NULL,
+  `PromoterID` int(11) DEFAULT NULL,
+  `VenueID` int(11) NOT NULL,
+  `LocationID` int(11) NOT NULL,
+  `Price` decimal(7,2) NOT NULL,
+  `TotalTickets` int(11) NOT NULL,
+  `SoldTickets` int(11) NOT NULL,
+  `Image` blob
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Phone`
+--
+
+CREATE TABLE IF NOT EXISTS `Phone` (
+`ID` int(11) NOT NULL,
+  `ContactID` int(11) NOT NULL,
+  `Number` varchar(12) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Sales`
+--
+
+CREATE TABLE IF NOT EXISTS `Sales` (
+`ID` int(11) NOT NULL,
+  `UserID` int(11) DEFAULT NULL,
+  `EventID` int(11) NOT NULL,
+  `Quantity` int(11) NOT NULL,
+  `Price` decimal(7,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `USER`
 --
 
-DROP TABLE IF EXISTS `USER`;
 CREATE TABLE IF NOT EXISTS `USER` (
 `user_id` int(10) unsigned NOT NULL,
   `username` varchar(20) NOT NULL,
@@ -85,9 +204,109 @@ INSERT INTO `USER` (`user_id`, `username`, `fname`, `lname`, `street_address`, `
 (10, 'jkeaton', 'jestin', 'keaton', '3430 Millenium View Dr', 'bananas', 'GA', '39283', 'fake@email.com', '$2y$10$coxh4r7F97JlBSUVI8raV.QTc5MISLSXaGgMHyb/B9cOhKt6fEpqC'),
 (11, 'bojangle', 'jack', 'nick', '564', 'aldkfj', 'UT', '48738', 'email@email.com', '$2y$10$vnt2eNn9KSlKgS6FVzUe9u01OAMPZMzfU2V4USSMRdXjNM/NgRzZy');
 
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `User2`
+--
+CREATE TABLE IF NOT EXISTS `User2` (
+`user_id` int(11)
+,`username` varchar(20)
+,`fname` varchar(45)
+,`lname` varchar(45)
+,`street_address` varchar(120)
+,`city` varchar(60)
+,`state` varchar(5)
+,`zipcode` varchar(11)
+,`eamil` varchar(45)
+,`hashed_pass` varchar(255)
+);
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `UserLinkToContact`
+--
+
+CREATE TABLE IF NOT EXISTS `UserLinkToContact` (
+  `UserID` int(11) NOT NULL,
+  `ContactID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Users`
+--
+
+CREATE TABLE IF NOT EXISTS `Users` (
+`ID` int(11) NOT NULL,
+  `UserName` varchar(20) NOT NULL,
+  `fName` varchar(45) DEFAULT NULL,
+  `lName` varchar(45) DEFAULT NULL,
+  `AddressID` int(11) DEFAULT NULL,
+  `PhoneID` int(11) DEFAULT NULL,
+  `EmailID` int(11) DEFAULT NULL,
+  `HashPass` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Venue`
+--
+
+CREATE TABLE IF NOT EXISTS `Venue` (
+`ID` int(11) NOT NULL,
+  `Name` varchar(60) NOT NULL,
+  `CompanyID` int(11) DEFAULT NULL,
+  `ContactID` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `Event2`
+--
+DROP TABLE IF EXISTS `Event2`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `Event2` AS select `e`.`ID` AS `eventID`,`e`.`Name` AS `eventname`,`e`.`Date` AS `date`,`e`.`Time` AS `time`,concat(`a`.`Address`,', ',`a`.`City`,', ',`a`.`State`,' ',`a`.`Zip`) AS `location`,`e`.`Price` AS `price`,`e`.`TotalTickets` AS `ticket_qty`,`e`.`Image` AS `img` from ((`EventTable` `e` join `Addresses` `a` on((`a`.`ID` = `e`.`LocationID`))) join `Venue` `v` on((`v`.`ID` = `e`.`VenueID`)));
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `User2`
+--
+DROP TABLE IF EXISTS `User2`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `User2` AS select `u`.`ID` AS `user_id`,`u`.`UserName` AS `username`,`u`.`fName` AS `fname`,`u`.`lName` AS `lname`,`a`.`Address` AS `street_address`,`a`.`City` AS `city`,`a`.`State` AS `state`,`a`.`Zip` AS `zipcode`,`e`.`Email` AS `eamil`,`u`.`HashPass` AS `hashed_pass` from ((`Users` `u` join `Addresses` `a` on((`a`.`ID` = `u`.`AddressID`))) join `Email` `e` on((`e`.`ID` = `u`.`EmailID`)));
+
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `Addresses`
+--
+ALTER TABLE `Addresses`
+ ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `Company`
+--
+ALTER TABLE `Company`
+ ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `Contact`
+--
+ALTER TABLE `Contact`
+ ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `Email`
+--
+ALTER TABLE `Email`
+ ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `EVENT`
@@ -96,25 +315,100 @@ ALTER TABLE `EVENT`
  ADD PRIMARY KEY (`eventid`), ADD UNIQUE KEY `eventid` (`eventid`);
 
 --
+-- Indexes for table `EventTable`
+--
+ALTER TABLE `EventTable`
+ ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `Phone`
+--
+ALTER TABLE `Phone`
+ ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `Sales`
+--
+ALTER TABLE `Sales`
+ ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `USER`
 --
 ALTER TABLE `USER`
  ADD PRIMARY KEY (`user_id`);
 
 --
+-- Indexes for table `Users`
+--
+ALTER TABLE `Users`
+ ADD PRIMARY KEY (`ID`), ADD UNIQUE KEY `UserName_UNIQUE` (`UserName`);
+
+--
+-- Indexes for table `Venue`
+--
+ALTER TABLE `Venue`
+ ADD PRIMARY KEY (`ID`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `Addresses`
+--
+ALTER TABLE `Addresses`
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `Company`
+--
+ALTER TABLE `Company`
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `Contact`
+--
+ALTER TABLE `Contact`
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `Email`
+--
+ALTER TABLE `Email`
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `EVENT`
 --
 ALTER TABLE `EVENT`
 MODIFY `eventid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
+-- AUTO_INCREMENT for table `EventTable`
+--
+ALTER TABLE `EventTable`
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `Phone`
+--
+ALTER TABLE `Phone`
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `Sales`
+--
+ALTER TABLE `Sales`
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `USER`
 --
 ALTER TABLE `USER`
 MODIFY `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
+--
+-- AUTO_INCREMENT for table `Users`
+--
+ALTER TABLE `Users`
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `Venue`
+--
+ALTER TABLE `Venue`
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
