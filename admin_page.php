@@ -313,7 +313,7 @@
             }
             .td_name, .th_name {
                 overflow: hidden;
-                width: 19%;  
+                width: 17%;  
             }
             .td_date, .th_date {
                 overflow: hidden;
@@ -325,11 +325,11 @@
             }
             .td_loc, .th_loc {
                 overflow: hidden;
-                width: 19%;  
+                width: 16%;  
             }
             .td_venue, .th_venue {
                 overflow: hidden;
-                width: 19%;  
+                width: 16%;  
             }
             .td_price, .th_price {
                 overflow: hidden;
@@ -342,6 +342,10 @@
             .td_img, .th_img {
                 overflow: hidden;
                 width: 10%;  
+            }
+            .td_purch, .th_purch{
+            	overflow: hidden;
+                width: 8%;
             }
         </style>
     </head>
@@ -403,8 +407,8 @@
                             <th class="th_venue">Venue</th>
                             <th class="th_price">Price</th>
                             <th class="th_qty">Ticket Qty</th>
+                            <th class="th_purch">Purchased</th>
                             <th class="th_img">Image</th>
-                            <th class="col-md-1">Modify Event</th>
                         </tr>
                     </thead>
                 </table>
@@ -414,17 +418,19 @@
                     <tbody>
                     <?php
                         while ($row = mysqli_fetch_assoc($results)) {
+                        	$ticketSold = ticketsAdmin($row['eventname']);
                             echo "<tr>";
-                            echo '<td class="col-md-1">' . $row['eventid'] . "</td>";
-                            echo '<td class="col-md-1">' . $row['eventname'] . "</td>";
-                            echo '<td class="col-md-1">' . $row['date'] . "</td>";
-                            echo '<td class="col-md-1">' . $row['time'] . "</td>";
-                            echo '<td class="col-md-1">' . $row['location'] . "</td>";
-                            echo '<td class="col-md-1">' . $row['venue'] . "</td>";
-                            echo '<td class="col-md-1">' . sprintf("%01.2f", $row['price']) . "</td>";
-                            echo '<td class="col-md-1">' . $row['ticket_qty'] . "</td>";
-                            echo '<td class="col-md-1"><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
-							echo "<td class='col-md-1'><a href='#myModal' class='btn btn-warning btn-xs' data-toggle='modal'>Modify</a></td>";
+                            echo '<td class="td_id">' . $row['eventid'] . "</td>";
+                            echo '<td class="td_name">' . $row['eventname'] . "<br/><a href='#myModal' class='btn btn-warning' data-toggle='modal'>Edit</a></td>";
+                            echo '<td class="td_date">' . $row['date'] . "</td>";
+                            echo '<td class="td_time">' . $row['time'] . "</td>";
+                            echo '<td class="td_loc">' . $row['location'] . "</td>";
+                            echo '<td class="td_venue">' . $row['venue'] . "</td>";
+                            echo '<td class="td_price">' . sprintf("%01.2f", $row['price']) . "</td>";
+                            echo '<td class="td_qty">' . $row['ticket_qty'] . "</td>";
+							echo "<td class='td_purch'>$ticketSold</td>";
+                            echo '<td class="td_img"><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
+							// echo "<td class='col-md-1'></td>";
                             echo "</tr>";
                         }
 	              	?>
