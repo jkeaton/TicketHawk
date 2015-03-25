@@ -116,11 +116,11 @@
             <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	function onLoad(){
 		alert("Hello World");
 	}
-</script>
+</script> -->
     </head>
 
     <body role="document" onload="onLoad()">
@@ -326,6 +326,58 @@
         </a>
     </div><!-- /.carousel -->
     <div class="container">
+    	
+    	<style>
+    		#search_div{
+    			
+  background: -webkit-linear-gradient(90deg, #FF8008 10%, #FFC837 90%); /* Chrome 10+, Saf5.1+ */
+  background:    -moz-linear-gradient(90deg, #FF8008 10%, #FFC837 90%); /* FF3.6+ */
+  background:     -ms-linear-gradient(90deg, #FF8008 10%, #FFC837 90%); /* IE10 */
+  background:      -o-linear-gradient(90deg, #FF8008 10%, #FFC837 90%); /* Opera 11.10+ */
+  background:         linear-gradient(90deg, #FF8008 10%, #FFC837 90%); /* W3C */
+        
+    		}
+    	</style>
+    		<div class="panel panel-default" id="search_div" style="width: 100%; margin-left: auto; margin-right: auto; padding:20px; border: solid 4px black;">
+    			<div class="row">
+    			<div class="col-md-5" style="">
+    				<h1>Find the tickets you need</h1>
+    				<h4>All your Favorites</h4>
+    				<div style="padding-top: 30px;">
+				<form>
+                    <div class="input-group custom-search-form">
+                            	
+                        <input type="text" class="form-control" placeholder="Search..." name="search_events"> 
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default" form_id="searchTrans"  type="button" name="srch">
+                          <span class="glyphicon glyphicon-search"></span>
+                           </button>          
+                       </span>
+                    </div>
+				</form>
+				</div>
+				<div style="padding-top: 10px;">
+				 <label>Trending</label>
+				 </div>
+                    		<p>
+                    			<a href="#" class="btn btn-primary btn-xs">Event 1</a>
+                    			<a href="#" class="btn btn-primary btn-xs">Event 2</a>
+                    			<a href="#" class="btn btn-primary btn-xs">Event 3</a>
+                    			<a href="#" class="btn btn-primary btn-xs">Event 4</a>
+                    		</p>
+                    		<p>
+                    			<a href="#" class="btn btn-primary btn-xs">Event 1</a>
+                    			<a href="#" class="btn btn-primary btn-xs">Event 2</a>
+                    			<a href="#" class="btn btn-primary btn-xs">Event 3</a>
+                    			<a href="#" class="btn btn-primary btn-xs">Event 4</a>
+                    			<a href="#" class="btn btn-primary btn-xs">Event 5</a>
+                    			<a href="#" class="btn btn-primary btn-xs">Event 6</a>
+                    		</p> 
+				</div>
+
+				</div>
+    		</div>
+    	
         <h1>New Movie Releases</h1>
         <h4>Preview the hotest releases everyone's talking about!</h4> 
         <div class="row">
@@ -352,6 +404,19 @@
         <?php
             echo getEventDisplays();
         ?>
+    </div>
+    <div id="footer" style="border:solid black 2px;">
+      <div class="container">
+		<div class="col-md-4">
+			<h3>Contact us</h3>
+			<p>Phone: 678-915-7778</p>
+			<p>1100 South Marietta Pkwy</p>
+			<p>Marietta, GA 30060</p>
+		</div>
+      </div>
+      		<div id="copy_right" style="text-align: center;">
+			<p> &copy; 2015-2020 Ticket Hawk All rights reserved.</p>
+		</div>
     </div>
 </body>
 </html>

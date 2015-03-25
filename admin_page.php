@@ -363,7 +363,7 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="homepage.php">Home</a></li>
                         <li class="active"><a href="admin_page.php">Events</a></li>
-                        <li><a href="#">Users</a></li>
+                        <li><a href="other_admin.php">Users</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                     <?php
@@ -404,7 +404,7 @@
                             <th class="th_price">Price</th>
                             <th class="th_qty">Ticket Qty</th>
                             <th class="th_img">Image</th>
-                            <th class="th_img">Modify Event</th>
+                            <th class="col-md-1">Modify Event</th>
                         </tr>
                     </thead>
                 </table>
@@ -415,16 +415,16 @@
                     <?php
                         while ($row = mysqli_fetch_assoc($results)) {
                             echo "<tr>";
-                            echo '<td class="td_id">' . $row['eventid'] . "</td>";
-                            echo '<td class="td_name">' . $row['eventname'] . "</td>";
-                            echo '<td class="td_date">' . $row['date'] . "</td>";
-                            echo '<td class="td_time">' . $row['time'] . "</td>";
-                            echo '<td class="td_loc">' . $row['location'] . "</td>";
-                            echo '<td class="td_venue">' . $row['venue'] . "</td>";
-                            echo '<td class="td_price">' . sprintf("%01.2f", $row['price']) . "</td>";
-                            echo '<td class="td_qty">' . $row['ticket_qty'] . "</td>";
-                            echo '<td class="td_img"><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
-							echo "<td><a href='#myModal' class='btn btn-warning' data-toggle='modal'>Modify</a></td>";
+                            echo '<td class="col-md-1">' . $row['eventid'] . "</td>";
+                            echo '<td class="col-md-1">' . $row['eventname'] . "</td>";
+                            echo '<td class="col-md-1">' . $row['date'] . "</td>";
+                            echo '<td class="col-md-1">' . $row['time'] . "</td>";
+                            echo '<td class="col-md-1">' . $row['location'] . "</td>";
+                            echo '<td class="col-md-1">' . $row['venue'] . "</td>";
+                            echo '<td class="col-md-1">' . sprintf("%01.2f", $row['price']) . "</td>";
+                            echo '<td class="col-md-1">' . $row['ticket_qty'] . "</td>";
+                            echo '<td class="col-md-1"><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
+							echo "<td class='col-md-1'><a href='#myModal' class='btn btn-warning btn-xs' data-toggle='modal'>Modify</a></td>";
                             echo "</tr>";
                         }
 	              	?>

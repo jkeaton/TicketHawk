@@ -100,4 +100,55 @@
             return;
         }
     }
+	// For Front end users
+	function ticketsAdmin($eventName){
+			$creds = db_admin();
+            $dbuser = array_values($creds)[0];
+            $dbpass = array_values($creds)[1];
+			global $dbhost, $dbname;
+		 	$cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+			$query = "SELECT * FROM EVENT where eventname = '$eventName'";
+			$results = mysqli_query($cxn, $query) or die("Connection could not be established");
+			$ticket_qty="";
+			$tickets_left = 0;
+		$results = mysqli_query($cxn, $query) or die("Connection could not be established");
+		while ($row = mysqli_fetch_assoc($results)) {
+			if ($row['ticket_qty'] === 0) {
+				$ticket_qty = "Sold Out!";
+				return $ticket_qty;
+			
+			}
+			else {
+				return $row['ticket_sold'];
+				
+			}
+		}
+
+	}
+	
+		function tickets($eventName, $numberOfTickets){
+			$creds = db_admin();
+            $dbuser = array_values($creds)[0];
+            $dbpass = array_values($creds)[1];
+			global $dbhost, $dbname;
+		 	$cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+			$query = "SELECT * FROM EVENT where eventname = '$eventName'";
+			$results = mysqli_query($cxn, $query) or die("Connection could not be established");
+			$ticket_qty="";
+			$tickets_left = 0;
+			while ($row = mysqli_fetch_assoc($results)) {
+				if ($row['ticket_qty'] == 0) {
+					$ticket_qty = "Sold Out!";
+					return $ticket_qty;
+				}
+				else if($row['ticket_sold'] == 0) {
+					 return $tickets_left;
+					
+				}
+				else {
+					$tickets_left = $row['ticket_qty'] - $row['ticket_sold'];
+					return $tickets_left;
+				}
+		}
+	}
 ?>
