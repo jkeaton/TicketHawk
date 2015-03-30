@@ -40,25 +40,30 @@
             foreach ($events as $value) {
                 if ($value['eventid'] == $id){
                     $output .= ('<div class="container">'
-                        . '<div class="row"><div class="col-md-4 text-center"><h2 class="text-center">'
+                        .'<div class="row">'
+                        .'<div class="col-md-4 vcenter text-center"><h3 class="text-center">'
                         .$value['eventname'].'</h3>'
-                        .'<img class="text-center" src = "data:image/jpeg;base64,' 
+                        .'<div class="col-md-offset-4 col-md-4>'
+                        .'<input class="input-group">'
+                        .'</input>'
+                        .'</div>'
+                        .'</div>'
+                        .'</div>'
+                        .'<div class="row">'
+                        .'<div class="col-md-4 vcenter text-center">'
+                        .'<img class="text-center img-thumbnail" src = "data:image/jpeg;base64,' 
                         .base64_encode($value['img']).'" width="300" height="300"/>'
                         .'</div>'
-                        .'<div class="col-md-8 container">'
-                        .'<div><b>Date: </b>'.$value['date']
-                        .'</div><br/>'
-                        .'<div><b>Time: </b>' . $value['time'] . '</div>'
-                        .'<br/>'
-                        .'<div><b>Location: </b>' . $value['location'] . '</div>'
-                        .'<br/>'
-                        .'<div><b>Venue: </b>' . $value['venue'] . '</div>'
-                        .'<br/>'
-                        .'<div><b>Ticket Price: </b>' . $value['price'] . '</div>'
-                        .'<br/>'
-                        .'<div><b>Tickets in Stock: </b>' . $value['ticket_qty']
-                        .'</div>'
-                        .'<br/>'
+                        .'<div class="col-md-4 vcenter">'
+                        .'<table class="table table-bordered dropped">'
+                        .'<tr><td><b>Date:</b></td><td>'.$value['date'].'</td>'
+                        .'</tr>'
+                        .'<tr><td><b>Time:</b></td><td>'.$value['time'].'</td></tr>'
+                        .'<tr><td><b>Location:</b></td><td>'.$value['location'].'</td></tr>'
+                        .'<tr><td><b>Venue:</b></td><td>'.$value['venue'].'</td></tr>'
+                        .'<tr><td><b>Ticket Price:</b></td><td>$'.$value['price'].'</td></tr>'
+                        .'<tr><td><b>Tickets in Stock:</b></td><td>'.$value['ticket_qty']
+                        .'</td></tr></table>'
                         .'</div>'
                         .'</div>'
                         .'</div>');
@@ -299,21 +304,6 @@
                 <?php echo generateEventDetails(); ?>
             </div>
         </div>
-    </div>
-
-
-    <div id="footer" style="border:solid black 2px;">
-      <div class="container">
-		<div class="col-md-4">
-			<h3>Contact us</h3>
-			<p>Phone: 678-915-7778</p>
-			<p>1100 South Marietta Pkwy</p>
-			<p>Marietta, GA 30060</p>
-		</div>
-      </div>
-      		<div id="copy_right" style="text-align: center;">
-			<p> &copy; 2015-2020 Ticket Hawk All rights reserved.</p>
-		</div>
     </div>
 </body>
 </html>

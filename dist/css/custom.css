@@ -19,3 +19,11 @@ body {
 #CaptchaCode {
     margin-top: 5px;
 }
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+.dropped {
+    margin-top: 40px;
+}
