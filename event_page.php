@@ -29,6 +29,47 @@
             ++$index;
         }
     }
+    
+    function generateEventDetails(){
+        global $events;
+        try {
+            $id = ($_SERVER['QUERY_STRING']);
+            $pos = strpos ($id , '=');
+            $id = substr($id, $pos+1);
+            $output = "";
+            foreach ($events as $value) {
+                if ($value['eventid'] == $id){
+                    $output .= ('<div class="container">'
+                        . '<div class="row"><div class="col-md-4 text-center"><h2 class="text-center">'
+                        .$value['eventname'].'</h3>'
+                        .'<img class="text-center" src = "data:image/jpeg;base64,' 
+                        .base64_encode($value['img']).'" width="300" height="300"/>'
+                        .'</div>'
+                        .'<div class="col-md-8 container">'
+                        .'<div><b>Date: </b>'.$value['date']
+                        .'</div><br/>'
+                        .'<div><b>Time: </b>' . $value['time'] . '</div>'
+                        .'<br/>'
+                        .'<div><b>Location: </b>' . $value['location'] . '</div>'
+                        .'<br/>'
+                        .'<div><b>Venue: </b>' . $value['venue'] . '</div>'
+                        .'<br/>'
+                        .'<div><b>Ticket Price: </b>' . $value['price'] . '</div>'
+                        .'<br/>'
+                        .'<div><b>Tickets in Stock: </b>' . $value['ticket_qty']
+                        .'</div>'
+                        .'<br/>'
+                        .'</div>'
+                        .'</div>'
+                        .'</div>');
+                }
+            }
+            return $output;
+        } 
+        catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
     /**
      * Generates the Event displays in rows of 3. Calculates the number of rows
      * needed and generates the html needed to display each event in the row in
@@ -43,7 +84,7 @@
                 if (($i*3)+$j >= count($events)){
                     break;
                 }
-                $out .= ('<div class="col-lg-4"><img class="img-circle" src="data:image/jpeg;base64,'.base64_encode($events[($i*3)+$j]['img']).'" style="width: 140px; height: 140px"><h2>'.$events[($i*3)+$j]['eventname'].'</h2><p><a class="btn btn-primary" href="event_page.php?event_id='.$events[($i*3)+$j]['eventid'].'" role="button">View Details &raquo;</a></p></div>');  
+                $out .= ('<div class="col-lg-4"><img class="img-circle" src="data:image/jpeg;base64,'.base64_encode($events[($i*3)+$j]['img']).'" style="width: 140px; height: 140px"><h2>'.$events[($i*3)+$j]['eventname'].'</h2><p><a class="btn btn-primary" href="#" role="button">View Details &raquo;</a></p></div>');  
             }
             $out .= '</div>';
         }
@@ -249,165 +290,18 @@
             </div><!--/.nav-collapse -->            
           </div>
         </nav>
-        
-        <!-- Carousel
-    ================================================== -->
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner" role="listbox">
-            <div class="item active">
-                <img src="http://p1.pichost.me/i/59/1835974.jpg" alt="First slide" id="img1">
-                <div class="container">
-                    <div class="carousel-caption">
-                        <h1>All The Tickets You Need!</h1>
-                        <p>On Your Favorite Site.</p>
-                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <img src="http://www.foxsports.com/content/dam/fsdigital/fscom/nfl/images/2014/01/14/011414-NFL-Seattle-Seahawks-Fans-HF-PI.jpg" alt="Second slide">
-                <div class="container">
-                    <div class="carousel-caption">
-                        <h1>Save Money!</h1>
-                        <p>The best seats for a lower price</p>
-                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <img src="http://www.hdwallpapersinn.com/wp-content/uploads/2014/08/2013-nascar-wallpaper-hd.jpg" alt="Third slide">
-                <div class="container">
-                    <div class="carousel-caption">
-                        <h1>Get Your Tickets Fast!</h1>
-                        <p>With our speedy checkout, you can order tickets fast!</p>
-                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <img src="http://1.bp.blogspot.com/-CJoL1b3qBR8/Ubw5sbzHU4I/AAAAAAAAYjE/-jW-Ch3inyU/s1600/Disney+World+HD+Wallpapers21.jpg" alt="Third slide">
-                <div class="container">
-                    <div class="carousel-caption">
-                        <h1>All of your favorite places!</h1>
-                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <img src="http://i2.cdnds.net/14/37/618x411/otr_paris_02.jpg" alt="fifth slide">
-                <div class="container">
-                    <div class="carousel-caption">
-                        <h1>Events you can't miss!</h1>
-                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <img src="http://cdn.caughtoffside.com/wp-content/uploads/2014/03/Lionel-Messi-Barcelona3.jpg" alt="sixth slide">
-                <div class="container">
-                    <div class="carousel-caption">
-                        <h1>Sign up and receive the best deal out.</h1>
-                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div><!-- /.carousel -->
+    
+    <!-- Start the Panel that Describes the Events -->
     <div class="container">
-    	
-    	<style>
-            
-    		#search_div{
-    	    /*background: -webkit-linear-gradient(90deg, #FF8008 10%, #FFC837 90%); /* Chrome 10+, Saf5.1+ */
-            /*background:    -moz-linear-gradient(90deg, #FF8008 10%, #FFC837 90%); /* FF3.6+ */
-            /*background:     -ms-linear-gradient(90deg, #FF8008 10%, #FFC837 90%); /* IE10 */
-            /*background:      -o-linear-gradient(90deg, #FF8008 10%, #FFC837 90%); /* Opera 11.10+ */
-            /*background:         linear-gradient(90deg, #FF8008 10%, #FFC837 90%); /* W3C */
-    		}
-    	</style>
-    		<div class="panel panel-default" id="search_div" style="width: 100%; margin-left: auto; margin-right: auto; padding:20px; border: solid 1px black;">
-    			<div class="row">
-    			<div class="col-md-5" style="">
-    				<h1>Find the tickets you need</h1>
-    				<h4>All your Favorites</h4>
-    				<div style="padding-top: 30px;">
-				<form>
-                    <div class="input-group custom-search-form">
-                            	
-                        <input type="text" class="form-control" placeholder="Search..." name="search_events"> 
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default" form_id="searchTrans"  type="button" name="srch">
-                          <span class="glyphicon glyphicon-search"></span>
-                           </button>          
-                       </span>
-                    </div>
-				</form>
-				</div>
-				<div style="padding-top: 10px;">
-				 <label>Trending</label>
-				 </div>
-                    		<p>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 1</a>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 2</a>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 3</a>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 4</a>
-                    		</p>
-                    		<p>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 1</a>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 2</a>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 3</a>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 4</a>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 5</a>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 6</a>
-                    		</p> 
-				</div>
-
-				</div>
-    		</div>
-    	
-        <!--
-        <h1>New Movie Releases</h1>
-        <h4>Preview the hotest releases everyone's talking about!</h4> 
-        <div class="row">
-            <div class="col-sm-4">
-                <h3>Game of Thrones</h3>
-                <iframe width="330" height="215" src="//www.youtube.com/embed/uvX4k_3Cmvs?rel=0" frameborder="0" allowfullscreen></iframe>
-                <p>George R.R. Martin's best-selling book series "A Song of Ice and Fire" is brought to the screen as HBO sinks its considerable storytelling teeth into the medieval fantasy epic</p>
-            </div>
-            <div class="col-sm-4">
-                <h3>Get Hard</h3>
-                <iframe width="330" height="215" src="//www.youtube.com/embed/sge-AzPU4LU?rel=0" frameborder="0" allowfullscreen></iframe>
-                <p>The prison-bound manager (Will Ferrell) of a hedge fund asks a black businessman (Kevin Hart) -- who has never been to jail -- to prepare him for life behind bars.</p>
-            </div>
-            <div class="col-sm-4">
-                <h3>American Sinper</h3> 
-                <iframe width="330" height="215" src="//www.youtube.com/embed/5bP1f_1o-zo?rel=0" frameborder="0" allowfullscreen></iframe>
-                <p>U.S. Navy SEAL Chris Kyle (Bradley Cooper) takes his sole mission -- protect his comrades -- to heart and becomes one of the most lethal snipers in American history.</p>
+        <h3>Event Details</h3>
+        <div class="panel panel-default">
+            <div class="panel">
+                <?php echo generateEventDetails(); ?>
             </div>
         </div>
-        -->
     </div>
-    <div class="container marketing">
-        <h1>Order Event Tickets Now!</h1>
-        <!-- Here, display all the events in rows of 3 -->
-        <?php
-            echo getEventDisplays();
-        ?>
-    </div>
+
+
     <div id="footer" style="border:solid black 2px;">
       <div class="container">
 		<div class="col-md-4">
@@ -427,3 +321,4 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="dist/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="dist/js/docs.min.js"></script>
+
