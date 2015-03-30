@@ -27,3 +27,7 @@ body {
 .dropped {
     margin-top: 40px;
 }
+.small_form_control{
+    margin-top: 10px;
+    width: 200px;
+}
