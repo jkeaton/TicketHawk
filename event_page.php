@@ -40,14 +40,8 @@
             foreach ($events as $value) {
                 if ($value['eventid'] == $id){
                     $output .= ('<div class="container">'
-                        .'<div class="row">'
-                        .'<div class="col-md-4 vcenter text-center"><h3 class="text-center">'
-                        .$value['eventname'].'</h3>'
-                        .'<div class="col-md-offset-4 col-md-4>'
-                        .'<input class="input-group">'
-                        .'</input>'
-                        .'</div>'
-                        .'</div>'
+                        .'<div class="row text-center">'
+                        .'<h3>'.$value['eventname'].'</h3>'
                         .'</div>'
                         .'<div class="row">'
                         .'<div class="col-md-4 vcenter text-center">'

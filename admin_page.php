@@ -289,14 +289,7 @@
 				height: 380px;
 			}
 			#events-in  .form-group {
-				/*margin-top: 10px;*/
-				/*width:500px;*/
 				padding: 10px;
-				/*padding-right: 10px;*/
-				/*white-space: nowrap;*/
-			}
-			#events-in input {
-				/*width:500px;*/
 			}
 			#event-img {
 				max-width: 200px;
