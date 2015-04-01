@@ -109,6 +109,8 @@
         <link href="dist/css/carousel.css" rel="stylesheet">
         <!-- Custom Style sheet for moving the body down below nav bar -->
         <link href="dist/css/custom.css" rel="stylesheet">
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -117,15 +119,32 @@
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-    <!--
-    <script type="text/javascript">
-	    function onLoad(){
-		    alert("Hello World");
-    	}
-    </script>-->
+
+        	<style>
+    		#search_div{
+				background-color:white;
+    		}
+    		body{
+    			/*background-image: url("dist/images/lebron-james-dunkman-kings.jpg");
+    			background-repeat: no-repeat;
+    			background-size: 100% 100%;*/
+    		}
+    		/*html{
+    			height: 100%;
+    		}*/
+				#menuPics {
+					border: solid 3px black;
+					width: 550px;
+					height: 350px;
+					margin: auto;
+					margin-top: 40px;
+					overflow: hidden;
+					background-color: #000;
+				}
+    	</style>
     </head>
 
-    <body role="document" onload="onLoad()">
+    <body role="document" style="background-color: black;">
 
         <!-- Fixed navbar -->
         <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -253,7 +272,7 @@
         <!-- Carousel
     ================================================== -->
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
-        <!-- Indicators -->
+        
         <ol class="carousel-indicators">
             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
             <li data-target="#myCarousel" data-slide-to="1"></li>
@@ -327,21 +346,38 @@
             <span class="sr-only">Next</span>
         </a>
     </div><!-- /.carousel -->
-    <div class="container">
-    	
-    	<style>
-    		#search_div{
-    			
-  background: -webkit-linear-gradient(90deg, #FF8008 10%, #FFC837 90%); /* Chrome 10+, Saf5.1+ */
-  background:    -moz-linear-gradient(90deg, #FF8008 10%, #FFC837 90%); /* FF3.6+ */
-  background:     -ms-linear-gradient(90deg, #FF8008 10%, #FFC837 90%); /* IE10 */
-  background:      -o-linear-gradient(90deg, #FF8008 10%, #FFC837 90%); /* Opera 11.10+ */
-  background:         linear-gradient(90deg, #FF8008 10%, #FFC837 90%); /* W3C */
-        
-    		}
-    	</style>
-    		<div class="panel panel-default" id="search_div" style="width: 100%; margin-left: auto; margin-right: auto; padding:20px; border: solid 4px black;">
-    			<div class="row">
+    <div class="container-fluid" id="main-div">
+<script>
+	var count = 1;
+
+	$("#menuPics :nth-child(" + 1 + ")").click(function() {
+		$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=purses");
+
+	});
+	$("#menuPics :nth-child(" + 2 + ")").click(function() {
+		$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=kidzcorner");
+
+	});
+
+	$("#menuPics :nth-child(" + 3 + ")").click(function() {
+		$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=Accessories");
+
+	});
+
+	$("#menuPics :nth-child(" + 4 + ")").click(function() {
+		$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=ProductsForTravel");
+
+	});
+
+	setInterval(function() {
+		count = ($("#menuPics :nth-child(" + count + ")").fadeOut().next().length == 0) ? 1 : count + 1;
+		$("#menuPics :nth-child(" + count + ")").fadeIn();
+
+	}, 3000);
+
+			</script>
+    		<div class="panel panel-default" id="search_div" style="margin-top:10px; solid 4px black;">
+    			<div class="row" style="padding: 10px;">
     			<div class="col-md-5" style="">
     				<h1>Find the tickets you need</h1>
     				<h4>All your Favorites</h4>
@@ -376,11 +412,18 @@
                     			<a href="#" class="btn btn-primary btn-xs">Event 6</a>
                     		</p> 
 				</div>
+				<h3 style="padding-left: 120px;">Your Favorite events</h3>
+				<div class="col-md-5" style="margin-left: 120px;" id="menuPics">
+						<img src="dist/images/images.jpeg"  width="550px" height = "400px" />
+						<img src="dist/images/katWilliams.jpeg" width="550px" height = "400px" />
+						<img src="dist/images/lebron-james-dunkman-kings.jpg"  width="550px" height = "400px" />
+						<img src="dist/images/on-the-run-650.jpg" width="550px" height = "400px" />
+				</div>
 
 				</div>
     		</div>
-    	
-        <h1>New Movie Releases</h1>
+    	  </div>
+        <!-- <h1>New Movie Releases</h1>
         <h4>Preview the hotest releases everyone's talking about!</h4> 
         <div class="row">
             <div class="col-sm-4">
@@ -399,7 +442,7 @@
                 <p>U.S. Navy SEAL Chris Kyle (Bradley Cooper) takes his sole mission -- protect his comrades -- to heart and becomes one of the most lethal snipers in American history.</p>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="container marketing">
         <h1>Order Event Tickets Now!</h1>
         <!-- Here, display all the events in rows of 3 -->
@@ -407,6 +450,7 @@
             echo getEventDisplays();
         ?>
     </div>
+  
     <div id="footer" style="border:solid black 2px;">
       <div class="container">
 		<div class="col-md-4">
