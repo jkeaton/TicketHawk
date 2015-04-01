@@ -422,38 +422,7 @@
 
 				</div>
     		</div>
-<<<<<<< HEAD
-    	  </div>
-        <!-- <h1>New Movie Releases</h1>
-=======
-    	
-        <!--
-        <h1>New Movie Releases</h1>
->>>>>>> f32590fa2eacca067051071786b6c4e2dda78b8a
-        <h4>Preview the hotest releases everyone's talking about!</h4> 
-        <div class="row">
-            <div class="col-sm-4">
-                <h3>Game of Thrones</h3>
-                <iframe width="330" height="215" src="//www.youtube.com/embed/uvX4k_3Cmvs?rel=0" frameborder="0" allowfullscreen></iframe>
-                <p>George R.R. Martin's best-selling book series "A Song of Ice and Fire" is brought to the screen as HBO sinks its considerable storytelling teeth into the medieval fantasy epic</p>
-            </div>
-            <div class="col-sm-4">
-                <h3>Get Hard</h3>
-                <iframe width="330" height="215" src="//www.youtube.com/embed/sge-AzPU4LU?rel=0" frameborder="0" allowfullscreen></iframe>
-                <p>The prison-bound manager (Will Ferrell) of a hedge fund asks a black businessman (Kevin Hart) -- who has never been to jail -- to prepare him for life behind bars.</p>
-            </div>
-            <div class="col-sm-4">
-                <h3>American Sinper</h3> 
-                <iframe width="330" height="215" src="//www.youtube.com/embed/5bP1f_1o-zo?rel=0" frameborder="0" allowfullscreen></iframe>
-                <p>U.S. Navy SEAL Chris Kyle (Bradley Cooper) takes his sole mission -- protect his comrades -- to heart and becomes one of the most lethal snipers in American history.</p>
-            </div>
-        </div>
-<<<<<<< HEAD
-    </div> -->
-=======
-        -->
-    </div>
->>>>>>> f32590fa2eacca067051071786b6c4e2dda78b8a
+    		
     <div class="container marketing">
         <h1>Order Event Tickets Now!</h1>
         <!-- Here, display all the events in rows of 3 -->
