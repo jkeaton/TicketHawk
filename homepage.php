@@ -43,7 +43,7 @@
                 if (($i*3)+$j >= count($events)){
                     break;
                 }
-                $out .= ('<div class="col-lg-4"><img class="img-circle" src="data:image/jpeg;base64,'.base64_encode($events[($i*3)+$j]['img']).'" style="width: 140px; height: 140px"><h2>'.$events[($i*3)+$j]['eventname'].'</h2><p><a class="btn btn-primary" href="#" role="button">View Details &raquo;</a></p></div>');  
+                $out .= ('<div class="col-lg-4"><img class="img-circle" src="data:image/jpeg;base64,'.base64_encode($events[($i*3)+$j]['img']).'" style="width: 140px; height: 140px"><h2>'.$events[($i*3)+$j]['eventname'].'</h2><p><a class="btn btn-primary" href="event_page.php?event_id='.$events[($i*3)+$j]['eventid'].'" role="button">View Details &raquo;</a></p></div>');  
             }
             $out .= '</div>';
         }
@@ -422,8 +422,14 @@
 
 				</div>
     		</div>
+<<<<<<< HEAD
     	  </div>
         <!-- <h1>New Movie Releases</h1>
+=======
+    	
+        <!--
+        <h1>New Movie Releases</h1>
+>>>>>>> f32590fa2eacca067051071786b6c4e2dda78b8a
         <h4>Preview the hotest releases everyone's talking about!</h4> 
         <div class="row">
             <div class="col-sm-4">
@@ -442,7 +448,12 @@
                 <p>U.S. Navy SEAL Chris Kyle (Bradley Cooper) takes his sole mission -- protect his comrades -- to heart and becomes one of the most lethal snipers in American history.</p>
             </div>
         </div>
+<<<<<<< HEAD
     </div> -->
+=======
+        -->
+    </div>
+>>>>>>> f32590fa2eacca067051071786b6c4e2dda78b8a
     <div class="container marketing">
         <h1>Order Event Tickets Now!</h1>
         <!-- Here, display all the events in rows of 3 -->
