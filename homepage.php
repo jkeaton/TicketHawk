@@ -235,36 +235,51 @@
 							</ul>
                 </li>
               </ul>
-                <form role="form" class="navbar-form navbar-nav" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                    <div class="form-group">
-                        <input type="text" name="username" placeholder="Username" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" name="password" placeholder="Password" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-primary" name="submit">Sign in</button>
-                    <label id="loginInfo" style="color: red; padding-left: 4px;">
-                    	<?php
-						    if (isset($_SESSION['loginErr']))
-                            {
-                                echo $_SESSION['loginErr'];
-						    }
-					    ?>
-                    </label>
-                </form>
-                <ul class="nav navbar-nav navbar-right">
                 <?php
-                    if (isset($_SESSION['user']))
-                    {
-                        echo "<li class=\"navbar-left\">
-                        <a>".$welcome_msg."</a></li><form role=\"form\"
-                        class=\"navbar-form navbar-right\" method=\"post\"
-                        action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\"><button
-                        type=\"submit\" class=\"btn btn-danger\"
-                        name=\"logout\">Log Out</button></form>";
+                    if (isset($_SESSION['user'])) {
+                        echo ('<ul class="nav navbar-nav navbar-right">'
+                            . '<li>'
+                            . '<a href="http://localhost/tickethawk/cart.php">'
+                            . '<i class="glyphicon glyphicon-shopping-cart icon-flipped"></i>'
+                            . '</a>'
+                            . '</li>'
+                            . '<li class="navbar-left"><a>'
+                            . $welcome_msg
+                            . '</a></li><form role="form" class="navbar-form navbar-right" method="post"'
+                            . 'action="'
+                            . htmlspecialchars($_SERVER["PHP_SELF"])
+                            . '"><button type="submit" class="btn btn-danger" name="logout">'
+                            . "Log Out</button></form>"
+                            . "</ul>");
+                    }
+                    else {
+                        $tmp = "";
+                        if (isset($_SESSION['loginErr'])){
+                            $tmp = $_SESSION['loginErr'];  
+                        }
+                        echo (
+                              '<ul class="nav navbar-nav navbar-right">'
+                            . '<li>'
+                            . '<a href="http://localhost/tickethawk/cart.php">'
+                            . '<i class="glyphicon glyphicon-shopping-cart icon-flipped"></i>'
+                            . '</a>'
+                            . '</li>'
+                            . '<form class="navbar-form navbar-nav navbar-right form-inline" role="form" method="post" action="'
+                            . htmlspecialchars($_SERVER["PHP_SELF"]). '">'
+                            . '<div class="form-group">'
+                            . '<input type="text" name="username" placeholder="Username" class="form-control">'
+                            . '</div>'
+                            . '<div class="form-group">'
+                            . '<input type="password" name="password" placeholder="Password" class="form-control">'
+                            . '</div>'
+                            . '<button type="submit" class="btn btn-primary" name="submit">Sign in</button>'
+                            . '<label id="loginInfo" style="color: red; padding-left: 4px;">'
+                    	    . $tmp
+                            . '</label>'
+                            . '</form>'
+                            . '</ul>');
                     }
                 ?>
-                </ul>
             </div><!--/.nav-collapse -->            
           </div>
         </nav>
@@ -422,7 +437,7 @@
 
 				</div>
     		</div>
-    		
+    <div class="container" id="browse" style="height: 50px;"></div>		
     <div class="container marketing">
         <h1>Order Event Tickets Now!</h1>
         <!-- Here, display all the events in rows of 3 -->

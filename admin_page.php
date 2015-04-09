@@ -385,20 +385,51 @@
                         <li class="active"><a href="admin_page.php">Events</a></li>
                         <li><a href="other_admin.php">Users</a></li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                    <?php
-                        if (isset($_SESSION['user']))
-                        {
-                            echo "<li class=\"navbar-left\">
-                            <a>".$welcome_msg."</a></li><li
-                            class=\"navbar-left\"><form role=\"form\"
-                            class=\"navbar-form navbar-left\" method=\"post\"
-                            action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\"><button
-                            type=\"submit\" class=\"btn btn-danger\"
-                            name=\"logout\">Log Out</button></form></li>";
+                <?php
+                    if (isset($_SESSION['user'])) {
+                        echo ('<ul class="nav navbar-nav navbar-right">'
+                            . '<li>'
+                            . '<a href="http://localhost/tickethawk/cart.php">'
+                            . '<i class="glyphicon glyphicon-shopping-cart"></i>'
+                            . '</a>'
+                            . '</li>'
+                            . '<li class="navbar-left"><a>'
+                            . $welcome_msg
+                            . '</a></li><form role="form" class="navbar-form navbar-right" method="post"'
+                            . 'action="'
+                            . htmlspecialchars($_SERVER["PHP_SELF"])
+                            . '"><button type="submit" class="btn btn-danger" name="logout">'
+                            . "Log Out</button></form>"
+                            . "</ul>");
+                    }
+                    else {
+                        $tmp = "";
+                        if (isset($_SESSION['loginErr'])){
+                            $tmp = $_SESSION['loginErr'];  
                         }
-                    ?>
-                    </ul>
+                        echo (
+                              '<ul class="nav navbar-nav navbar-right">'
+                            . '<li>'
+                            . '<a href="http://localhost/tickethawk/cart.php">'
+                            . '<i class="glyphicon glyphicon-shopping-cart"></i>'
+                            . '</a>'
+                            . '</li>'
+                            . '<form class="navbar-form navbar-nav navbar-right form-inline" role="form" method="post" action="'
+                            . htmlspecialchars($_SERVER["PHP_SELF"]). '">'
+                            . '<div class="form-group">'
+                            . '<input type="text" name="username" placeholder="Username" class="form-control">'
+                            . '</div>'
+                            . '<div class="form-group">'
+                            . '<input type="password" name="password" placeholder="Password" class="form-control">'
+                            . '</div>'
+                            . '<button type="submit" class="btn btn-primary" name="submit">Sign in</button>'
+                            . '<label id="loginInfo" style="color: red; padding-left: 4px;">'
+                    	    . $tmp
+                            . '</label>'
+                            . '</form>'
+                            . '</ul>');
+                    }
+                ?>
                 </div><!--/.nav-collapse -->            
             </div>
         </nav>
@@ -437,8 +468,7 @@
                         	$ticketSold = ticketsAdmin($row['eventname']);
                             echo "<tr>";
                             echo '<td class="td_id">' . $row['eventid'] . "</td>";
-                            echo '<td class="td_name">' . $row['eventname'] . "<br/><form method='post'><input type='submit' href='#myModal' value='Edit' id='".$row['eventid']."' name='edit' class='btn btn-warning' data-toggle='modal'/>
-                            <input type='hidden' name='eventid' value='".$row['eventid']."'</form></td>";
+                            echo '<td class="td_name">' . $row['eventname'] . '<br/><form method="post"><input type="submit" href="#myModal" value="Edit" id="'.$row['eventid'].'" name="edit" class="btn btn-warning" data-toggle="modal"/> <input type="hidden" name="eventid" value="'.$row['eventid'].'"</form></td>';
                             echo '<td class="td_date">' . $row['date'] . "</td>";
                             echo '<td class="td_time">' . $row['time'] . "</td>";
                             echo '<td class="td_loc">' . $row['location'] . "</td>";
@@ -587,6 +617,7 @@
     <?php 
     if (isset($_POST['edit'])) {
     	global $cxn;
+        echo "<p>".$_POST['edit']."</p>";
 		$query = "SELECT * FROM EVENT WHERE eventid = '".$_POST['eventid']."'";
 
 	}

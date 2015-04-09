@@ -77,6 +77,7 @@
                 else {
                     $_SESSION['valid_admin'] = false; 
                 }
+                $_SESSION['cart'] = array();
                 return true;    
             }
         }
