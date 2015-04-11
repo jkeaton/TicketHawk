@@ -449,7 +449,7 @@
         </div>
     </div>
   
-    <div id="footer" class="panel panel-default">
+    <div id="footer" class="panel panel-default" style="background-color: #D8D8D8">
         <div class="panel-body">
             <div class="col-md-4">
                 <h3>Contact us</h3>
