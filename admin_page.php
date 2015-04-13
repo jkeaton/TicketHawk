@@ -5,7 +5,7 @@
     bounce();
 
     // Create the connection to the database to be reused
-    global $dbhost, $dbname;
+    global $dbhost, $dbname,$tmpid;
 	//$results = NULL;
     $creds = db_admin();
     $dbuser = array_values($creds)[0];
@@ -25,6 +25,7 @@
 
     $eventName = $eventDate = $eventTime = $eventLocation = $eventVenue = $eventPrice = $ticketQuantity = $eventImg = $target_dir = $dateToDB = $timeToDB = "";
     $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "*";
+	
 
     $eventImg1 = FALSE;
 
@@ -213,12 +214,12 @@
     if (isset($_POST['filter']) && isset($_POST['date-1']) && isset($_POST['date-2'])) {
         filterByDate();
     }
-    if (isset($_POST['edit'])) {
-		global $cxn;
+    //if (isset($_POST['edit'])) {
+		//global $cxn;
 		// $id = $_POST['eventid'];
 		// echo "<script> alert('".$_POST['eventid']."'); </script>";
-		$query = "SELECT * FROM EVENT WHERE eventid = '".$_POST['eventid']."'";
-		$results = mysqli_query($cxn, $query)or die(mysqli_error($cxn));
+		//$query = "SELECT * FROM EVENT WHERE eventid = '".$_POST['eventid']."'";
+		//$results = mysqli_query($cxn, $query)or die(mysqli_error($cxn));
 		// foreach ($results as $entry) {
 			// if ($entry['eventid'] == $id){
 // 					
@@ -226,10 +227,10 @@
 		// }
 
 		
-		$row = mysqli_fetch_assoc($results);
+		//$row = mysqli_fetch_assoc($results);
 		
 		
-	}	
+	//}	
     
 ?>
 
@@ -460,26 +461,55 @@
                     </thead>
                 </table>
             </div>
+                    <script>
+        	function myFunction(eventid){
+        		 document.getElementById("eventNum").setAttribute("value", eventid);
+				document.getElementById("the_button").click();
+
+				
+        	}
+
+        </script>
             <div class="panel" id="events-ready">
                 <table class="table">
                     <tbody>
                     <?php
+                    // echo "<script>
+                    // function myfunction(eventid){";
+					// echo "var c = eventid;";
+                    	// echo "alert(c);";
+						// echo "return c";
+                    // echo "}";
+                   // echo "</script>";
+				    //$tmpid = myfunction(eventid);
+				    echo "<form method='post' action ='' id='myForm'>";
+				    echo "<input type='hidden' name ='eventNum' id ='eventNum'>";
+					echo "<button name = 'the_button' id='the_button' type='submit' style='visibility: hidden;'></button>";
                         while ($row = mysqli_fetch_assoc($results)) {
+                        	
                         	$ticketSold = ticketsAdmin($row['eventname']);
-                            echo "<tr>";
-                            echo '<td class="td_id">' . $row['eventid'] . "</td>";
-                            echo '<td class="td_name">' . $row['eventname'] . '<br/><form method="post"><input type="submit" href="#myModal" value="Edit" id="'.$row['eventid'].'" name="edit" class="btn btn-warning" data-toggle="modal"/> <input type="hidden" name="eventid" value="'.$row['eventid'].'"</form></td>';
-                            echo '<td class="td_date">' . $row['date'] . "</td>";
-                            echo '<td class="td_time">' . $row['time'] . "</td>";
-                            echo '<td class="td_loc">' . $row['location'] . "</td>";
-                            echo '<td class="td_venue">' . $row['venue'] . "</td>";
-                            echo '<td class="td_price">' . sprintf("%01.2f", $row['price']) . "</td>";
-                            echo '<td class="td_qty">' . $row['ticket_qty'] . "</td>";
+							echo "<tr>";
+							echo "<td class='td_id'>".$row['eventid']."</td>";
+							echo "
+							<td class='td_name'>".$row['eventname']."";
+							echo "<br/>";		
+							
+							//$tmpid =$row['eventid'];
+							echo "<input type='button' href='#myModal' value='Edit' id='edit_button' class='btn btn-warning' onclick ='myFunction(".$row['eventid'].")' data-toggle='modal'/>";
+
+							echo "</td>";
+							echo "<td class='td_date'>".$row['date']."</td>";
+							echo '<td class="td_time">' . $row['time'] . "</td>";
+							echo '<td class="td_loc">' . $row['location'] . "</td>";
+							echo '<td class="td_venue">' . $row['venue'] . "</td>";
+							echo '<td class="td_price">' . sprintf("%01.2f", $row['price']) . "</td>";
+							echo '<td class="td_qty">' . $row['ticket_qty'] . "</td>";
+
 							echo "<td class='td_purch'>$ticketSold</td>";
-                            echo '<td class="td_img"><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
-							// echo "<td class='col-md-1'></td>";
-                            echo "</tr>";
-							$eventid = $row['eventid'];
+							echo '<td class="td_img"><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
+							echo "</tr>";
+														echo "</form>";
+							
                         }
 	              	?>
                     </tbody>
@@ -573,7 +603,7 @@
                     <div class="form-group">
                         <label for="id-num">Delete By ID:</label>
                         <input type="number"  class="form-control" name="delete-by-id"/>
-                        <button type="submit" name="deleteById"  class="btn btn-danger"/>Delete</button>
+                        <input type="submit" value="Delete" name="deleteById"  class="btn btn-danger"/>
                     </div>	
                 </form>
             </div>
@@ -612,17 +642,22 @@
 				
 				
         </div>
+
             
     <!-- Modal HTML -->
     <?php 
-    if (isset($_POST['edit'])) {
-    	global $cxn;
-        echo "<p>".$_POST['edit']."</p>";
-		$query = "SELECT * FROM EVENT WHERE eventid = '".$_POST['eventid']."'";
 
-	}
+	
+    if (isset($_POST['the_button']) && isset($_POST['eventNum'])) {
+		$tmpid = $_POST['eventNum'];
+		$query = "SELECT * FROM EVENT WHERE eventid = ".$tmpid;
 		$results = mysqli_query($cxn, $query)or die(mysqli_error($cxn));
 		$row  = mysqli_fetch_assoc($results);
+		echo "<script>alert(".$tmpid.");</script>";
+	
+
+	
+
 	 echo"<div id='myModal' class='modal fade'>
         <div class='modal-dialog' style='width: 700px;'>
             <div class='modal-content'>
@@ -715,6 +750,8 @@
         </div>
     </div>
 </div> ";
+}
+
    ?>
         
         
