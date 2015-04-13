@@ -392,14 +392,14 @@
 
 			</script>
     		<div class="panel panel-default" id="search_div" style="margin-top:10px; solid 4px black;">
+                <div class="panel-heading">
+    				<h3>Search for Tickets</h3>
+                </div>
     			<div class="row" style="padding: 10px;">
     			<div class="col-md-5" style="">
-    				<h1>Find the tickets you need</h1>
-    				<h4>All your Favorites</h4>
-    				<div style="padding-top: 30px;">
+    			<div style="padding-top: 30px;">
 				<form>
                     <div class="input-group custom-search-form">
-                            	
                         <input type="text" class="form-control" placeholder="Search..." name="search_events"> 
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default" form_id="searchTrans"  type="button" name="srch">
@@ -412,22 +412,21 @@
 				<div style="padding-top: 10px;">
 				 <label>Trending</label>
 				 </div>
-                    		<p>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 1</a>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 2</a>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 3</a>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 4</a>
-                    		</p>
-                    		<p>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 1</a>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 2</a>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 3</a>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 4</a>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 5</a>
-                    			<a href="#" class="btn btn-primary btn-xs">Event 6</a>
-                    		</p> 
+                    <p>
+                        <a href="#" class="btn btn-primary btn-xs">Event 1</a>
+                    	<a href="#" class="btn btn-primary btn-xs">Event 2</a>
+                    	<a href="#" class="btn btn-primary btn-xs">Event 3</a>
+                    	<a href="#" class="btn btn-primary btn-xs">Event 4</a>
+                    </p>
+                    <p>
+                    	<a href="#" class="btn btn-primary btn-xs">Event 1</a>
+                    	<a href="#" class="btn btn-primary btn-xs">Event 2</a>
+                    	<a href="#" class="btn btn-primary btn-xs">Event 3</a>
+                    	<a href="#" class="btn btn-primary btn-xs">Event 4</a>
+                    	<a href="#" class="btn btn-primary btn-xs">Event 5</a>
+                    	<a href="#" class="btn btn-primary btn-xs">Event 6</a>
+                    </p> 
 				</div>
-				<h3 style="padding-left: 120px;">Your Favorite events</h3>
 				<div class="col-md-5" style="margin-left: 120px;" id="menuPics">
 						<img src="dist/images/images.jpeg"  width="550px" height = "400px" />
 						<img src="dist/images/katWilliams.jpeg" width="550px" height = "400px" />
@@ -438,26 +437,30 @@
 				</div>
     		</div>
     <div class="container" id="browse" style="height: 50px;"></div>		
-    <div class="container marketing">
-        <h1>Order Event Tickets Now!</h1>
-        <!-- Here, display all the events in rows of 3 -->
-        <?php
-            echo getEventDisplays();
-        ?>
+    <div class="panel panel-default marketing">
+        <div class="panel-heading">
+            <h3>Browse Event Tickets</h3>
+        </div>
+        <div class="panel-body">
+            <!-- Here, display all the events in rows of 3 -->
+            <?php
+                echo getEventDisplays();
+            ?>
+        </div>
     </div>
   
-    <div id="footer" style="border:solid black 2px;">
-      <div class="container">
-		<div class="col-md-4">
-			<h3>Contact us</h3>
-			<p>Phone: 678-915-7778</p>
-			<p>1100 South Marietta Pkwy</p>
-			<p>Marietta, GA 30060</p>
-		</div>
-      </div>
-      		<div id="copy_right" style="text-align: center;">
-			<p> &copy; 2015-2020 Ticket Hawk All rights reserved.</p>
-		</div>
+    <div id="footer" class="panel panel-default" style="background-color: #D8D8D8">
+        <div class="panel-body">
+            <div class="col-md-4">
+                <h3>Contact us</h3>
+                <p>Phone: 678-915-7778</p>
+                <p>1100 South Marietta Pkwy</p>
+                <p>Marietta, GA 30060</p>
+            </div>
+        </div>
+        <div id="copy_right" style="text-align: center;">
+            <p> &copy; 2015-2020 Ticket Hawk All rights reserved.</p>
+        </div>
     </div>
 </body>
 </html>

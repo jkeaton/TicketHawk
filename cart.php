@@ -33,7 +33,7 @@
     // Handle Login Attempt
     if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
-        if (isset($_POST['remove'])){
+        if (isset($_POST['remove_event'])){
             if (isset($_POST['id_to_remove'])){
                 $_SESSION['cart'][strval($_POST['id_to_remove'])] = 0;
                 header('Location: http://localhost/TicketHawk/cart.php');
@@ -92,7 +92,7 @@
                             . '<td class="text-right">'.sprintf("$%01.2f", $e["price"]*$qty).'</td>'           
                             . '<td class="text-center">'.$qty.'</td>'
                             . '<td class="text-center">'
-                            . '<button onClick="remove('.$id.');" class="btn btn-danger" name="remove" type="submit">'           
+                            . '<button onClick="erase_event('.$id.');" class="btn btn-danger" name="remove_event" type="submit">'           
                             . 'Remove</button>'
                             . '</td>'
                             . '</tr>');
@@ -113,8 +113,8 @@
 <html lang="en">
     
     <script>
-        function remove(num){
-            document.getElementById("rem").setAttribute("value", num)  
+        function erase_event(num){
+            document.getElementById("rem").setAttribute("value", num);
         }
     </script>
 
@@ -152,7 +152,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">Ticket Hawk</a>
+              <a class="navbar-brand" href="">Ticket Hawk</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
