@@ -35,7 +35,7 @@
     {
         if (isset($_POST['remove'])){
             if (isset($_POST['id_to_remove'])){
-                $_SESSION['cart'][$_POST['id_to_remove']] = 0;
+                $_SESSION['cart'][strval($_POST['id_to_remove'])] = 0;
                 header('Location: http://localhost/TicketHawk/cart.php');
             }
         }
@@ -315,7 +315,7 @@
                             <h5><?php echo generateTotal(); ?></h5>
                         </div>
                         <div class="col-sm-2 text-right">
-                            <button type="submit" name "purchase" class="btn btn-success">Purchase</button>
+                            <button type="submit" name="purchase" class="btn btn-success">Purchase</button>
                         </div>
                     </div>
                 </div>
