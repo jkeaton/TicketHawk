@@ -17,6 +17,39 @@
             return logout();
         }
 
+        if (isset($_POST['signin'])){
+            $errCount = 0;
+            if (empty($_POST["uname"])) {
+                ++$errCount;
+                $usernameErr = "Username is required";
+            } else {
+                $username = test_input($_POST["uname"]);
+                // only allow alpha digit characters as part of the username
+                if (!preg_match("/^[a-zA-Z0-9]*$/",$username)) {
+                    ++$errCount;
+                    $usernameErr = "Only letters and numbers allowed";
+                }
+            }
+            if (empty($_POST["pass"])) {
+                ++$errCount;
+                $passwordErr = "Password is required";
+            } else {
+                $password = test_input($_POST["pass"]);
+            }
+            if ($errCount == 0){
+                if (login($username, $password)){
+                    $_SESSION['user'] = $username;
+                    $welcome_msg = ("Welcome " . $_SESSION['user']);
+                    if ($username == 'admin'){
+					    header('Location: http://localhost/TicketHawk/admin_page.php');
+                    }
+                    else {
+		                header('Location: http://localhost/TicketHawk/homepage.php');
+                    }
+                }
+            }
+        }
+        
         $errCount = 0;
         // Get username
         if (empty($_POST["username"])) {
@@ -268,30 +301,51 @@
 							</ul>
 						</li>
 					</ul>
-					<form class="navbar-form navbar-nav">
-						<div class="form-group">
-							<input type="text" placeholder="Email" class="form-control">
-						</div>
-						<div class="form-group">
-							<input type="password" placeholder="Password" class="form-control">
-						</div>
-						<button type="submit" class="btn btn-primary" name="submit">
-							Sign in
-						</button>
-					</form>
-                    <ul class="nav navbar-nav navbar-right">
-                    <?php
-                        if (isset($_SESSION['user']))
-                        {
-                            echo "<li class=\"navbar-left\">
-                            <a>".$welcome_msg."</a></li><form role=\"form\"
-                            class=\"navbar-form navbar-right\" method=\"post\"
-                            action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\"><button
-                            type=\"submit\" class=\"btn btn-danger\"
-                            name=\"logout\">Log Out</button></form>";
+                <?php
+                    if (isset($_SESSION['user'])) {
+                        echo ('<ul class="nav navbar-nav navbar-right">'
+                            . '<li>'
+                            . '<a href="http://localhost/tickethawk/cart.php">'
+                            . '<i class="glyphicon glyphicon-shopping-cart icon-flipped"></i>'
+                            . '</a>'
+                            . '</li>'
+                            . '<li class="navbar-left"><a>'
+                            . $welcome_msg
+                            . '</a></li><form role="form" class="navbar-form navbar-right" method="post"'
+                            . 'action="'
+                            . htmlspecialchars($_SERVER["PHP_SELF"])
+                            . '"><button type="submit" class="btn btn-danger" name="logout">'
+                            . "Log Out</button></form>"
+                            . "</ul>");
+                    }
+                    else {
+                        $tmp = "";
+                        if (isset($_SESSION['loginErr'])){
+                            $tmp = $_SESSION['loginErr'];  
                         }
-                    ?>
-                    </ul>
+                        echo (
+                              '<ul class="nav navbar-nav navbar-right">'
+                            . '<li>'
+                            . '<a href="http://localhost/tickethawk/cart.php">'
+                            . '<i class="glyphicon glyphicon-shopping-cart icon-flipped"></i>'
+                            . '</a>'
+                            . '</li>'
+                            . '<form class="navbar-form navbar-nav navbar-right form-inline" role="form" method="post" action="'
+                            . htmlspecialchars($_SERVER["PHP_SELF"]). '">'
+                            . '<div class="form-group">'
+                            . '<input type="text" name="uname" placeholder="Username" class="form-control">'
+                            . '</div>'
+                            . '<div class="form-group">'
+                            . '<input type="password" name="pass" placeholder="Password" class="form-control">'
+                            . '</div>'
+                            . '<button type="submit" class="btn btn-primary" name="signin">Sign in</button>'
+                            . '<label id="loginInfo" style="color: red; padding-left: 4px;">'
+                    	    . $tmp
+                            . '</label>'
+                            . '</form>'
+                            . '</ul>');
+                    }
+                ?>
 				</div><!--/.nav-collapse -->
 			</div>
 		</nav>

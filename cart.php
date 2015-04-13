@@ -15,66 +15,13 @@
     $results = mysqli_query($cxn, $query) or die("Connection could not be established");
     $events = array();
     $e_id = -1;
+    $price_total = 0.00;
     storeEventRows();
-    // Comment to add bootstrap in a commit
 
-    /**
-     * Fetches the EVENT rows from the database and stores them in an array for
-     * us to use when displaying the rows of 3 at the bottom of the page.
-     */
     function storeEventRows(){
         global $events, $results;
-        $index = 0;
         while ($row = mysqli_fetch_assoc($results)) {
-            $events[$index] = $row;
-            ++$index;
-        }
-    }
-    
-    function generateEventDetails(){
-        global $events, $e_id;
-        try {
-            $id = ($_SERVER['QUERY_STRING']);
-            $_SESSION['q_string'] = $id;
-            $pos = strpos ($id , '=');
-            $id = substr($id, $pos+1);
-            $output = "";
-            foreach ($events as $value) {
-                if ($value['eventid'] == $id){
-                    $output .= ('<div class="container">'
-                                    .'<div class="row text-center">'
-                                        .'<h3>'.$value['eventname'].'</h3>'
-                                    .'</div>'
-                                    .'<div class="row">'
-                                        .'<div class="col-sm-4 vcenter text-center">'
-                                            .'<img class="text-center img-thumbnail" src = "data:image/jpeg;base64,' 
-                                            .base64_encode($value['img']).'" width="300" height="300"/>'
-                                        .'</div>'
-                                        .'<div class="col-sm-8 container-fluid">'
-                                            .'<table class="table table-bordered">'
-                                                .'<tr><td><b>Date:</b></td><td>'.$value['date'].'</td></tr>'
-                                                .'<tr><td><b>Time:</b></td><td>'.$value['time'].'</td></tr>'
-                                                .'<tr><td><b>Location:</b></td><td>'.$value['location'].'</td></tr>'
-                                                .'<tr><td><b>Venue:</b></td><td>'.$value['venue'].'</td></tr>'
-                                                .'<tr><td><b>Ticket Price:</b></td><td>$'.$value['price'].'</td></tr>'
-                                                .'<tr><td><b>Tickets in Stock:</b></td><td>'.$value['ticket_qty'].'</td></tr>'
-                                            .'</table>'
-                                            .'<form role="form"  method="post" action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'" enctype="multipart/form-data">'
-                                                .'<div class="form-group">'
-                                                    .'<input type="number" name="qty" placeholder="Quantity" class="form-control small_form_control" required>'
-					                                .'<button type="submit" class="form-control small_form_control btn btn-success" name="add">'
-						                                .'Add To Cart</button>'
-                                                .'</div>'
-                                            .'</form>'
-                                        .'</div>'
-                                    .'</div>'
-                                .'</div>');
-                }
-            }
-            return $output;
-        } 
-        catch (Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
+            $events[strval($row['eventid'])] = $row;
         }
     }
 
@@ -86,28 +33,13 @@
     // Handle Login Attempt
     if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
-        // If the user has entered a number for the ticket quantity and has
-        // pressed "add to cart"
-        if (isset($_POST['add'])){
-            if (isset($_POST['qty'])){
-                $pos = strpos ($_SESSION['q_string'] , '=');
-                $id = substr($_SESSION['q_string'], $pos+1);
-                // Handle the case where we have a guest who hasn't yet logged
-                // in but still wants to purchase tickets
-                if (!isset($_SESSION['cart'])){
-                    $_SESSION['cart'] = array(); 
-                }
-                if (!isset($_SESSION['cart'][$id])){
-                    $_SESSION['cart'][$id] = $_POST['qty'];  
-                }
-                else{
-                    $_SESSION['cart'][$id] += $_POST['qty'];
-                }
-                // Redirect back to current page when finished adding item to cart
-                $new_url = ('http://localhost/TicketHawk/event_page.php?'.$_SESSION['q_string']);
-                header("Location: http://localhost/tickethawk/cart.php");
+        if (isset($_POST['remove_event'])){
+            if (isset($_POST['id_to_remove'])){
+                $_SESSION['cart'][strval($_POST['id_to_remove'])] = 0;
+                header('Location: http://localhost/TicketHawk/cart.php');
             }
         }
+
         // Handle logout attempt
         if (isset($_POST['logout'])){
             return logout();
@@ -143,10 +75,49 @@
             }
         }
 	}
+
+    function generateTicketInfo(){
+        global $events, $price_total;
+        $output = "";
+        if (isset($_SESSION['cart'])){
+            foreach ($_SESSION['cart'] as $id => $qty){
+                if ($qty > 0){
+                    $e = $events[$id];
+                    $output .= ('<tr>'
+                            . '<td>'.$e["eventname"].'</td>'
+                            . '<td class="text-center">'.$e["date"].'</td>'           
+                            . '<td class="text-center">'.$e["time"].'</td>'           
+                            . '<td>'.$e["location"].'</td>'           
+                            . '<td>'.$e["venue"].'</td>'           
+                            . '<td class="text-right">'.sprintf("$%01.2f", $e["price"]*$qty).'</td>'           
+                            . '<td class="text-center">'.$qty.'</td>'
+                            . '<td class="text-center">'
+                            . '<button onClick="erase_event('.$id.');" class="btn btn-danger" name="remove_event" type="submit">'           
+                            . 'Remove</button>'
+                            . '</td>'
+                            . '</tr>');
+                    $price_total += ($e["price"]*$qty);
+                }
+            }
+        }
+        return $output;
+    }
+
+    function generateTotal(){
+        global $price_total;
+        return ('Total: '.sprintf("$%01.2f", $price_total));
+    }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+    
+    <script>
+        function erase_event(num){
+            document.getElementById("rem").setAttribute("value", num);
+        }
+    </script>
+
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -167,12 +138,6 @@
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-    <!--
-    <script type="text/javascript">
-	    function onLoad(){
-		    alert("Hello World");
-    	}
-    </script>-->
     </head>
 
     <body role="document" onload="onLoad()">
@@ -187,7 +152,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">Ticket Hawk</a>
+              <a class="navbar-brand" href="">Ticket Hawk</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
@@ -317,12 +282,46 @@
     
     <!-- Start the Panel that Describes the Events -->
     <div class="container">
-        <h3>Event Details</h3>
-        <div class="panel panel-default">
-            <div class="panel">
-                <?php echo generateEventDetails(); ?>
+        <form role="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <h3>My Cart</h3>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                        	    <th class="text-center">Event Name</th>
+                                <th class="text-center">Date</th>
+                                <th class="text-center">Time</th>
+                                <th class="text-center">Location</th>
+                                <th class="text-center">Venue</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php echo generateTicketInfo(); ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group row">
+                        <div class="col-sm-3 text-left">
+                            <a class="btn btn-primary" href="http://localhost/tickethawk/homepage.php#browse" role="button">
+                                Add More Tickets
+                            </a>
+                        </div>
+                        <div class="col-sm-2 col-sm-offset-5 text-right">
+                            <h5><?php echo generateTotal(); ?></h5>
+                        </div>
+                        <div class="col-sm-2 text-right">
+                            <button type="submit" name="purchase" class="btn btn-success">Purchase</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+            <input type="text" id="rem" name="id_to_remove" style="visibility: hidden;"></input>
+        </form>
     </div>
 </body>
 </html>
@@ -330,4 +329,5 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="dist/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="dist/js/docs.min.js"></script>
+
 

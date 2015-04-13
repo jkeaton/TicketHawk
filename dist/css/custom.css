@@ -31,3 +31,13 @@ body {
     margin-top: 10px;
     width: 200px;
 }
+.icon-flipped {
+    transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -ms-transform: scaleX(-1);
+}
+.form-inline > * {
+    margin-left: 5px !important;
+    /*margin-right: 3px !important;
+}
