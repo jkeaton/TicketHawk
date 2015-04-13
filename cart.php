@@ -285,7 +285,7 @@
         <form role="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <h3>My Cart</h3>
             <div class="panel panel-default">
-                <div class="panel-body">
+                <div>
                     <table class="table">
                         <thead>
                             <tr>
@@ -315,7 +315,9 @@
                             <h5><?php echo generateTotal(); ?></h5>
                         </div>
                         <div class="col-sm-2 text-right">
-                            <button type="submit" name="purchase" class="btn btn-success">Purchase</button>
+                            <a class="btn btn-success" href="http://localhost/tickethawk/payment_info.php" role="button">
+                                Purchase
+                            </a>
                         </div>
                     </div>
                 </div>
