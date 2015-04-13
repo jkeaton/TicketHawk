@@ -658,98 +658,114 @@
 
 	
 
-	 echo"<div id='myModal' class='modal fade'>
-        <div class='modal-dialog' style='width: 700px;'>
-            <div class='modal-content'>
-                <div class='modal-header'>
-                    <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
-                    <h4 class='modal-title'>Confirmation</h4>
-                </div>
-                <div class='modal-body'>
-							 <div class='panel panel-default' id='events-in'>
-        	
-        	<div class='panel-heading'>
-                <h3 class='panel-title'>Modify Events</h3>
-            </div>
-           
-			<form role='form'  method='post' action='<?php echo htmlspecialchars(".$_SERVER['PHP_SELF']."); ?>' enctype='multipart/form-data'>
-                <div class='container-fluid'>
-                    <div class='row'>
-                        <div class='form-group'>
-                            <label for='event-name'>Event Name:</label>
-                            <span class='error'>* <?php echo $eventNameErr; ?></span>
-                            <input type='text' class='form-control' id='event-name' value='".$row['eventname']."' placeholder='Event Name' name='eventName' required>
-                        </div>
-                    </div>
-                    <div class='row'>
-                        <div class='col-xs-6 col-sm-3 form-group'>
-                            <label for=event-'date'>Date:</label>
-                            <span class='error'>* <?php echo $eventDateErr; ?></span>
-                            <div class='input-group input-ammend' id='event-date' name='eventDate'>
-                                <input type='text' value= '".$row['date']."' class='datepicker form-control' required>
-                                <span class='input-group-addon'>
-                                    <span class='glyphicon glyphicon-calendar'></span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class='col-xs-6 col-sm-3 form-group'>
-                            <label for='time'>Time:</label>
-                            <span class='error'>* <?php echo $eventTimeErr; ?></span>
-                            <div class='input-group input-ammend' id='time'>
-                                <input type='text' value = '".$row['time']."' class='form-control input-small bootstrap-timepicker timepicker' placeholder='Enter Time' name='eventTime' required>
-                                <span class='input-group-addon'>
-                                    <span class='glyphicon glyphicon-time'></span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class='col-xs-6 col-sm-3 form-group'>
-                            <label for='price'>Price:</label>
-                            <span class='error'>* <?php echo $eventPriceErr; ?></span>
-                            <input type='text' value= '".$row['price']."' class='form-control' id='price' placeholder='Enter Price' name='eventPrice' required>
-                        </div>
-                        <div class='col-xs-6 col-sm-3 form-group'>
-                            <label for='ticket-amount'>Ticket Quantity:</label>
-                            <span class='error'>* <?php echo $ticketQuantityErr; ?></span>
-                            <input type='number' value = '".$row['ticket_qty']."' class='form-control' id='ticket-amount' placeholder='Ticket Quantity' name='ticketQuantity' required>
-                        </div>
-                    </div>
-                    <div class='row'>
-                    </div>
-                    <div class='row'>
-                        <div class='col-md-6 form-group'>
-                            <label for='location'>Location:</label>
-                            <span class='error'>* <?php echo $eventLocationErr; ?></span>
-                            <input type='text' value = '".$row['location']."' class='form-control' id='location' placeholder='Enter Location' name='eventLocation'required>
-                        </div>
-                        <div class='col-xs-6 form-group'>
-                            <label for='venue'>Venue:</label>
-                            <span class='error'>* <?php echo $eventVenueErr; ?></span>
-                            <input type='text' value = '".$row['venue']."' class='form-control' id='venue' placeholder='Enter Venue' name='eventVenue' required>
-                        </div>
-                    </div>
-                    <div class='row'>
-                        <div class='col-md-6 form-group'>
-                            <label for='event-img'>Event Image:</label>
-                            <span class='error'>* <?php echo $eventImgErr; ?></span>
-                            <input type='file' value = 'data:image/jpeg;base64," . base64_encode($row['img']) ."' id='event-img' name='eventImg' required>
-                        </div>
-                        <a name='addEvent'><div class='col-md-6 form-group' id='button-div' style='margin-top: 5px;'>
-                        </div></a>
-                    </div>
-                </div>
-            </form>
-        </div>
-                    <label></label>
-                    <p class='text-warning'><small>If you don't save, your changes will be lost.</small></p>
-                </div>
-                <div class='modal-footer'>
-                    <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
-                    <button type='button' class='btn btn-primary' name ='savechanges'>Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> ";
+	 echo "<div id='myModal' class='modal fade'>"
+        . "<div class='modal-dialog' style='width: 700px;'>"
+        . "<div class='modal-content'>"
+        . "<div class='modal-header'>"
+        . "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>"
+        . "<h4 class='modal-title'>Confirmation</h4>"
+        . "</div>"
+        . "<div class='modal-body'>"
+		. "<div class='panel panel-default' id='events-in'>"
+       	. "<div class='panel-heading'>"
+        . "<h3 class='panel-title'>Modify Events</h3>"
+        . "</div>"
+		. "<form role='form'  method='post' action='".htmlspecialchars($_SERVER['PHP_SELF'])."' enctype='multipart/form-data'>"
+        ."<div class='container-fluid'>"
+        ."<div class='row'>"
+        ."<div class='form-group'>"
+        ."<label for='event-name'>Event Name:</label>"
+        ."<span class='error'>* ".$eventNameErr."</span>"
+        ."<input type='text' class='form-control' id='event-name' value='".$row['eventname']."' placeholder='Event Name' name='eventName' required>"
+        ."</div>"
+        ."</div>"
+        ."<div class='row'>"
+        ."<div class='col-xs-6 col-sm-3 form-group'>"
+        ."<label for=event-'date'>Date:</label>"
+        ."<span class='error'>* ".$eventDateErr. "</span>"
+        ."<div class='input-group input-ammend' id='event-date' name='eventDate'>"
+        ."<input type='text' value= '".$row['date']."' class='datepicker form-control' required>"
+        ."<span class='input-group-addon'>"
+        ."<span class='glyphicon glyphicon-calendar'></span>"
+        ."</span>"
+        ."</div>"
+        ."</div>"
+        ."<div class='col-xs-6 col-sm-3 form-group'>"
+        ."<label for='time'>Time:</label>"
+        ."<span class='error'>* ". $eventTimeErr. "</span>"
+        ."<div class='input-group input-ammend' id='time'>"
+        ."<input type='text' value = '".$row['time']."' class='form-control input-small bootstrap-timepicker timepicker' placeholder='Enter Time' name='eventTime' required>"
+        ."<span class='input-group-addon'>"
+        ."<span class='glyphicon glyphicon-time'></span>"
+        ."</span>"
+        ."</div>"
+        ."</div>"
+                        ."<div class='col-xs-6 col-sm-3 form-group'>"
+                            ."<label for='price'>Price:</label>"
+                            ."<span class='error'>* ".$eventPriceErr. "</span>"
+                            ."<input type='text' value= '".$row['price']."'
+                            class='form-control' id='price' placeholder='Enter
+                            Price' name='eventPrice' required>"
+                        ."</div>"
+                        ."<div class='col-xs-6 col-sm-3 form-group'>"
+                            ."<label for='ticket-amount'>Ticket
+                            Quantity:</label>"
+                            ."<span class='error'>* ".$ticketQuantityErr. "</span>"
+                            ."<input type='number' value =
+                            '".$row['ticket_qty']."' class='form-control'
+                            id='ticket-amount' placeholder='Ticket Quantity'
+                            name='ticketQuantity' required>"
+                        ."</div>"
+                    ."</div>"
+                    ."<div class='row'>"
+                    ."</div>"
+                    ."<div class='row'>"
+                        ."<div class='col-md-6 form-group'>"
+                            ."<label for='location'>Location:</label>"
+                            ."<span class='error'>* ".$eventLocationErr."</span>"
+                            ."<input type='text' value = '".$row['location']."'
+                            class='form-control' id='location'
+                            placeholder='Enter Location'
+                            name='eventLocation'required>"
+                        ."</div>"
+                        ."<div class='col-xs-6 form-group'>"
+                            ."<label for='venue'>Venue:</label>"
+                            ."<span class='error'>* ".$eventVenueErr."</span>"
+                            ."<input type='text' value = '".$row['venue']."'
+                            class='form-control' id='venue' placeholder='Enter
+                            Venue' name='eventVenue' required>"
+                        ."</div>"
+                    ."</div>"
+                    ."<div class='row'>"
+                        ."<div class='col-md-6 form-group'>"
+                            ."<label for='event-img'>Event Image:</label>"
+                            ."<span class='error'>* ".$eventImgErr."</span>"
+                            ."<input type='file' value =
+                            'data:image/jpeg;base64," .
+                            base64_encode($row['img']) ."' id='event-img'
+                            name='eventImg' required>"
+                        ."</div>"
+                        ."<a name='addEvent'><div class='col-md-6 form-group'
+                        id='button-div' style='margin-top: 5px;'>"
+                        ."</div></a>"
+                    ."</div>"
+                ."</div>"
+            ."</form>"
+        ."</div>"
+                    ."<label></label>"
+                    ."<p class='text-warning'><small>If you don't save, your
+                    changes will be lost.</small></p>"
+                ."</div>"
+                ."<div class='modal-footer'>"
+                    ."<button type='button' class='btn btn-default'
+                    data-dismiss='modal'>Close</button>"
+                    ."<button type='button' class='btn btn-primary' name
+                    ='savechanges'>Save changes</button>"
+                ."</div>"
+            ."</div>"
+        ."</div>"
+    ."</div>"
+."</div>";
 }
 
    ?>
