@@ -461,28 +461,43 @@
                     </thead>
                 </table>
             </div>
+                    <script>
+        	function myFunction(eventid){
+        		 document.getElementById("eventNum").setAttribute("value", eventid);
+				document.getElementById("the_button").click();
+
+				
+        	}
+
+        </script>
             <div class="panel" id="events-ready">
                 <table class="table">
                     <tbody>
                     <?php
-                    echo "<script>
-                    function myfunction(eventid){";
-					echo "var c = eventid;";
-                    	echo "alert(c);";
-						echo "return c";
-                    echo "}";
-                   echo "</script>";
+                    // echo "<script>
+                    // function myfunction(eventid){";
+					// echo "var c = eventid;";
+                    	// echo "alert(c);";
+						// echo "return c";
+                    // echo "}";
+                   // echo "</script>";
 				    //$tmpid = myfunction(eventid);
+				    echo "<form method='post' action ='' id='myForm'>";
+				    echo "<input type='hidden' name ='eventNum' id ='eventNum'>";
+					echo "<button name = 'the_button' id='the_button' type='submit' style='visibility: hidden;'></button>";
                         while ($row = mysqli_fetch_assoc($results)) {
                         	
                         	$ticketSold = ticketsAdmin($row['eventname']);
 							echo "<tr>";
 							echo "<td class='td_id'>".$row['eventid']."</td>";
-							echo "<td class='td_name'>".$row['eventname']."<br/>
+							echo "
+							<td class='td_name'>".$row['eventname']."";
+							echo "<br/>";		
 							
-							<input type='submit' href='#myModal' value='Edit' id=".$row['eventid']." 
-							name='edit' class='btn btn-warning' onclick ='myfunction(".$row['eventid'].")' data-toggle='modal'/>
-							<input type='hidden' name='eventid' value='".$row['eventid']."'></td>";
+							//$tmpid =$row['eventid'];
+							echo "<input type='button' href='#myModal' value='Edit' id='edit_button' class='btn btn-warning' onclick ='myFunction(".$row['eventid'].")' data-toggle='modal'/>";
+
+							echo "</td>";
 							echo "<td class='td_date'>".$row['date']."</td>";
 							echo '<td class="td_time">' . $row['time'] . "</td>";
 							echo '<td class="td_loc">' . $row['location'] . "</td>";
@@ -493,21 +508,8 @@
 							echo "<td class='td_purch'>$ticketSold</td>";
 							echo '<td class="td_img"><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
 							echo "</tr>";
-                            // echo "<tr>";
-                            // echo '<td class="td_id">' . $row['eventid'] . "</td>";
-                            // echo '<td class="td_name">' . $row['eventname'] . "<br/>
-                            // <input type='submit' href='#myModal' value='Edit' id='".$row['eventid']."' name='edit' class='btn btn-warning' data-toggle='modal'/>
-                            // <input type='hidden' name='eventid' value='".$row['eventid']."'</form></td>";
-                            // echo '<td class="td_date">' . $row['date'] . "</td>";
-                            // echo '<td class="td_time">' . $row['time'] . "</td>";
-                            // echo '<td class="td_loc">' . $row['location'] . "</td>";
-                            // echo '<td class="td_venue">' . $row['venue'] . "</td>";
-                            // echo '<td class="td_price">' . sprintf("%01.2f", $row['price']) . "</td>";
-                            // echo '<td class="td_qty">' . $row['ticket_qty'] . "</td>";
-							// echo "<td class='td_purch'>$ticketSold</td>";
-                            // echo '<td class="td_img"><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
-                            // echo "</tr>";
-
+														echo "</form>";
+							
                         }
 	              	?>
                     </tbody>
@@ -601,7 +603,7 @@
                     <div class="form-group">
                         <label for="id-num">Delete By ID:</label>
                         <input type="number"  class="form-control" name="delete-by-id"/>
-                        <button type="submit" name="deleteById"  class="btn btn-danger"/>Delete</button>
+                        <input type="submit" value="Delete" name="deleteById"  class="btn btn-danger"/>
                     </div>	
                 </form>
             </div>
@@ -640,20 +642,21 @@
 				
 				
         </div>
+
             
     <!-- Modal HTML -->
     <?php 
 
 	
-    if (isset($_POST['edit'])) {
-    	global $cxn;
-
-        echo "<p>".$_POST['edit']."</p>";
-		$query = "SELECT * FROM EVENT WHERE eventid = '".$_POST['eventid']."'";
-
-	}
+    if (isset($_POST['the_button']) && isset($_POST['eventNum'])) {
+		$tmpid = $_POST['eventNum'];
+		$query = "SELECT * FROM EVENT WHERE eventid = ".$tmpid;
 		$results = mysqli_query($cxn, $query)or die(mysqli_error($cxn));
 		$row  = mysqli_fetch_assoc($results);
+		echo "<script>alert(".$tmpid.");</script>";
+	
+
+	
 
 	 echo"<div id='myModal' class='modal fade'>
         <div class='modal-dialog' style='width: 700px;'>
@@ -675,7 +678,7 @@
                         <div class='form-group'>
                             <label for='event-name'>Event Name:</label>
                             <span class='error'>* <?php echo $eventNameErr; ?></span>
-                            <input type='text' class='form-control' id='event-name' value='".$rowA['eventname']."' placeholder='Event Name' name='eventName' required>
+                            <input type='text' class='form-control' id='event-name' value='".$row['eventname']."' placeholder='Event Name' name='eventName' required>
                         </div>
                     </div>
                     <div class='row'>
@@ -683,7 +686,7 @@
                             <label for=event-'date'>Date:</label>
                             <span class='error'>* <?php echo $eventDateErr; ?></span>
                             <div class='input-group input-ammend' id='event-date' name='eventDate'>
-                                <input type='text' value= '".$rowA['date']."' class='datepicker form-control' required>
+                                <input type='text' value= '".$row['date']."' class='datepicker form-control' required>
                                 <span class='input-group-addon'>
                                     <span class='glyphicon glyphicon-calendar'></span>
                                 </span>
@@ -693,7 +696,7 @@
                             <label for='time'>Time:</label>
                             <span class='error'>* <?php echo $eventTimeErr; ?></span>
                             <div class='input-group input-ammend' id='time'>
-                                <input type='text' value = '".$rowA['time']."' class='form-control input-small bootstrap-timepicker timepicker' placeholder='Enter Time' name='eventTime' required>
+                                <input type='text' value = '".$row['time']."' class='form-control input-small bootstrap-timepicker timepicker' placeholder='Enter Time' name='eventTime' required>
                                 <span class='input-group-addon'>
                                     <span class='glyphicon glyphicon-time'></span>
                                 </span>
@@ -702,12 +705,12 @@
                         <div class='col-xs-6 col-sm-3 form-group'>
                             <label for='price'>Price:</label>
                             <span class='error'>* <?php echo $eventPriceErr; ?></span>
-                            <input type='text' value= '".$rowA['price']."' class='form-control' id='price' placeholder='Enter Price' name='eventPrice' required>
+                            <input type='text' value= '".$row['price']."' class='form-control' id='price' placeholder='Enter Price' name='eventPrice' required>
                         </div>
                         <div class='col-xs-6 col-sm-3 form-group'>
                             <label for='ticket-amount'>Ticket Quantity:</label>
                             <span class='error'>* <?php echo $ticketQuantityErr; ?></span>
-                            <input type='number' value = '".$rowA['ticket_qty']."' class='form-control' id='ticket-amount' placeholder='Ticket Quantity' name='ticketQuantity' required>
+                            <input type='number' value = '".$row['ticket_qty']."' class='form-control' id='ticket-amount' placeholder='Ticket Quantity' name='ticketQuantity' required>
                         </div>
                     </div>
                     <div class='row'>
@@ -716,12 +719,12 @@
                         <div class='col-md-6 form-group'>
                             <label for='location'>Location:</label>
                             <span class='error'>* <?php echo $eventLocationErr; ?></span>
-                            <input type='text' value = '".$rowA['location']."' class='form-control' id='location' placeholder='Enter Location' name='eventLocation'required>
+                            <input type='text' value = '".$row['location']."' class='form-control' id='location' placeholder='Enter Location' name='eventLocation'required>
                         </div>
                         <div class='col-xs-6 form-group'>
                             <label for='venue'>Venue:</label>
                             <span class='error'>* <?php echo $eventVenueErr; ?></span>
-                            <input type='text' value = '".$rowA['venue']."' class='form-control' id='venue' placeholder='Enter Venue' name='eventVenue' required>
+                            <input type='text' value = '".$row['venue']."' class='form-control' id='venue' placeholder='Enter Venue' name='eventVenue' required>
                         </div>
                     </div>
                     <div class='row'>
@@ -747,7 +750,7 @@
         </div>
     </div>
 </div> ";
-
+}
 
    ?>
         
