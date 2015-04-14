@@ -73,6 +73,7 @@
             if (password_verify ($_pass , $row['hashed_pass'])){
 	            if ($_username === 'admin') {
                     $_SESSION['valid_admin'] = true; 
+                    $_SESSION['user_id'] = $row['user_id'];
                 }
                 else {
                     $_SESSION['valid_admin'] = false; 
