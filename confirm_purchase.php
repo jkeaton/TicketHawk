@@ -70,6 +70,27 @@
             }
         }
 
+        // Handle purchase from registered user
+        if (isset($_POST['confirm_as_reg_user'])){
+            // Add each line in cart if the quantity is greater than 0
+            foreach ($_SESSION['cart'] as $id => $qty){
+                if ($qty > 0){
+                    $e = $events[$id];
+                    addSale($_SESSION['user_id'], $id, $qty, $e["price"]);
+                }
+            }
+            // Empty the Cart
+            $_SESSION['cart'] = array();
+        }
+
+        if (isset($_POST['sign_and_confirm'])){
+            // Log the User In but do not redirect and handle purchase
+        }
+
+        if (isset($_POST['confirm_as_guest'])){
+            // Handle purchase for guest
+        }
+
         if (isset($_POST['continue'])){
             $_SESSION['payment_info'] = array();
             $errCount = 0;
@@ -114,6 +135,19 @@
             }
         }
     }
+
+    function addSale($_uid, $_eid, $_qty, $_price){
+        global $cxn;
+        // Add the sale to the sales table
+        $query = "INSERT INTO sales (UserID, EventID, Quantity, Price) VALUES ('$_uid', '$_eid', '$_qty', '$_price')";
+        $results = mysqli_query($cxn, $query) or die("Connection could not be established");
+        // Deduct the amount of tickets purchased from the event's ticket quantity
+        $query = ("UPDATE EVENT SET ticket_qty=ticket_qty-".$_qty." WHERE eventid=".$_eid);
+        $results = mysqli_query($cxn, $query) or die("Connection could not be established");
+        // Add the amount of tickets purchased to the event's ticket_sold quantity
+        $query = ("UPDATE EVENT SET ticket_sold=ticket_sold+".$_qty." WHERE eventid=".$_eid);
+        $results = mysqli_query($cxn, $query) or die("Connection could not be established");
+    }
     
     function createNewAccount($_username, $_fname, $_lname, $_street, $_city, $_state, $_zipcode, $_email, $_password) {
         $dbuser = 'customer';
@@ -147,6 +181,55 @@
                     $count++;
                 }
             }
+        }
+        return $output;
+    }
+
+    function getSignInFields(){
+        $output = "";
+        if (!isset($_SESSION['user'])){
+            $output .= (
+                '<div class="form-group col-sm-3">'
+                .'<label for="inputUsername">Username:</label>'
+                .'<span class="error">* <?php echo $usernameErr; ?></span>'
+                .'<input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username">'
+                .'</div>'
+                .'<div class="form-group col-sm-3">'
+                .'<label for="inputPassword">Password</label>'
+                .'<span class="error">* <?php echo $passwordErr; ?></span>'
+                .'<input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">'
+                .'</div>'
+                .'<div class="form-group col-sm-3">'
+                .'<label for="inputPassword">Confirm Password</label>'
+                .'<span class="error">* <?php echo $confirmPassErr; ?></span>'
+                .'<input type="password" name="confirm_pass" class="form-control" id="inputPassword" placeholder="Password">'
+                .'</div>');
+        }
+        return $output;
+    }
+
+    function getCorrectFooter(){
+        $output = "";
+        if (isset($_SESSION['user'])){
+            $output .= (  
+			    '<div class="form-group col-sm-3 col-sm-offset-9">'
+	            .'<button type="submit" name="confirm_as_reg_user" class="btn btn-primary form-control">'
+                .'Confirm Purchase'
+				.'</button>'
+			    .'</div>');
+        }
+        else {
+            $output .= (  
+			    '<div class="form-group col-sm-3 col-sm-offset-6">'
+	            .'<button type="submit" name="sign_and_confirm" class="btn btn-primary form-control">'
+                .'Sign Up & Confirm Purchase'
+				.'</button>'
+			    .'</div>'
+			    .'<div class="form-group col-sm-3">'
+			    .'<button type="submit" name="confirm_as_guest" class="btn btn-primary form-control">'
+				.'Confirm Purchase As Guest'
+                .'</button>'
+				.'</div>');
         }
         return $output;
     }
@@ -338,35 +421,12 @@
                 <br/>
                 <br/>
                 <div class="row">
-                    <div class="form-group col-sm-3">
-                        <label for="inputUsername">Username:</label>
-                        <span class="error">* <?php echo $usernameErr; ?></span>
-                        <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username">
-                    </div>
-                    <div class="form-group col-sm-3">
-                        <label for="inputPassword">Password</label>
-                        <span class="error">* <?php echo $passwordErr; ?></span>
-                        <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
-                    </div>
-                    <div class="form-group col-sm-3">
-                        <label for="inputPassword">Confirm Password</label>
-                        <span class="error">* <?php echo $confirmPassErr; ?></span>
-                        <input type="password" name="confirm_pass" class="form-control" id="inputPassword" placeholder="Password">
-                    </div>
+                    <?php echo getSignInFields(); ?>
                 </div>
             </div>
             <div class="panel-footer">
                 <div class="row">
-			        <div class="form-group col-sm-3 col-sm-offset-6">
-					    <button type="submit" name="sign_and_confirm" class="btn btn-primary form-control">
-						    Sign Up & Confirm Purchase
-						</button>
-					</div>
-			        <div class="form-group col-sm-3">
-					    <button type="submit" name="confirm_as_guest" class="btn btn-primary form-control">
-						    Confirm Purchase As Guest
-						</button>
-					</div>
+                    <?php echo getCorrectFooter(); ?>
                 </div>
             </div>       
 	    </div>

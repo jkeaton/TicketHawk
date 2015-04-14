@@ -344,25 +344,41 @@
                 overflow: hidden;
                 width: 16%;  
             }
-            .td_venue, .th_venue {
+            .td_venue {
                 overflow: hidden;
                 width: 16%;  
             }
-            .td_price, .th_price {
+            .th_venue {
+                overflow: hidden;
+                width: 15%;  
+            }
+            .td_price {
                 overflow: hidden;
                 width: 7%;  
             }
-            .td_qty, .th_qty {
+            .th_price {
+                overflow: hidden;
+                width: 6%;  
+            }
+            .td_qty {
                 overflow: hidden;
                 width: 8%;  
+            }
+            .th_qty {
+                overflow: hidden;
+                width: 8%;  
+            }
+            .td_purch{
+            	overflow: hidden;
+                width: 8%;
+            }
+            .th_purch{
+            	overflow: hidden;
+                width: 9%;
             }
             .td_img, .th_img {
                 overflow: hidden;
                 width: 10%;  
-            }
-            .td_purch, .th_purch{
-            	overflow: hidden;
-                width: 8%;
             }
         </style>
     </head>
