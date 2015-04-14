@@ -81,7 +81,31 @@
 	}
 
     function generateOrderInfo(){
-        
+        global $cxn, $events, $price_total;
+        $output = '';
+        if (!isset($_SESSION['user_id'])){
+            return NULL;
+        }
+        else{
+            $query = "SELECT * FROM sales WHERE UserID=".$_SESSION['user_id'];
+            $results = mysqli_query($cxn, $query) or die("Connection could not be established");
+            foreach($results as $row){
+                $phpdate = strtotime($row["date_time"]);
+                $purch_date = date('m/d/Y', $phpdate);
+                $purch_time = date('H:i:s', $phpdate);
+                $output .= (
+                    '<tr>'
+                    .'<td class="text-center">'.$row["ID"].'</td>'
+                    .'<td class="text-center">'.$purch_date.'</td>'
+                    .'<td class="text-center">'.$purch_time.'</td>'
+                    .'<td class="text-left">'.$events[$row["EventID"]]['eventname'].'</td>'
+                    .'<td class="text-center">'.$row["Quantity"].'</td>'
+                    .'<td class="text-right">'.sprintf("$%10.2f", ($row["Quantity"] * $row["Price"])).'</td>'
+                    .'</tr>');
+                $price_total += ($row["Quantity"] * $row["Price"]);
+            }
+            return $output;
+        }
     }
 
     function addPurchaseBtn(){
@@ -175,6 +199,7 @@
                 ?>
                 <li><a href="#about">About</a></li>
                 <li><a href="getContactUsForm.php">Contact</a></li>
+                <li><a href="http://localhost/tickethawk/homepage.php#browse">Events</a></li>
               </ul>
                 <?php
                     if (isset($_SESSION['user'])) {
@@ -237,15 +262,22 @@
                         	    <th class="text-center">Sale ID</th>
                                 <th class="text-center">Purchase Date</th>
                                 <th class="text-center">Purchase Time</th>
-                                <th class="text-center">Event Name</th>
+                                <th class="text-left">Event Name</th>
                                 <th class="text-center">Ticket Quantity</th>
-                                <th class="text-center">Total Price</th>
+                                <th class="text-right">Total Price</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php echo generateOrderInfo(); ?>
                         </tbody>
                     </table>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-sm-3 col-sm-offset-9 text-right">
+                            <h4>Total Spent: <?php echo sprintf('$%06.2f',$price_total);?></h4>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>

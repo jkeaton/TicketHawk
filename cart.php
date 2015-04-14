@@ -194,6 +194,7 @@
                 ?>
                 <li><a href="#about">About</a></li>
                 <li><a href="getContactUsForm.php">Contact</a></li>
+                <li><a href="http://localhost/tickethawk/homepage.php#browse">Events</a></li>
               </ul>
                 <?php
                     if (isset($_SESSION['user'])) {
@@ -276,7 +277,7 @@
                             </a>
                         </div>
                         <div class="col-sm-2 col-sm-offset-5 text-right">
-                            <h5><?php echo generateTotal(); ?></h5>
+                            <h4><?php echo generateTotal(); ?></h4>
                         </div>
                         <?php echo addPurchaseBtn(); ?>
                     </div>

@@ -381,6 +381,12 @@
                 width: 10%;  
             }
         </style>
+        <script>
+            function myFunction(eventid){
+                document.getElementById("eventNum").setAttribute("value", eventid);
+				document.getElementById("the_button").click();
+        	}
+        </script>
     </head>
 
     <body role="document">
@@ -399,7 +405,7 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="homepage.php">Home</a></li>
-                        <li class="active"><a href="admin_page.php">Events</a></li>
+                        <li><a href="http://localhost/tickethawk/homepage.php#browse">Events</a></li>
                         <li><a href="other_admin.php">Users</a></li>
                     </ul>
                 <?php
@@ -477,15 +483,6 @@
                     </thead>
                 </table>
             </div>
-                    <script>
-        	function myFunction(eventid){
-        		 document.getElementById("eventNum").setAttribute("value", eventid);
-				document.getElementById("the_button").click();
-
-				
-        	}
-
-        </script>
             <div class="panel" id="events-ready">
                 <table class="table">
                     <tbody>
