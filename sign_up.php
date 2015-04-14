@@ -309,7 +309,7 @@
                             . '<i class="glyphicon glyphicon-shopping-cart icon-flipped"></i>'
                             . '</a>'
                             . '</li>'
-                            . '<li class="navbar-left"><a>'
+                            . '<li class="navbar-left"><a href="http://localhost/tickethawk/order_history.php">'
                             . $welcome_msg
                             . '</a></li><form role="form" class="navbar-form navbar-right" method="post"'
                             . 'action="'

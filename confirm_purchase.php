@@ -2,8 +2,8 @@
 <?php
     session_start();
     include "dist/common.php";
-    $usernameErr = $fnameErr = $lnameErr = $streetErr = $cityErr = $stateErr = $zipcodeErr = $emailErr = $passwordErr = $confirmPassErr = "";
-    $username = $fname = $lname = $street = $city = $state = $zipcode = $email = $password = $hashed_pass = "";
+    $usernameErr = $newunameErr = $fnameErr = $lnameErr = $streetErr = $cityErr = $stateErr = $zipcodeErr = $emailErr = $passwordErr = $newpassErr = $confirmPassErr = "";
+    $username = $uname = $fname = $lname = $street = $city = $state = $zipcode = $email = $password = $pass = $hashed_pass = "";
     $welcome_msg = "";
 
     // Fetch the Events from the database
@@ -16,8 +16,8 @@
     $results = mysqli_query($cxn, $query) or die("Connection could not be established");
     $events = array();
     $price_total = 0.00;
-
     storeEventRows();
+    $line_items = generateLineItems();
 
     function storeEventRows(){
         global $events, $results;
@@ -43,9 +43,9 @@
                 ++$errCount;
                 $usernameErr = "Username is required";
             } else {
-                $username = test_input($_POST["uname"]);
+                $uname = test_input($_POST["uname"]);
                 // only allow alpha digit characters as part of the username
-                if (!preg_match("/^[a-zA-Z0-9]*$/",$username)) {
+                if (!preg_match("/^[a-zA-Z0-9]*$/",$uname)) {
                     ++$errCount;
                     $usernameErr = "Only letters and numbers allowed";
                 }
@@ -54,13 +54,13 @@
                 ++$errCount;
                 $passwordErr = "Password is required";
             } else {
-                $password = test_input($_POST["pass"]);
+                $pass = test_input($_POST["pass"]);
             }
             if ($errCount == 0){
-                if (login($username, $password)){
-                    $_SESSION['user'] = $username;
+                if (login($uname, $pass)){
+                    $_SESSION['user'] = $uname;
                     $welcome_msg = ("Welcome " . $_SESSION['user']);
-                    if ($username == 'admin'){
+                    if ($uname == 'admin'){
 					    header('Location: http://localhost/TicketHawk/admin_page.php');
                     }
                     else {
@@ -81,58 +81,74 @@
             }
             // Empty the Cart
             $_SESSION['cart'] = array();
+            // Clear Payment Info Array
+            $_SESSION['payment_info'] = array();
+            header('Location: http://localhost/tickethawk/order_history.php');
         }
 
         if (isset($_POST['sign_and_confirm'])){
-            // Log the User In but do not redirect and handle purchase
-        }
-
-        if (isset($_POST['confirm_as_guest'])){
-            // Handle purchase for guest
-        }
-
-        if (isset($_POST['continue'])){
-            $_SESSION['payment_info'] = array();
+            // Log the User In, but do not redirect and handle purchase
             $errCount = 0;
-
-            /*
             // Get username
             if (empty($_POST["username"])) {
                 ++$errCount;
-                $usernameErr = "Username is required";
+                $newunameErr = "Username is required";
             } else {
                 $username = test_input($_POST["username"]);
                 // only allow alpha digit characters as part of the username
                 if (!preg_match("/^[a-zA-Z0-9]*$/",$username)) {
                     ++$errCount;
-                    $usernameErr = "Only letters and numbers allowed";
+                    $newunameErr = "Only letters and numbers allowed";
                 }
                 if (!availableUser($username)){
                     ++$errCount;
-                    $usernameErr = "Username is unavailable, please choose another";
+                    $newunameErr = "Username is unavailable, please choose another";
                 }
             }
 
             // Get password  
             if (empty($_POST["password"])) {
                 ++$errCount;
-                $passwordErr = "Password is required";
+                $newpassErr = "Password is required";
             } else {
                 $password = test_input($_POST["password"]);
                 // hash password for storage
                 $hashed_pass = password_hash($password, PASSWORD_DEFAULT);
             }
-            */
 
-            // If no errors occured, create a user and store it in the database
-            if ($errCount == 0){
-                header("Location: http://localhost/TicketHawk/confirm_purchase.php");
-                /*
-                if (createNewAccount($username, $fname, $lname, $street, $city,
-                    $state, $zipcode, $email, $hashed_pass)){
-                    header('Location: http://localhost/TicketHawk/homepage.php');
-                }*/
+            // Get password confirmation  
+            if (empty($_POST["confirm_pass"]) || ($_POST["password"] != $_POST["confirm_pass"])) {
+                ++$errCount;
+                $confirmPassErr = "Password and Password Confirmation do not match";
             }
+
+            if ($errCount == 0){
+                if (createNewAccount($username, $_SESSION['payment_info']['fname'], $_SESSION['payment_info']['lname'],
+                    $_SESSION['payment_info']['street'], $_SESSION['payment_info']['city'],
+                    $_SESSION['payment_info']['state'], $_SESSION['payment_info']['zipcode'],
+                    $_SESSION['payment_info']['email'], $hashed_pass)){
+                    if (login($username, $password)){
+                        $_SESSION['user'] = $username;
+                        $welcome_msg = ("Welcome " . $_SESSION['user']);
+                    }
+                }
+            }
+            header('Location: http://localhost/tickethawk/order_history.php');
+        }
+
+        if (isset($_POST['confirm_as_guest'])){
+            // Handle purchase for guest
+            foreach ($_SESSION['cart'] as $id => $qty){
+                if ($qty > 0){
+                    $e = $events[$id];
+                    addSale(NULL, $id, $qty, $e["price"]);
+                }
+            }
+            // Empty the Cart
+            $_SESSION['cart'] = array();
+            // Clear Payment Info Array
+            $_SESSION['payment_info'] = array();
+            header('Location: http://localhost/tickethawk/order_history.php');
         }
     }
 
@@ -181,27 +197,32 @@
                     $count++;
                 }
             }
+            // If there are no line items, get me out of here
+            if ($price_total == 0){
+                header('Location: http://localhost/tickethawk/homepage.php#browse');
+            }
         }
         return $output;
     }
 
     function getSignInFields(){
+        global $newunameErr, $newpassErr, $confirmPassErr;
         $output = "";
         if (!isset($_SESSION['user'])){
             $output .= (
                 '<div class="form-group col-sm-3">'
                 .'<label for="inputUsername">Username:</label>'
-                .'<span class="error">* <?php echo $usernameErr; ?></span>'
+                .'<span class="error">* '.$newunameErr.'</span>'
                 .'<input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username">'
                 .'</div>'
                 .'<div class="form-group col-sm-3">'
                 .'<label for="inputPassword">Password</label>'
-                .'<span class="error">* <?php echo $passwordErr; ?></span>'
+                .'<span class="error">* '.$newpassErr.'</span>'
                 .'<input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">'
                 .'</div>'
                 .'<div class="form-group col-sm-3">'
                 .'<label for="inputPassword">Confirm Password</label>'
-                .'<span class="error">* <?php echo $confirmPassErr; ?></span>'
+                .'<span class="error">* '.$confirmPassErr.'</span>'
                 .'<input type="password" name="confirm_pass" class="form-control" id="inputPassword" placeholder="Password">'
                 .'</div>');
         }
@@ -230,6 +251,20 @@
 				.'Confirm Purchase As Guest'
                 .'</button>'
 				.'</div>');
+        }
+        return $output;
+    }
+
+    function printPaymentInfo(){
+        $output = "";
+        if (isset($_SESSION['payment_info']['fname'])){
+            $output .= ($_SESSION['payment_info']['fname']." ".$_SESSION['payment_info']['lname']
+                . "<br/>"
+                . $_SESSION['payment_info']['street']
+                . "<br/>"
+                . $_SESSION['payment_info']['city']." ".$_SESSION['payment_info']['state'].", ".$_SESSION['payment_info']['zipcode']
+                . "<br/>"
+                . $_SESSION['payment_info']['email']);
         }
         return $output;
     }
@@ -280,63 +315,6 @@
 						<li>
 							<a href="getContactUsForm.php">Contact</a>
 						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Search <span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
-<table class="table" style="width: 650px;">
-								<tr>
-								<th>Sports</th>
-								<th>Movies</th>
-								<th>Events</th>
-								<th>On Tour</th>
-								<th>Theme Parks</th>
-								</tr>
-								<tr>
-									<td><a href="#">NBA</a></td>
-									<td><a href="#">New Releases</a></td>
-									<td><a href="#">World Cupr Qatar</a></td>
-									<td><a href="#">Jay Z & Beyonce (On the run)</a></td>
-									<td><a href="#">Disney World FL</a></td>
-								</tr>
-								<tr>
-									<td><a href="#">NFL</a></td>
-									<td><a href="#">Drama</a></td>
-									<td><a href="#">2016 Olympics</a></td>
-									<td><a href="#">Rock</a></td>
-									<td><a href="#">Sea World</a></td>
-								</tr>
-								<tr>
-									<td><a href="#">MLB</a></td>
-									<td><a href="#">Action</a></td>
-									<td><label></label></td>
-									<td><a href="#">R&B</a></td>
-									<td><a href="#">Six Flags GA</a></td>
-								</tr>
-								<tr>
-									<td><a href="#">MLH</a></td>
-									<td><a href="#">Horror</a></td>
-									<td><label></label></td>
-									<td><a href="#">Rap</a></td>
-									<td><a href="#">Disney Land CA</a></td>	
-								</tr>
-								<tr>
-									<td><a href="#">MLS</a></td>
-									<td><a href="#">Comedy</a></td>
-									<td><label></label></td>
-									<td><a href="#">Blues</a></td>
-									<td><label></label></td>	
-								</tr>
-								<tr>
-									<td><a href="#">NASCAR</a></td>
-									<td><a href="#">Suspense</a></td>
-									<td><label></label></td>
-									<td><a href="#">Gospel</a></td>
-									<td><label></label></td>	
-								</tr>
-								
-								</table>
-							</ul>
-						</li>
 					</ul>
                 <?php
                     if (isset($_SESSION['user'])) {
@@ -346,7 +324,7 @@
                             . '<i class="glyphicon glyphicon-shopping-cart icon-flipped"></i>'
                             . '</a>'
                             . '</li>'
-                            . '<li class="navbar-left"><a>'
+                            . '<li class="navbar-left"><a href="http://localhost/tickethawk/order_history.php">'
                             . $welcome_msg
                             . '</a></li><form role="form" class="navbar-form navbar-right" method="post"'
                             . 'action="'
@@ -396,7 +374,15 @@
 				<p class="panel-title">Confirm Purchase</p>
             </div>
             <div class="panel-body">
-                <h4>Order Invoice: </h4>
+                <h3>Order Invoice: </h3>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p>
+                            <?php echo printPaymentInfo(); ?>   
+                        </p>
+                    </div>
+                </div>
+                <br/>
                 <div class="row">
                     <div class="col-sm-4 text-left">
                         <b><u>Event Name</u></b>
@@ -411,7 +397,7 @@
                         <b><u>Price Per Ticket</u></b>
                     </div>
                 </div>
-                <?php echo generateLineItems(); ?>
+                <?php echo $line_items; ?>
                 <br/>
                 <div class="row">
                     <div class="col-sm-3 col-sm-offset-9 text-right">

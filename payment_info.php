@@ -154,11 +154,6 @@
             // If no errors occured, create a user and store it in the database
             if ($errCount == 0){
                 header("Location: http://localhost/TicketHawk/confirm_purchase.php");
-                /*
-                if (createNewAccount($username, $fname, $lname, $street, $city,
-                    $state, $zipcode, $email, $hashed_pass)){
-                    header('Location: http://localhost/TicketHawk/homepage.php');
-                }*/
             }
         }
     }
@@ -222,63 +217,6 @@
 						<li>
 							<a href="getContactUsForm.php">Contact</a>
 						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Search <span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
-<table class="table" style="width: 650px;">
-								<tr>
-								<th>Sports</th>
-								<th>Movies</th>
-								<th>Events</th>
-								<th>On Tour</th>
-								<th>Theme Parks</th>
-								</tr>
-								<tr>
-									<td><a href="#">NBA</a></td>
-									<td><a href="#">New Releases</a></td>
-									<td><a href="#">World Cupr Qatar</a></td>
-									<td><a href="#">Jay Z & Beyonce (On the run)</a></td>
-									<td><a href="#">Disney World FL</a></td>
-								</tr>
-								<tr>
-									<td><a href="#">NFL</a></td>
-									<td><a href="#">Drama</a></td>
-									<td><a href="#">2016 Olympics</a></td>
-									<td><a href="#">Rock</a></td>
-									<td><a href="#">Sea World</a></td>
-								</tr>
-								<tr>
-									<td><a href="#">MLB</a></td>
-									<td><a href="#">Action</a></td>
-									<td><label></label></td>
-									<td><a href="#">R&B</a></td>
-									<td><a href="#">Six Flags GA</a></td>
-								</tr>
-								<tr>
-									<td><a href="#">MLH</a></td>
-									<td><a href="#">Horror</a></td>
-									<td><label></label></td>
-									<td><a href="#">Rap</a></td>
-									<td><a href="#">Disney Land CA</a></td>	
-								</tr>
-								<tr>
-									<td><a href="#">MLS</a></td>
-									<td><a href="#">Comedy</a></td>
-									<td><label></label></td>
-									<td><a href="#">Blues</a></td>
-									<td><label></label></td>	
-								</tr>
-								<tr>
-									<td><a href="#">NASCAR</a></td>
-									<td><a href="#">Suspense</a></td>
-									<td><label></label></td>
-									<td><a href="#">Gospel</a></td>
-									<td><label></label></td>	
-								</tr>
-								
-								</table>
-							</ul>
-						</li>
 					</ul>
                 <?php
                     if (isset($_SESSION['user'])) {
@@ -288,7 +226,7 @@
                             . '<i class="glyphicon glyphicon-shopping-cart icon-flipped"></i>'
                             . '</a>'
                             . '</li>'
-                            . '<li class="navbar-left"><a>'
+                            . '<li class="navbar-left"><a href="http://localhost/tickethawk/order_history.php">'
                             . $welcome_msg
                             . '</a></li><form role="form" class="navbar-form navbar-right" method="post"'
                             . 'action="'

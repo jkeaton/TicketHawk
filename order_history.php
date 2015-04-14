@@ -15,66 +15,17 @@
     $results = mysqli_query($cxn, $query) or die("Connection could not be established");
     $events = array();
     $e_id = -1;
+    $price_total = 0.00;
     storeEventRows();
-    // Comment to add bootstrap in a commit
 
-    /**
-     * Fetches the EVENT rows from the database and stores them in an array for
-     * us to use when displaying the rows of 3 at the bottom of the page.
-     */
+    if (!isset($_SESSION['user'])){
+        header('Location: http://localhost/TicketHawk/homepage.php');
+    }
+
     function storeEventRows(){
         global $events, $results;
-        $index = 0;
         while ($row = mysqli_fetch_assoc($results)) {
-            $events[$index] = $row;
-            ++$index;
-        }
-    }
-    
-    function generateEventDetails(){
-        global $events, $e_id;
-        try {
-            $id = ($_SERVER['QUERY_STRING']);
-            $_SESSION['q_string'] = $id;
-            $pos = strpos ($id , '=');
-            $id = substr($id, $pos+1);
-            $output = "";
-            foreach ($events as $value) {
-                if ($value['eventid'] == $id){
-                    $output .= ('<div class="container">'
-                                    .'<div class="row text-center">'
-                                        .'<h3>'.$value['eventname'].'</h3>'
-                                    .'</div>'
-                                    .'<div class="row">'
-                                        .'<div class="col-sm-4 vcenter text-center">'
-                                            .'<img class="text-center img-thumbnail" src = "data:image/jpeg;base64,' 
-                                            .base64_encode($value['img']).'" width="300" height="300"/>'
-                                        .'</div>'
-                                        .'<div class="col-sm-8 container-fluid">'
-                                            .'<table class="table table-bordered">'
-                                                .'<tr><td><b>Date:</b></td><td>'.$value['date'].'</td></tr>'
-                                                .'<tr><td><b>Time:</b></td><td>'.$value['time'].'</td></tr>'
-                                                .'<tr><td><b>Location:</b></td><td>'.$value['location'].'</td></tr>'
-                                                .'<tr><td><b>Venue:</b></td><td>'.$value['venue'].'</td></tr>'
-                                                .'<tr><td><b>Ticket Price:</b></td><td>$'.$value['price'].'</td></tr>'
-                                                .'<tr><td><b>Tickets in Stock:</b></td><td>'.$value['ticket_qty'].'</td></tr>'
-                                            .'</table>'
-                                            .'<form role="form"  method="post" action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'" enctype="multipart/form-data">'
-                                                .'<div class="form-group">'
-                                                    .'<input type="number" name="qty" placeholder="Quantity" class="form-control small_form_control" required>'
-					                                .'<button type="submit" class="form-control small_form_control btn btn-success" name="add">'
-						                                .'Add To Cart</button>'
-                                                .'</div>'
-                                            .'</form>'
-                                        .'</div>'
-                                    .'</div>'
-                                .'</div>');
-                }
-            }
-            return $output;
-        } 
-        catch (Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
+            $events[strval($row['eventid'])] = $row;
         }
     }
 
@@ -86,28 +37,13 @@
     // Handle Login Attempt
     if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
-        // If the user has entered a number for the ticket quantity and has
-        // pressed "add to cart"
-        if (isset($_POST['add'])){
-            if (isset($_POST['qty'])){
-                $pos = strpos ($_SESSION['q_string'] , '=');
-                $id = substr($_SESSION['q_string'], $pos+1);
-                // Handle the case where we have a guest who hasn't yet logged
-                // in but still wants to purchase tickets
-                if (!isset($_SESSION['cart'])){
-                    $_SESSION['cart'] = array(); 
-                }
-                if (!isset($_SESSION['cart'][$id])){
-                    $_SESSION['cart'][$id] = $_POST['qty'];  
-                }
-                else{
-                    $_SESSION['cart'][$id] += $_POST['qty'];
-                }
-                // Redirect back to current page when finished adding item to cart
-                $new_url = ('http://localhost/TicketHawk/event_page.php?'.$_SESSION['q_string']);
-                header("Location: http://localhost/tickethawk/cart.php");
+        if (isset($_POST['remove_event'])){
+            if (isset($_POST['id_to_remove'])){
+                $_SESSION['cart'][strval($_POST['id_to_remove'])] = 0;
+                header('Location: http://localhost/TicketHawk/cart.php');
             }
         }
+
         // Handle logout attempt
         if (isset($_POST['logout'])){
             return logout();
@@ -143,10 +79,49 @@
             }
         }
 	}
+
+    function generateOrderInfo(){
+        
+    }
+
+    function addPurchaseBtn(){
+        $item_ct = 0;
+        if (!isset($_SESSION['cart'])){
+            return NULL;
+        }
+        foreach ($_SESSION['cart'] as $id => $qty){
+            if ($qty > 0){
+                $item_ct++;
+            }
+        }
+        if ($item_ct == 0){
+            return NULL;
+        }
+        else {
+            return (
+                '<div class="col-sm-2 text-right">'
+                .'<a class="btn btn-success" href="http://localhost/tickethawk/payment_info.php" role="button">'
+                .'Purchase'
+                .'</a>'
+                .'</div>');
+        }
+    }
+
+    function generateTotal(){
+        global $price_total;
+        return ('Total: '.sprintf("$%01.2f", $price_total));
+    }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+    
+    <script>
+        function erase_event(num){
+            document.getElementById("rem").setAttribute("value", num);
+        }
+    </script>
+
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -167,12 +142,6 @@
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-    <!--
-    <script type="text/javascript">
-	    function onLoad(){
-		    alert("Hello World");
-    	}
-    </script>-->
     </head>
 
     <body role="document" onload="onLoad()">
@@ -187,7 +156,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">Ticket Hawk</a>
+              <a class="navbar-brand" href="">Ticket Hawk</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
@@ -206,65 +175,6 @@
                 ?>
                 <li><a href="#about">About</a></li>
                 <li><a href="getContactUsForm.php">Contact</a></li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
-								
-								<table class="table" style="width: 650px;">
-								<tr>
-								<th>Sports</th>
-								<th>Movies</th>
-								<th>Events</th>
-								<th>On Tour</th>
-								<th>Theme Parks</th>
-								</tr>
-								<tr>
-									<td><a href="#">NBA</a></td>
-									<td><a href="#">New Releases</a></td>
-									<td><a href="#">World Cupr Qatar</a></td>
-									<td><a href="#">Jay Z & Beyonce (On the run)</a></td>
-									<td><a href="#">Disney World FL</a></td>
-								</tr>
-								<tr>
-									<td><a href="#">NFL</a></td>
-									<td><a href="#">Drama</a></td>
-									<td><a href="#">2016 Olympics</a></td>
-									<td><a href="#">Rock</a></td>
-									<td><a href="#">Sea World</a></td>
-								</tr>
-								<tr>
-									<td><a href="#">MLB</a></td>
-									<td><a href="#">Action</a></td>
-									<td><label></label></td>
-									<td><a href="#">R&B</a></td>
-									<td><a href="#">Six Flags GA</a></td>
-								</tr>
-								<tr>
-									<td><a href="#">MLH</a></td>
-									<td><a href="#">Horror</a></td>
-									<td><label></label></td>
-									<td><a href="#">Rap</a></td>
-									<td><a href="#">Disney Land CA</a></td>	
-								</tr>
-								<tr>
-									<td><a href="#">MLS</a></td>
-									<td><a href="#">Comedy</a></td>
-									<td><label></label></td>
-									<td><a href="#">Blues</a></td>
-									<td><label></label></td>	
-								</tr>
-								<tr>
-									<td><a href="#">NASCAR</a></td>
-									<td><a href="#">Suspense</a></td>
-									<td><label></label></td>
-									<td><a href="#">Gospel</a></td>
-									<td><label></label></td>	
-								</tr>
-								
-								</table>
-							
-							</ul>
-                </li>
               </ul>
                 <?php
                     if (isset($_SESSION['user'])) {
@@ -317,12 +227,28 @@
     
     <!-- Start the Panel that Describes the Events -->
     <div class="container">
-        <h3>Event Details</h3>
-        <div class="panel panel-default">
-            <div class="panel">
-                <?php echo generateEventDetails(); ?>
+        <form role="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <h3>My Order History</h3>
+            <div class="panel panel-default">
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                        	    <th class="text-center">Sale ID</th>
+                                <th class="text-center">Purchase Date</th>
+                                <th class="text-center">Purchase Time</th>
+                                <th class="text-center">Event Name</th>
+                                <th class="text-center">Ticket Quantity</th>
+                                <th class="text-center">Total Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php echo generateOrderInfo(); ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </body>
 </html>
@@ -330,4 +256,5 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="dist/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="dist/js/docs.min.js"></script>
+
 
