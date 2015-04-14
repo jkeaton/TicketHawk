@@ -2,9 +2,29 @@
 <?php
     session_start();
     include "dist/common.php";
-    $usernameErr = $fnameErr = $lnameErr = $streetErr = $cityErr = $stateErr = $zipcodeErr = $emailErr = $passwordErr = "";
-    $username = $fname = $lname = $street = $city = $state = $zipcode = $email = $password = $hashed_pass = "";
+    $usernameErr = $newunameErr = $fnameErr = $lnameErr = $streetErr = $cityErr = $stateErr = $zipcodeErr = $emailErr = $passwordErr = $newpassErr = $confirmPassErr = "";
+    $username = $uname = $fname = $lname = $street = $city = $state = $zipcode = $email = $password = $pass = $hashed_pass = "";
     $welcome_msg = "";
+
+    // Fetch the Events from the database
+    global $dbhost, $dbname;
+    $creds = db_admin();
+    $dbuser = array_values($creds)[0];
+    $dbpass = array_values($creds)[1];
+    $cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+    $query = "SELECT * FROM EVENT";
+    $results = mysqli_query($cxn, $query) or die("Connection could not be established");
+    $events = array();
+    $price_total = 0.00;
+    storeEventRows();
+    $line_items = generateLineItems();
+
+    function storeEventRows(){
+        global $events, $results;
+        while ($row = mysqli_fetch_assoc($results)) {
+            $events[strval($row['eventid'])] = $row;
+        }
+    }
 
     // If the current session includes a valid user, display the welcome label
     if (isset($_SESSION['user'])){
@@ -23,9 +43,9 @@
                 ++$errCount;
                 $usernameErr = "Username is required";
             } else {
-                $username = test_input($_POST["uname"]);
+                $uname = test_input($_POST["uname"]);
                 // only allow alpha digit characters as part of the username
-                if (!preg_match("/^[a-zA-Z0-9]*$/",$username)) {
+                if (!preg_match("/^[a-zA-Z0-9]*$/",$uname)) {
                     ++$errCount;
                     $usernameErr = "Only letters and numbers allowed";
                 }
@@ -34,13 +54,13 @@
                 ++$errCount;
                 $passwordErr = "Password is required";
             } else {
-                $password = test_input($_POST["pass"]);
+                $pass = test_input($_POST["pass"]);
             }
             if ($errCount == 0){
-                if (login($username, $password)){
-                    $_SESSION['user'] = $username;
+                if (login($uname, $pass)){
+                    $_SESSION['user'] = $uname;
                     $welcome_msg = ("Welcome " . $_SESSION['user']);
-                    if ($username == 'admin'){
+                    if ($uname == 'admin'){
 					    header('Location: http://localhost/TicketHawk/admin_page.php');
                     }
                     else {
@@ -50,146 +70,99 @@
             }
         }
 
-        if (isset($_POST['continue'])){
+        // Handle purchase from registered user
+        if (isset($_POST['confirm_as_reg_user'])){
+            // Add each line in cart if the quantity is greater than 0
+            foreach ($_SESSION['cart'] as $id => $qty){
+                if ($qty > 0){
+                    $e = $events[$id];
+                    addSale($_SESSION['user_id'], $id, $qty, $e["price"]);
+                }
+            }
+            // Empty the Cart
+            $_SESSION['cart'] = array();
+            // Clear Payment Info Array
             $_SESSION['payment_info'] = array();
-            $errCount = 0;
+            header('Location: http://localhost/tickethawk/order_history.php');
+        }
 
-            /*
+        if (isset($_POST['sign_and_confirm'])){
+            // Log the User In, but do not redirect and handle purchase
+            $errCount = 0;
             // Get username
             if (empty($_POST["username"])) {
                 ++$errCount;
-                $usernameErr = "Username is required";
+                $newunameErr = "Username is required";
             } else {
                 $username = test_input($_POST["username"]);
                 // only allow alpha digit characters as part of the username
                 if (!preg_match("/^[a-zA-Z0-9]*$/",$username)) {
                     ++$errCount;
-                    $usernameErr = "Only letters and numbers allowed";
+                    $newunameErr = "Only letters and numbers allowed";
                 }
                 if (!availableUser($username)){
                     ++$errCount;
-                    $usernameErr = "Username is unavailable, please choose another";
+                    $newunameErr = "Username is unavailable, please choose another";
                 }
             }
 
             // Get password  
             if (empty($_POST["password"])) {
                 ++$errCount;
-                $passwordErr = "Password is required";
+                $newpassErr = "Password is required";
             } else {
                 $password = test_input($_POST["password"]);
                 // hash password for storage
                 $hashed_pass = password_hash($password, PASSWORD_DEFAULT);
             }
-            */
-    
-            // Get fname  
-            if (empty($_POST["fname"])) {
+
+            // Get password confirmation  
+            if (empty($_POST["confirm_pass"]) || ($_POST["password"] != $_POST["confirm_pass"])) {
                 ++$errCount;
-                $fnameErr = "First name is required";
-            } else {
-                $_SESSION['payment_info']['fname'] = test_input($_POST["fname"]);
-                // only allow alpha characters as part of the first name
-                if (!preg_match("/^[a-zA-Z]*$/",$_SESSION['payment_info']['fname'])) {
-                    ++$errCount;
-                    $fnameErr = "Only letters allowed";
-                }
-            }
-        
-            // Get lname  
-            if (empty($_POST["lname"])) {
-                ++$errCount;
-                $lnameErr = "Last name is required";
-            } else {
-                $_SESSION['payment_info']['lname'] = test_input($_POST["lname"]);
-                // only allow alpha characters as part of the last name
-                if (!preg_match("/^[a-zA-Z]*$/",$_SESSION['payment_info']['lname'])) {
-                    ++$errCount;
-                    $lnameErr = "Only letters allowed";
-                }
+                $confirmPassErr = "Password and Password Confirmation do not match";
             }
 
-            // Get street 
-            if (empty($_POST["street"])) {
-                ++$errCount;
-                $streetErr = "Street Address is required";
-            } else {
-                $_SESSION['payment_info']['street'] = test_input($_POST["street"]);
-                // only allow alpha digit characters as part of the street address
-                if (!preg_match("/^[a-zA-Z0-9 ]*$/",$_SESSION['payment_info']['street'])) {
-                    ++$errCount;
-                    $streetErr = "Only letters, numbers and spaces are allowed";
-                }
-            }
-            
-            // Get city
-            if (empty($_POST["city"])) {
-                ++$errCount;
-                $cityErr = "City is required";
-            } else {
-                $_SESSION['payment_info']['city'] = test_input($_POST["city"]);
-                // only allow alpha characters as part of the city
-                if (!preg_match("/^[a-zA-Z]*$/",$_SESSION['payment_info']['city'])) {
-                    ++$errCount;
-                    $cityErr = "Only letters allowed";
-                }
-            }
-
-            // Get state 
-            if (empty($_POST["state"])) {
-                ++$errCount;
-                $stateErr = "State is required";
-            } else {
-                $_SESSION['payment_info']['state'] = test_input($_POST["state"]);
-                // only allow alpha characters as part of the state
-                if (!preg_match("/^[a-zA-Z]*$/",$_SESSION['payment_info']['state'])) {
-                    ++$errCount;
-                    $stateErr = "Only letters allowed";
-                }
-            }
-
-            // Get zipcode
-            if (empty($_POST["zipcode"])) {
-                ++$errCount;
-                $zipcodeErr = "Zipcode is required";
-            } else {
-                $_SESSION['payment_info']['zipcode'] = test_input($_POST["zipcode"]);
-                // only allow digit characters as part of the zipcode
-                if (!preg_match("/^[0-9]*$/",$zipcode)) {
-                    ++$errCount;
-                    $zipcodeErr = "Only numbers allowed";
-                }
-                else{
-                    if (strlen($_SESSION['payment_info']['zipcode']) != 5){
-                        ++$errCount;
-                        $zipcodeErr = "Zipcode must be 5 digits long";
+            if ($errCount == 0){
+                if (createNewAccount($username, $_SESSION['payment_info']['fname'], $_SESSION['payment_info']['lname'],
+                    $_SESSION['payment_info']['street'], $_SESSION['payment_info']['city'],
+                    $_SESSION['payment_info']['state'], $_SESSION['payment_info']['zipcode'],
+                    $_SESSION['payment_info']['email'], $hashed_pass)){
+                    if (login($username, $password)){
+                        $_SESSION['user'] = $username;
+                        $welcome_msg = ("Welcome " . $_SESSION['user']);
                     }
                 }
             }
+            header('Location: http://localhost/tickethawk/order_history.php');
+        }
 
-            // Get email 
-            if (empty($_POST["email"])) {
-                ++$errCount;
-                $emailErr = "Email address is required";
-            } else {
-                $_SESSION['payment_info']['email'] = test_input($_POST["email"]);
-                // check if e-mail address is well-formed
-                if (!filter_var($_SESSION['payment_info']['email'], FILTER_VALIDATE_EMAIL)) {
-                    ++$errCount;
-                    $emailErr = "Invalid email format";
+        if (isset($_POST['confirm_as_guest'])){
+            // Handle purchase for guest
+            foreach ($_SESSION['cart'] as $id => $qty){
+                if ($qty > 0){
+                    $e = $events[$id];
+                    addSale(NULL, $id, $qty, $e["price"]);
                 }
             }
-
-            // If no errors occured, create a user and store it in the database
-            if ($errCount == 0){
-                header("Location: http://localhost/TicketHawk/confirm_purchase.php");
-                /*
-                if (createNewAccount($username, $fname, $lname, $street, $city,
-                    $state, $zipcode, $email, $hashed_pass)){
-                    header('Location: http://localhost/TicketHawk/homepage.php');
-                }*/
-            }
+            // Empty the Cart
+            $_SESSION['cart'] = array();
+            // Clear Payment Info Array
+            $_SESSION['payment_info'] = array();
+            header('Location: http://localhost/tickethawk/order_history.php');
         }
+    }
+
+    function addSale($_uid, $_eid, $_qty, $_price){
+        global $cxn;
+        // Add the sale to the sales table
+        $query = "INSERT INTO sales (UserID, EventID, Quantity, Price) VALUES ('$_uid', '$_eid', '$_qty', '$_price')";
+        $results = mysqli_query($cxn, $query) or die("Connection could not be established");
+        // Deduct the amount of tickets purchased from the event's ticket quantity
+        $query = ("UPDATE EVENT SET ticket_qty=ticket_qty-".$_qty." WHERE eventid=".$_eid);
+        $results = mysqli_query($cxn, $query) or die("Connection could not be established");
+        // Add the amount of tickets purchased to the event's ticket_sold quantity
+        $query = ("UPDATE EVENT SET ticket_sold=ticket_sold+".$_qty." WHERE eventid=".$_eid);
+        $results = mysqli_query($cxn, $query) or die("Connection could not be established");
     }
     
     function createNewAccount($_username, $_fname, $_lname, $_street, $_city, $_state, $_zipcode, $_email, $_password) {
@@ -205,30 +178,93 @@
         return true;
     }
     
-    function generateTicketInfo(){
+    function generateLineItems(){
         global $events, $price_total;
         $output = "";
         if (isset($_SESSION['cart'])){
+            $count = 1;
             foreach ($_SESSION['cart'] as $id => $qty){
                 if ($qty > 0){
                     $e = $events[$id];
-                    $format = '%30$s  %-10$s  %-10$d @ %';
-                    $output .= ('<p>'
-                            . substr($e["eventname"], 0, 30).
-                            . '<td class="text-center">'.$e["date"].'</td>'           
-                            . '<td class="text-center">'.$e["time"].'</td>'           
-                            . '<td>'.$e["location"].'</td>'           
-                            . '<td>'.$e["venue"].'</td>'           
-                            . '<td class="text-right">'.sprintf("$%01.2f", $e["price"]*$qty).'</td>'           
-                            . '<td class="text-center">'.$qty.'</td>'
-                            . '<td class="text-center">'
-                            . '<button onClick="erase_event('.$id.');" class="btn btn-danger" name="remove_event" type="submit">'           
-                            . 'Remove</button>'
-                            . '</td>'
-                            . '</tr>');
+                    $output .= (
+                        '<div class="row">'
+                        . '<div class="col-sm-4 text-left">'. $e["eventname"]. '</div>'
+                        . '<div class="col-sm-3 text-center">'. $e["date"]. '</div>'
+                        . '<div class="col-sm-2 text-right">'. $qty. '</div>'
+                        . '<div class="col-sm-3 text-right">'. sprintf("@ $%5.2f (ea)", $e["price"]) .'</div>'
+                        . '</div>');
                     $price_total += ($e["price"]*$qty);
+                    $count++;
                 }
             }
+            // If there are no line items, get me out of here
+            if ($price_total == 0){
+                header('Location: http://localhost/tickethawk/homepage.php#browse');
+            }
+        }
+        return $output;
+    }
+
+    function getSignInFields(){
+        global $newunameErr, $newpassErr, $confirmPassErr;
+        $output = "";
+        if (!isset($_SESSION['user'])){
+            $output .= (
+                '<div class="form-group col-sm-3">'
+                .'<label for="inputUsername">Username:</label>'
+                .'<span class="error">* '.$newunameErr.'</span>'
+                .'<input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username">'
+                .'</div>'
+                .'<div class="form-group col-sm-3">'
+                .'<label for="inputPassword">Password</label>'
+                .'<span class="error">* '.$newpassErr.'</span>'
+                .'<input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">'
+                .'</div>'
+                .'<div class="form-group col-sm-3">'
+                .'<label for="inputPassword">Confirm Password</label>'
+                .'<span class="error">* '.$confirmPassErr.'</span>'
+                .'<input type="password" name="confirm_pass" class="form-control" id="inputPassword" placeholder="Password">'
+                .'</div>');
+        }
+        return $output;
+    }
+
+    function getCorrectFooter(){
+        $output = "";
+        if (isset($_SESSION['user'])){
+            $output .= (  
+			    '<div class="form-group col-sm-3 col-sm-offset-9">'
+	            .'<button type="submit" name="confirm_as_reg_user" class="btn btn-primary form-control">'
+                .'Confirm Purchase'
+				.'</button>'
+			    .'</div>');
+        }
+        else {
+            $output .= (  
+			    '<div class="form-group col-sm-3 col-sm-offset-6">'
+	            .'<button type="submit" name="sign_and_confirm" class="btn btn-primary form-control">'
+                .'Sign Up & Confirm Purchase'
+				.'</button>'
+			    .'</div>'
+			    .'<div class="form-group col-sm-3">'
+			    .'<button type="submit" name="confirm_as_guest" class="btn btn-primary form-control">'
+				.'Confirm Purchase As Guest'
+                .'</button>'
+				.'</div>');
+        }
+        return $output;
+    }
+
+    function printPaymentInfo(){
+        $output = "";
+        if (isset($_SESSION['payment_info']['fname'])){
+            $output .= ($_SESSION['payment_info']['fname']." ".$_SESSION['payment_info']['lname']
+                . "<br/>"
+                . $_SESSION['payment_info']['street']
+                . "<br/>"
+                . $_SESSION['payment_info']['city']." ".$_SESSION['payment_info']['state'].", ".$_SESSION['payment_info']['zipcode']
+                . "<br/>"
+                . $_SESSION['payment_info']['email']);
         }
         return $output;
     }
@@ -279,63 +315,7 @@
 						<li>
 							<a href="getContactUsForm.php">Contact</a>
 						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Search <span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
-<table class="table" style="width: 650px;">
-								<tr>
-								<th>Sports</th>
-								<th>Movies</th>
-								<th>Events</th>
-								<th>On Tour</th>
-								<th>Theme Parks</th>
-								</tr>
-								<tr>
-									<td><a href="#">NBA</a></td>
-									<td><a href="#">New Releases</a></td>
-									<td><a href="#">World Cupr Qatar</a></td>
-									<td><a href="#">Jay Z & Beyonce (On the run)</a></td>
-									<td><a href="#">Disney World FL</a></td>
-								</tr>
-								<tr>
-									<td><a href="#">NFL</a></td>
-									<td><a href="#">Drama</a></td>
-									<td><a href="#">2016 Olympics</a></td>
-									<td><a href="#">Rock</a></td>
-									<td><a href="#">Sea World</a></td>
-								</tr>
-								<tr>
-									<td><a href="#">MLB</a></td>
-									<td><a href="#">Action</a></td>
-									<td><label></label></td>
-									<td><a href="#">R&B</a></td>
-									<td><a href="#">Six Flags GA</a></td>
-								</tr>
-								<tr>
-									<td><a href="#">MLH</a></td>
-									<td><a href="#">Horror</a></td>
-									<td><label></label></td>
-									<td><a href="#">Rap</a></td>
-									<td><a href="#">Disney Land CA</a></td>	
-								</tr>
-								<tr>
-									<td><a href="#">MLS</a></td>
-									<td><a href="#">Comedy</a></td>
-									<td><label></label></td>
-									<td><a href="#">Blues</a></td>
-									<td><label></label></td>	
-								</tr>
-								<tr>
-									<td><a href="#">NASCAR</a></td>
-									<td><a href="#">Suspense</a></td>
-									<td><label></label></td>
-									<td><a href="#">Gospel</a></td>
-									<td><label></label></td>	
-								</tr>
-								
-								</table>
-							</ul>
-						</li>
+                        <li><a href="http://localhost/tickethawk/homepage.php#browse">Events</a></li>
 					</ul>
                 <?php
                     if (isset($_SESSION['user'])) {
@@ -345,7 +325,7 @@
                             . '<i class="glyphicon glyphicon-shopping-cart icon-flipped"></i>'
                             . '</a>'
                             . '</li>'
-                            . '<li class="navbar-left"><a>'
+                            . '<li class="navbar-left"><a href="http://localhost/tickethawk/order_history.php">'
                             . $welcome_msg
                             . '</a></li><form role="form" class="navbar-form navbar-right" method="post"'
                             . 'action="'
@@ -395,30 +375,45 @@
 				<p class="panel-title">Confirm Purchase</p>
             </div>
             <div class="panel-body">
+                <h3>Order Invoice: </h3>
                 <div class="row">
-                    <div class="form-group col-sm-3">
-                        <label for="inputUsername">Username:</label>
-                        <span class="error">* <?php echo $usernameErr; ?></span>
-                        <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username">
+                    <div class="col-sm-6">
+                        <p>
+                            <?php echo printPaymentInfo(); ?>   
+                        </p>
                     </div>
-                    <div class="form-group col-sm-3">
-                        <label for="inputPassword">Password</label>
-                        <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-4 text-left">
+                        <b><u>Event Name</u></b>
                     </div>
+                    <div class="col-sm-3 text-center">
+                        <b><u>Event Date</u></b>
+                    </div>
+                    <div class="col-sm-2 text-right">
+                        <b><u>Ticket Count</u></b>
+                    </div>
+                    <div class="col-sm-3 text-right">
+                        <b><u>Price Per Ticket</u></b>
+                    </div>
+                </div>
+                <?php echo $line_items; ?>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-3 col-sm-offset-9 text-right">
+                        <?php echo sprintf("<b>Total Price:  <u>$%5.2f</u></b>", $price_total); ?>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+                <div class="row">
+                    <?php echo getSignInFields(); ?>
                 </div>
             </div>
             <div class="panel-footer">
                 <div class="row">
-			        <div class="form-group col-sm-3 col-sm-offset-6">
-					    <button type="submit" name="sign_and_confirm" class="btn btn-primary form-control">
-						    Sign Up & Confirm Purchase
-						</button>
-					</div>
-			        <div class="form-group col-sm-3">
-					    <button type="submit" name="confirm_as_guest" class="btn btn-primary form-control">
-						    Confirm Purchase As Guest
-						</button>
-					</div>
+                    <?php echo getCorrectFooter(); ?>
                 </div>
             </div>       
 	    </div>

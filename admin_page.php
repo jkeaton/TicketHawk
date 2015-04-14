@@ -338,27 +338,49 @@
                 overflow: hidden;
                 width: 16%;  
             }
-            .td_venue, .th_venue {
+            .td_venue {
                 overflow: hidden;
                 width: 16%;  
             }
-            .td_price, .th_price {
+            .th_venue {
+                overflow: hidden;
+                width: 15%;  
+            }
+            .td_price {
                 overflow: hidden;
                 width: 7%;  
             }
-            .td_qty, .th_qty {
+            .th_price {
+                overflow: hidden;
+                width: 6%;  
+            }
+            .td_qty {
                 overflow: hidden;
                 width: 8%;  
+            }
+            .th_qty {
+                overflow: hidden;
+                width: 8%;  
+            }
+            .td_purch{
+            	overflow: hidden;
+                width: 8%;
+            }
+            .th_purch{
+            	overflow: hidden;
+                width: 9%;
             }
             .td_img, .th_img {
                 overflow: hidden;
                 width: 10%;  
             }
-            .td_purch, .th_purch{
-            	overflow: hidden;
-                width: 8%;
-            }
         </style>
+        <script>
+            function myFunction(eventid){
+                document.getElementById("eventNum").setAttribute("value", eventid);
+				document.getElementById("the_button").click();
+        	}
+        </script>
     </head>
 
     <body role="document">
@@ -377,7 +399,7 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="homepage.php">Home</a></li>
-                        <li class="active"><a href="admin_page.php">Events</a></li>
+                        <li><a href="http://localhost/tickethawk/homepage.php#browse">Events</a></li>
                         <li><a href="other_admin.php">Users</a></li>
                     </ul>
                 <?php
@@ -385,10 +407,10 @@
                         echo ('<ul class="nav navbar-nav navbar-right">'
                             . '<li>'
                             . '<a href="http://localhost/tickethawk/cart.php">'
-                            . '<i class="glyphicon glyphicon-shopping-cart"></i>'
+                            . '<i class="glyphicon glyphicon-shopping-cart icon-flipped"></i>'
                             . '</a>'
                             . '</li>'
-                            . '<li class="navbar-left"><a>'
+                            . '<li class="navbar-left"><a href="http://localhost/tickethawk/order_history.php">'
                             . $welcome_msg
                             . '</a></li><form role="form" class="navbar-form navbar-right" method="post"'
                             . 'action="'
@@ -406,7 +428,7 @@
                               '<ul class="nav navbar-nav navbar-right">'
                             . '<li>'
                             . '<a href="http://localhost/tickethawk/cart.php">'
-                            . '<i class="glyphicon glyphicon-shopping-cart"></i>'
+                            . '<i class="glyphicon glyphicon-shopping-cart icon-flipped"></i>'
                             . '</a>'
                             . '</li>'
                             . '<form class="navbar-form navbar-nav navbar-right form-inline" role="form" method="post" action="'
@@ -734,7 +756,7 @@ echo "<div id='myModal' class='modal fade'>
     </div>
 </div>"; 
   }	
-?>     
+?>
         
       </div>
    </body>

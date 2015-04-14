@@ -40,3 +40,7 @@ body {
 .form-inline > * {
     margin-left: 5px !important;
 }
+.doubleUnderline {
+    text-decoration:underline;
+    border-bottom: 1px solid #000;
+}
