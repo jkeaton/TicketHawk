@@ -2,9 +2,29 @@
 <?php
     session_start();
     include "dist/common.php";
-    $usernameErr = $fnameErr = $lnameErr = $streetErr = $cityErr = $stateErr = $zipcodeErr = $emailErr = $passwordErr = "";
+    $usernameErr = $fnameErr = $lnameErr = $streetErr = $cityErr = $stateErr = $zipcodeErr = $emailErr = $passwordErr = $confirmPassErr = "";
     $username = $fname = $lname = $street = $city = $state = $zipcode = $email = $password = $hashed_pass = "";
     $welcome_msg = "";
+
+    // Fetch the Events from the database
+    global $dbhost, $dbname;
+    $creds = db_admin();
+    $dbuser = array_values($creds)[0];
+    $dbpass = array_values($creds)[1];
+    $cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+    $query = "SELECT * FROM EVENT";
+    $results = mysqli_query($cxn, $query) or die("Connection could not be established");
+    $events = array();
+    $price_total = 0.00;
+
+    storeEventRows();
+
+    function storeEventRows(){
+        global $events, $results;
+        while ($row = mysqli_fetch_assoc($results)) {
+            $events[strval($row['eventid'])] = $row;
+        }
+    }
 
     // If the current session includes a valid user, display the welcome label
     if (isset($_SESSION['user'])){
@@ -82,103 +102,6 @@
                 $hashed_pass = password_hash($password, PASSWORD_DEFAULT);
             }
             */
-    
-            // Get fname  
-            if (empty($_POST["fname"])) {
-                ++$errCount;
-                $fnameErr = "First name is required";
-            } else {
-                $_SESSION['payment_info']['fname'] = test_input($_POST["fname"]);
-                // only allow alpha characters as part of the first name
-                if (!preg_match("/^[a-zA-Z]*$/",$_SESSION['payment_info']['fname'])) {
-                    ++$errCount;
-                    $fnameErr = "Only letters allowed";
-                }
-            }
-        
-            // Get lname  
-            if (empty($_POST["lname"])) {
-                ++$errCount;
-                $lnameErr = "Last name is required";
-            } else {
-                $_SESSION['payment_info']['lname'] = test_input($_POST["lname"]);
-                // only allow alpha characters as part of the last name
-                if (!preg_match("/^[a-zA-Z]*$/",$_SESSION['payment_info']['lname'])) {
-                    ++$errCount;
-                    $lnameErr = "Only letters allowed";
-                }
-            }
-
-            // Get street 
-            if (empty($_POST["street"])) {
-                ++$errCount;
-                $streetErr = "Street Address is required";
-            } else {
-                $_SESSION['payment_info']['street'] = test_input($_POST["street"]);
-                // only allow alpha digit characters as part of the street address
-                if (!preg_match("/^[a-zA-Z0-9 ]*$/",$_SESSION['payment_info']['street'])) {
-                    ++$errCount;
-                    $streetErr = "Only letters, numbers and spaces are allowed";
-                }
-            }
-            
-            // Get city
-            if (empty($_POST["city"])) {
-                ++$errCount;
-                $cityErr = "City is required";
-            } else {
-                $_SESSION['payment_info']['city'] = test_input($_POST["city"]);
-                // only allow alpha characters as part of the city
-                if (!preg_match("/^[a-zA-Z]*$/",$_SESSION['payment_info']['city'])) {
-                    ++$errCount;
-                    $cityErr = "Only letters allowed";
-                }
-            }
-
-            // Get state 
-            if (empty($_POST["state"])) {
-                ++$errCount;
-                $stateErr = "State is required";
-            } else {
-                $_SESSION['payment_info']['state'] = test_input($_POST["state"]);
-                // only allow alpha characters as part of the state
-                if (!preg_match("/^[a-zA-Z]*$/",$_SESSION['payment_info']['state'])) {
-                    ++$errCount;
-                    $stateErr = "Only letters allowed";
-                }
-            }
-
-            // Get zipcode
-            if (empty($_POST["zipcode"])) {
-                ++$errCount;
-                $zipcodeErr = "Zipcode is required";
-            } else {
-                $_SESSION['payment_info']['zipcode'] = test_input($_POST["zipcode"]);
-                // only allow digit characters as part of the zipcode
-                if (!preg_match("/^[0-9]*$/",$zipcode)) {
-                    ++$errCount;
-                    $zipcodeErr = "Only numbers allowed";
-                }
-                else{
-                    if (strlen($_SESSION['payment_info']['zipcode']) != 5){
-                        ++$errCount;
-                        $zipcodeErr = "Zipcode must be 5 digits long";
-                    }
-                }
-            }
-
-            // Get email 
-            if (empty($_POST["email"])) {
-                ++$errCount;
-                $emailErr = "Email address is required";
-            } else {
-                $_SESSION['payment_info']['email'] = test_input($_POST["email"]);
-                // check if e-mail address is well-formed
-                if (!filter_var($_SESSION['payment_info']['email'], FILTER_VALIDATE_EMAIL)) {
-                    ++$errCount;
-                    $emailErr = "Invalid email format";
-                }
-            }
 
             // If no errors occured, create a user and store it in the database
             if ($errCount == 0){
@@ -205,28 +128,23 @@
         return true;
     }
     
-    function generateTicketInfo(){
+    function generateLineItems(){
         global $events, $price_total;
         $output = "";
         if (isset($_SESSION['cart'])){
+            $count = 1;
             foreach ($_SESSION['cart'] as $id => $qty){
                 if ($qty > 0){
                     $e = $events[$id];
-                    $format = '%30$s  %-10$s  %-10$d @ %';
-                    $output .= ('<p>'
-                            . substr($e["eventname"], 0, 30).
-                            . '<td class="text-center">'.$e["date"].'</td>'           
-                            . '<td class="text-center">'.$e["time"].'</td>'           
-                            . '<td>'.$e["location"].'</td>'           
-                            . '<td>'.$e["venue"].'</td>'           
-                            . '<td class="text-right">'.sprintf("$%01.2f", $e["price"]*$qty).'</td>'           
-                            . '<td class="text-center">'.$qty.'</td>'
-                            . '<td class="text-center">'
-                            . '<button onClick="erase_event('.$id.');" class="btn btn-danger" name="remove_event" type="submit">'           
-                            . 'Remove</button>'
-                            . '</td>'
-                            . '</tr>');
+                    $output .= (
+                        '<div class="row">'
+                        . '<div class="col-sm-4 text-left">'. $e["eventname"]. '</div>'
+                        . '<div class="col-sm-3 text-center">'. $e["date"]. '</div>'
+                        . '<div class="col-sm-2 text-right">'. $qty. '</div>'
+                        . '<div class="col-sm-3 text-right">'. sprintf("@ $%5.2f (ea)", $e["price"]) .'</div>'
+                        . '</div>');
                     $price_total += ($e["price"]*$qty);
+                    $count++;
                 }
             }
         }
@@ -395,6 +313,30 @@
 				<p class="panel-title">Confirm Purchase</p>
             </div>
             <div class="panel-body">
+                <h4>Order Invoice: </h4>
+                <div class="row">
+                    <div class="col-sm-4 text-left">
+                        <b><u>Event Name</u></b>
+                    </div>
+                    <div class="col-sm-3 text-center">
+                        <b><u>Event Date</u></b>
+                    </div>
+                    <div class="col-sm-2 text-right">
+                        <b><u>Ticket Count</u></b>
+                    </div>
+                    <div class="col-sm-3 text-right">
+                        <b><u>Price Per Ticket</u></b>
+                    </div>
+                </div>
+                <?php echo generateLineItems(); ?>
+                <br/>
+                <div class="row">
+                    <div class="col-sm-3 col-sm-offset-9 text-right">
+                        <?php echo sprintf("<b>Total Price:  <u>$%5.2f</u></b>", $price_total); ?>
+                    </div>
+                </div>
+                <br/>
+                <br/>
                 <div class="row">
                     <div class="form-group col-sm-3">
                         <label for="inputUsername">Username:</label>
@@ -403,7 +345,13 @@
                     </div>
                     <div class="form-group col-sm-3">
                         <label for="inputPassword">Password</label>
+                        <span class="error">* <?php echo $passwordErr; ?></span>
                         <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label for="inputPassword">Confirm Password</label>
+                        <span class="error">* <?php echo $confirmPassErr; ?></span>
+                        <input type="password" name="confirm_pass" class="form-control" id="inputPassword" placeholder="Password">
                     </div>
                 </div>
             </div>

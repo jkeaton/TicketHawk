@@ -74,6 +74,13 @@
 	            if ($_username === 'admin') {
                     $_SESSION['valid_admin'] = true; 
                     $_SESSION['user_id'] = $row['user_id'];
+                    $_SESSION['fname'] = $row['fname'];
+                    $_SESSION['lname'] = $row['lname'];
+                    $_SESSION['street'] = $row['street_address'];
+                    $_SESSION['city'] = $row['city'];
+                    $_SESSION['state'] = $row['state'];
+                    $_SESSION['zipcode'] = $row['zipcode'];
+                    $_SESSION['email'] = $row['email'];
                 }
                 else {
                     $_SESSION['valid_admin'] = false; 

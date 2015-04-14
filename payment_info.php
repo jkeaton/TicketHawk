@@ -54,35 +54,6 @@
             $_SESSION['payment_info'] = array();
             $errCount = 0;
 
-            /*
-            // Get username
-            if (empty($_POST["username"])) {
-                ++$errCount;
-                $usernameErr = "Username is required";
-            } else {
-                $username = test_input($_POST["username"]);
-                // only allow alpha digit characters as part of the username
-                if (!preg_match("/^[a-zA-Z0-9]*$/",$username)) {
-                    ++$errCount;
-                    $usernameErr = "Only letters and numbers allowed";
-                }
-                if (!availableUser($username)){
-                    ++$errCount;
-                    $usernameErr = "Username is unavailable, please choose another";
-                }
-            }
-
-            // Get password  
-            if (empty($_POST["password"])) {
-                ++$errCount;
-                $passwordErr = "Password is required";
-            } else {
-                $password = test_input($_POST["password"]);
-                // hash password for storage
-                $hashed_pass = password_hash($password, PASSWORD_DEFAULT);
-            }
-            */
-    
             // Get fname  
             if (empty($_POST["fname"])) {
                 ++$errCount;
@@ -367,44 +338,32 @@
 				<p class="panel-title">Please Enter Your Contact Information</p>
             </div>
             <div class="panel-body">
-                <!--
-                <div class="row">
-                    <div class="form-group col-sm-3">
-                        <label for="inputUsername">Username:</label>
-                        <span class="error">* <?php echo $usernameErr; ?></span>
-                        <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username">
-                    </div>
-                    <div class="form-group col-sm-3">
-                        <label for="inputPassword">Password</label>
-                        <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
-                    </div>
-                </div>-->
                 <div class="row">
                     <div class="form-group col-sm-6">
                         <label for="inputFname">First Name:</label>
                         <span class="error">* <?php echo $fnameErr; ?></span>
-                        <input type="text" name="fname" class="form-control" id="inputFname" placeholder="First Name">
+                        <input type="text" name="fname" class="form-control" id="inputFname" placeholder="First Name" value="<?php if (isset($_SESSION['fname'])) echo $_SESSION['fname'];?>">
                     </div>
                     <div class="form-group col-sm-6">
                         <label for="inputLname">Last Name:</label>
                         <span class="error">* <?php echo $lnameErr; ?></span>
-                        <input type="text" name="lname" class="form-control" id="inputLname" placeholder="Last Name">
+                        <input type="text" name="lname" class="form-control" id="inputLname" placeholder="Last Name" value="<?php if (isset($_SESSION['lname'])) echo $_SESSION['lname'];?>">
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-sm-6">
                         <label for="inputStreet">Street Address:</label>
                         <span class="error">* <?php echo $streetErr; ?></span>
-                        <input type="text" name="street" class="form-control" id="inputStreet" placeholder="Street Address">
+                        <input type="text" name="street" class="form-control" id="inputStreet" placeholder="Street Address" value="<?php if (isset($_SESSION['street'])) echo $_SESSION['street'];?>">
                     </div>
-                    <div class="form-group col-sm-3">
+                    <div class="form-group col-sm-2">
                         <label for="inputCity">City:</label>
                         <span class="error">* <?php echo $cityErr; ?></span>
-                        <input type="text" name="city" class="form-control" id="inputCity" placeholder="City">
+                        <input type="text" name="city" class="form-control" id="inputCity" placeholder="City" value="<?php if (isset($_SESSION['city'])) echo $_SESSION['city'];?>">
                     </div>
-                    <div class="form-group col-sm-1">
+                    <div class="form-group col-sm-2">
                         <label>State: <span class="error">* <?php echo $stateErr; ?></span></label><br/>
-                        <select name="state" class="form-control">
+                        <select name="state" class="form-control" value="<?php if (isset($_SESSION['state'])) echo $_SESSION['state'];?>">
                             <option value="AL">AL</option>
                             <option value="AK">AK</option>
                             <option value="AZ">AZ</option>
@@ -461,14 +420,14 @@
                     <div class="form-group col-sm-2">
                         <label for="inputZipcode">Zipcode:</label>
                         <span class="error">* <?php echo $zipcodeErr; ?></span>
-                        <input type="text" name="zipcode" class="form-control" id="inputZipcode" placeholder="Zipcode">
+                        <input type="text" name="zipcode" class="form-control" id="inputZipcode" placeholder="Zipcode" value="<?php if (isset($_SESSION['zipcode'])) echo $_SESSION['zipcode'];?>">
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-sm-6">
                         <label for="inputEmail">Email</label>
                         <span class="error">* <?php echo $emailErr; ?></span>
-                        <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email">
+                        <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email" value="<?php if (isset($_SESSION['email'])) echo $_SESSION['email'];?>">
                     </div>
                 </div>
             </div>
