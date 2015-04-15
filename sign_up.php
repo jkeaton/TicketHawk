@@ -2,7 +2,7 @@
 <?php
     session_start();
     include "dist/common.php";
-    $usernameErr = $fnameErr = $lnameErr = $streetErr = $cityErr = $stateErr = $zipcodeErr = $emailErr = $passwordErr = "";
+    $usernameErr = $fnameErr = $lnameErr = $streetErr = $cityErr = $stateErr = $zipcodeErr = $emailErr = $passwordErr = $confirmErr = "";
     $username = $fname = $lname = $street = $city = $state = $zipcode = $email = $password = $hashed_pass = "";
     $welcome_msg = "";
 
@@ -175,11 +175,26 @@
             $hashed_pass = password_hash($password, PASSWORD_DEFAULT);
         }
 
+        // Get confirmation
+        if (empty($_POST["confirm_pass"])) {
+            ++$errCount;
+            $confirmErr = "Confirmation is required";
+        }
+        else {
+            if ($_POST["confirm_pass"] !== $_POST["password"]){
+                ++$errCount;
+                $confirmErr = "Password and Confirmation do not match";
+            }
+        }
+
         // If no errors occured, create a user and store it in the database
         if ($errCount == 0){
             if (createNewAccount($username, $fname, $lname, $street, $city,
                 $state, $zipcode, $email, $hashed_pass)){
-		        header('Location: http://localhost/TicketHawk/homepage.php');
+                // Log the User in automatically after creating a new account
+                if (login($username, $password)){
+		            header('Location: http://localhost/TicketHawk/homepage.php');
+                }
             }
         }
     }
@@ -296,36 +311,54 @@
 
 		<!--main
 		================================================== -->
-		<div class="container">
-			<div id="sign-up">
-				<h2>Sign up</h2>
-                <form role="form" method="post" id="sign_up_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                    <div class="form-group">
+        <form role="form" method="post" id="sign_up_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <div class="container" style="margin-top: 30px;">
+		    <div class="panel panel-default">
+                <div class="panel-heading">
+                    <p class="panel-title">Sign up</p>
+                </div>
+                <div class="panel-body">
+			    <div class="row">
+                    <div class="form-group col-sm-6">
                         <label for="inputUsername">Username:</label>
                         <span class="error">* <?php echo $usernameErr; ?></span>
                         <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-sm-3">
+                        <label for="inputPassword">Password</label>
+                        <span class="error">* <?php echo $passwordErr; ?></span>
+                        <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label for="inputPassword">Confirm Password</label>
+                        <span class="error">* <?php echo $confirmErr; ?></span>
+                        <input type="password" name="confirm_pass" class="form-control" id="inputPassword" placeholder="Confirm Pass">
+                    </div>
+                </div>
+			    <div class="row">
+                    <div class="form-group col-sm-6">
                         <label for="inputFname">First Name:</label>
                         <span class="error">* <?php echo $fnameErr; ?></span>
                         <input type="text" name="fname" class="form-control" id="inputFname" placeholder="First Name">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-sm-6">
                         <label for="inputLname">Last Name:</label>
                         <span class="error">* <?php echo $lnameErr; ?></span>
                         <input type="text" name="lname" class="form-control" id="inputLname" placeholder="Last Name">
                     </div>
-                    <div class="form-group">
+                </div>
+			    <div class="row">
+                    <div class="form-group col-sm-6">
                         <label for="inputStreet">Street Address:</label>
                         <span class="error">* <?php echo $streetErr; ?></span>
                         <input type="text" name="street" class="form-control" id="inputStreet" placeholder="Street Address">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-sm-2">
                         <label for="inputCity">City:</label>
                         <span class="error">* <?php echo $cityErr; ?></span>
                         <input type="text" name="city" class="form-control" id="inputCity" placeholder="City">
                     </div>
-                    <div>
+                    <div class="form-group col-sm-2">
                         <label>State: <span class="error">* <?php echo $stateErr; ?></span></label><br/>
                         <select name="state" class="form-control">
                             <option value="AL">AL</option>
@@ -381,31 +414,30 @@
                             <option value="WY">WY</option>
                         </select>
                     </div>
-                    <br/>
-                    <div class="form-group">
+                    <div class="form-group col-sm-2">
                         <label for="inputZipcode">Zipcode:</label>
                         <span class="error">* <?php echo $zipcodeErr; ?></span>
                         <input type="text" name="zipcode" class="form-control" id="inputZipcode" placeholder="Zipcode">
                     </div>
-                    <div class="form-group">
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
                         <label for="inputEmail">Email</label>
                         <span class="error">* <?php echo $emailErr; ?></span>
                         <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email">
                     </div>
-                    <div class="form-group">
-                        <label for="inputPassword">Password</label>
-                        <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
-                    </div>
-					<div class="form-group">
+                </div>
+                </div>
+                <div class="panel-footer">
+					<div class="form-group text-right">
 					    <button type="submit" class="btn btn-primary" name="submit">
 						    Submit
 						</button>
 					</div>
-				</form>
-			</div>
-		</div>
-		<!-- /.main -->
-
+                </div>
+		    </div>
+        </div>
+        </form>
 	</body>
 
 </html>

@@ -178,7 +178,7 @@
                         echo "<li class=\"active\"><a href=\"homepage.php\">Home</a></li>";
                     }
                 ?>
-                <li><a href="#about">About</a></li>
+                <!--<li><a href="#about">About</a></li>-->
                 <li><a href="getContactUsForm.php">Contact</a></li>
                 <li><a href="http://localhost/tickethawk/homepage.php#browse">Events</a></li>
               </ul>
@@ -338,6 +338,7 @@
 	}, 3000);
 
 			</script>
+            <!--
     		<div class="panel panel-default" id="search_div" style="margin-top:10px; solid 4px black;">
                 <div class="panel-heading">
     				<h3>Search for Tickets</h3>
@@ -398,7 +399,7 @@
 				</div>
 
 				</div>
-    		</div>
+    		</div>-->
     <div class="container" id="browse" style="height: 50px;"></div>		
     <div class="panel panel-default marketing">
         <div class="panel-heading">
