@@ -77,7 +77,7 @@
                 else {
                     $_SESSION['valid_admin'] = false; 
                 }
-                $_SESSION['cart'] = array();
+                //$_SESSION['cart'] = array();
                 $_SESSION['user_id'] = $row['user_id'];
                 $_SESSION['fname'] = $row['fname'];
                 $_SESSION['lname'] = $row['lname'];

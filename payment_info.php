@@ -100,7 +100,7 @@
             } else {
                 $_SESSION['payment_info']['city'] = test_input($_POST["city"]);
                 // only allow alpha characters as part of the city
-                if (!preg_match("/^[a-zA-Z]*$/",$_SESSION['payment_info']['city'])) {
+                if (!preg_match("/^[a-zA-Z ]*$/",$_SESSION['payment_info']['city'])) {
                     ++$errCount;
                     $cityErr = "Only letters allowed";
                 }

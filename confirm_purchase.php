@@ -130,6 +130,16 @@
                     if (login($username, $password)){
                         $_SESSION['user'] = $username;
                         $welcome_msg = ("Welcome " . $_SESSION['user']);
+                        foreach ($_SESSION['cart'] as $id => $qty){
+                            if ($qty > 0){
+                                $e = $events[$id];
+                                addSale($_SESSION['user_id'], $id, $qty, $e["price"]);
+                            }
+                        }
+                        // Empty the Cart
+                        $_SESSION['cart'] = array();
+                        // Clear Payment Info Array
+                        $_SESSION['payment_info'] = array();
                     }
                 }
             }
@@ -262,7 +272,7 @@
                 . "<br/>"
                 . $_SESSION['payment_info']['street']
                 . "<br/>"
-                . $_SESSION['payment_info']['city']." ".$_SESSION['payment_info']['state'].", ".$_SESSION['payment_info']['zipcode']
+                . $_SESSION['payment_info']['city'].", ".$_SESSION['payment_info']['state'].", ".$_SESSION['payment_info']['zipcode']
                 . "<br/>"
                 . $_SESSION['payment_info']['email']);
         }

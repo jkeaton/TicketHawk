@@ -114,7 +114,7 @@
         } else {
             $city = test_input($_POST["city"]);
             // only allow alpha characters as part of the city
-            if (!preg_match("/^[a-zA-Z]*$/",$city)) {
+            if (!preg_match("/^[a-zA-Z ]*$/",$city)) {
                 ++$errCount;
                 $cityErr = "Only letters allowed";
             }
