@@ -5,7 +5,7 @@
     bounce();
 
     // Create the connection to the database to be reused
-    global $dbhost, $dbname,$tmpid;
+    global $dbhost, $dbname;
 	//$results = NULL;
     $creds = db_admin();
     $dbuser = array_values($creds)[0];
@@ -19,6 +19,7 @@
     $welcome_msg = ("Welcome " . $username);
 
     $deleteDate="";
+	$tmpid="";
 
     // Set Max Sizes
     $maxSizeBlob = 65535;
@@ -35,12 +36,153 @@
             validateFields();
         }
 		elseif (isset($_POST['savechanges'])) {
-			
-			
+			echo "<script> alert('Save Changes clicked'); </script>";
+			echo "<script> alert('$tmpid'); </script>";
+			validateFields_U();
 		}
         // Handle logout attempt
         elseif (isset($_POST['logout'])){
             return logout();
+        }
+    }
+		function validateFields_U(){
+			echo "<script> alert('validateFields_U'); </script>";
+			global $tmpid;
+        global $cxn;
+        global $eventNameErr, $eventDateErr, $eventTimeErr, $eventLocationErr, $eventVenueErr, $eventPriceErr, $ticketQuantityErr, $eventImgErr, $maxSizeBlob;
+        $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "*";
+        $errCount = 0;
+        if (empty($_POST["eventName_U"])) {
+            ++$errCount;
+            $eventNameErr = "Event name is required";
+        } else {
+            $eventName = test_input($_POST["eventName_U"]);
+            if (!preg_match("/^[a-zA-Z0-9 ]*$/",$eventName)) {
+                ++$errCount;
+                $eventNameErr = "Only letters, numbers and spaces allowed";
+            }
+        }
+        if (empty($_POST["eventDate_U"])) {
+        	echo "<script> alert('empty date'); </script>";
+            ++$errCount;
+            $eventDateErr = "Event date is required";
+        } else {
+            $eventDate = test_input($_POST["eventDate_U"]);
+            $eventDate = DateTime::createFromFormat('m/d/Y', $eventDate);
+            if (!$eventDate){
+               // ++$errCount;
+                $eventDateErr = "Invalid Date";
+				echo "<script> alert('date error 1'); </script>";
+            }
+            else {
+                $dateToDB = $eventDate->format("Y-m-d");
+                $year = (int) ($eventDate->format("Y"));
+                $month = (int) ($eventDate->format("m"));
+                $day = (int) ($eventDate->format("d"));
+                if (!checkdate ($month , $day , $year )){
+                    ++$errCount;
+                    $eventDateErr = "Invalid Date";
+					echo "<script> alert('date error 2'); </script>";
+                }
+            }
+        }
+
+        if (empty($_POST["eventTime_U"])) {
+            ++$errCount;
+            $eventTimeErr = "Event time is required";
+        } else {
+            $eventTime = test_input($_POST["eventTime_U"]);
+            if (!strtotime($eventTime)){
+                ++$errCount;
+                $eventTimeErr = "Invalid Time";
+            }
+            else {
+                if (!date('H:i:s', strtotime($eventTime))){
+                    ++$errCount;
+                    $eventTimeErr = "Invalid Time";
+                }
+                else {
+                    $timeToDB = date('H:i:s', strtotime($eventTime));
+                }
+            }
+        }
+
+        if (empty($_POST["eventLocation_U"])) {
+            ++$errCount;
+            $eventLocationErr = "Event Location is required";
+        } else {
+            $eventLocation = test_input($_POST["eventLocation_U"]);
+        }
+
+        if (empty($_POST["eventVenue_U"])) {
+            ++$errCount;
+            $eventVenueErr = "Event Venue is required";
+        } else {
+            $eventVenue = test_input($_POST["eventVenue_U"]);
+        }
+
+        if (empty($_POST["eventPrice_U"])) {
+            ++$errCount;
+            $eventPriceErr = "Event Price is required";
+        } else {
+            $eventPrice = test_input($_POST["eventPrice_U"]);
+            if (!is_numeric ($eventPrice)){
+                ++$errCount;
+                $eventPriceErr = "Invalid Price";
+            }
+            elseif (!preg_match("/^[0-9\.]*$/",$eventPrice)) {
+                ++$errCount;
+                $eventPriceErr = "Only digits and a radix point";
+            }
+            else {
+                $eventPrice = floatval ($eventPrice);
+            }
+        }
+
+        if (empty($_POST["ticketQuantity_U"])) {
+            ++$errCount;
+            $ticketQuantityErr = "Invalid Quantity";
+        } else {
+            $ticketQuantity = test_input($_POST["ticketQuantity_U"]);
+            if (!is_numeric ($ticketQuantity)){
+                ++$errCount;
+                $ticketQuantityErr = "Invalid Quantity";
+            }
+            elseif (!preg_match("/^[0-9]*$/",$ticketQuantity)) {
+                ++$errCount;
+                $ticketQuantityErr = "Only positive integers";
+            }
+            else{
+                $ticketQuantity = (int) ($ticketQuantity);
+            }
+        }
+
+        if (empty($_FILES["eventImg_U"])) {
+            ++$errCount;
+            $eventImgErr = "Event Image is required";
+        } else {
+            $imgData = mysqli_real_escape_string($cxn, file_get_contents($_FILES['eventImg_U']['tmp_name']));
+            $imgType = mysqli_real_escape_string($cxn, $_FILES['eventImg_U']['type']);
+            $imgSize = mysqli_real_escape_string($cxn, $_FILES['eventImg_U']['size']);
+            if (!substr($imgType, 0, 5) == "image"){
+                ++$errCount;
+                $eventImgErr = "File type must be 'image'";
+            }
+            elseif ($imgSize > $maxSizeBlob){
+                ++$errCount;
+                $eventImgErr = "Max file size is 65,535 bytes";
+            }
+            else {
+                $eventImg = $imgData;    
+            }
+        }
+
+        if ($errCount == 0) {
+        	echo "<script> alert('error count 0'); </script>";
+            updateEvent($eventName, $dateToDB, $timeToDB, $eventLocation, $eventVenue, $eventPrice, $ticketQuantity, $eventImg);
+            /* Clear the POST array so we don't insert duplicate events */
+            $_POST = array();
+            header('Location: http://localhost/TicketHawk/admin_page.php');
         }
     }
 
@@ -187,11 +329,14 @@
         $results = mysqli_query($cxn, $query) or die("Could not perform request");
     }
 	function updateEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_eventVenue, $_eventPrice, $_ticketQuantity, $_eventImg) {
-        global $cxn;
+        global $cxn, $tmpid;
         $query = "UPDATE EVENT SET eventname ='$_eventName', date ='$_eventDate', time = '$_eventTime', 
         location = '$_eventLocation', venue =  '$_eventVenue', price = '$_eventPrice', ticket_qty = '$_ticketQuantity', img = '$_eventImg' 
-        WHERE eventid = '$tmpid'";
+        WHERE eventid = 7";
         $results = mysqli_query($cxn, $query) or die("Could not perform request");
+		if($results){
+			echo "<h1>$tmpid</h1>";
+		}
     }
 
     function deleteByDate(){
@@ -220,9 +365,6 @@
     }
     if (isset($_POST['filter']) && isset($_POST['date-1']) && isset($_POST['date-2'])) {
         filterByDate();
-    }
-    if(isset($_POST['savechanges'])){
-    	updateEvent();
     }
 	
     
@@ -293,6 +435,11 @@
 			$('#d3').datepicker({
 				format : 'yyyy-mm-dd'
 			});
+		</script>
+				<script>
+	$('#d4').datepicker({
+		format : 'yyyy-mm-dd'
+	});
 		</script>
 		<style type="text/css">
     .bs-example{
@@ -481,31 +628,39 @@
         	function myFunction(eventid){
         		 document.getElementById("eventNum").setAttribute("value", eventid);
 				 document.getElementById("the_button").click();	
+				 
 				 //document.body.getElementById("myModal").appendChild(body);
 				 //document.getElementById("myModal").showModal();
+        	}
+        </script>
+                <script>
+        	function showModal(){
+        		
+				 document.getElementById("modal_button").click();	
         	}
         </script>
         
         <script>
         	function validate(){
-        		return false;
+        		return true;
+        		
         	}
         </script>
             <div class="panel" id="events-ready">
                 <table class="table">
                     <tbody>
                     <?php
-				   echo "<form method='post' action ='' id='myForm'>";
+				   echo "<form method='post' action ='' id='myForm' onsubmit=''>";
 				    echo "<input type='hidden' name ='eventNum'  id ='eventNum'>";
-					echo "<button name = 'the_button' id='the_button' type='submit' style='visibility: hidden;'></button>";
+					echo "<button name = 'the_button' id='the_button' type='submit' onclick='showModal()' style='visibility: hidden;'></button>";
                         while ($row = mysqli_fetch_assoc($results)) {
                         	$ticketSold = ticketsAdmin($row['eventname']);
 							echo "<tr>";
 							echo "<td class='td_id'>".$row['eventid']."</td>";
 							echo "<td class='td_name'>".$row['eventname']."";
 							echo "<br/>";
-							echo "<a href='#myModal' value='Edit' id='edit_button' style='margin-right:5px;' class='btn btn-warning' data-toggle='modal'/>Edit</a>";		
-							echo "<input type='button' value='Set' id='edit_button' class='btn btn-primary' onclick ='myFunction(".$row['eventid'].")' data-toggle='modal'/>";
+							echo "<input type='button' value='Edit' id='edit_button' class='btn btn-warning' onclick ='myFunction(".$row['eventid'].")'/>";
+							echo "<input type='button'value='edit' href='#myModal' id='modal_button' style='' class='btn btn-warning' data-toggle='modal'/>";		
 							echo "</td>";
 							echo "<td class='td_date'>".$row['date']."</td>";
 							echo '<td class="td_time">' . $row['time'] . "</td>";
@@ -656,9 +811,9 @@
     <?php 
 
 	
-{
+if(isset($_POST['eventNum'])){
 		$tmpid = $_POST['eventNum'];
-		$query = "SELECT * FROM EVENT WHERE eventid ='$tmpid'";
+		$query = "SELECT * FROM EVENT WHERE eventid =". $tmpid;
 		$results = mysqli_query($cxn, $query)or die(mysqli_error($cxn));
 		$row  = mysqli_fetch_assoc($results);
 		//echo "<script>alert(".$tmpid.");</script>";
@@ -683,15 +838,15 @@ echo "<div id='myModal' class='modal fade'>
                         <div class='form-group'>
                             <label for='event-name'>Event Name:</label>
                             <span class='error'>* $eventNameErr;</span>
-                            <input type='text' class='form-control' id='event-name' value='".$row['eventname']."' placeholder='Event Name' name='eventName' required>
+                            <input type='text' class='form-control' id='event-name-u' value='".$row['eventname']."' placeholder='Event Name' name='eventName_U' required>
                         </div>
                     </div>
                     <div class='row'>
                         <div class='col-xs-6 col-sm-3 form-group'>
                             <label for=event-'date'>Date:</label>
                             <span class='error'>* <?php echo $eventDateErr; ?></span>
-                            <div class='input-group input-ammend' id='event-date' name='eventDate'>
-                                <input type='text' value= '".$row['date']."' class='datepicker form-control' required>
+                            <div class='input-group input-ammend' id='event-date-u'>
+                                <input type='text' class='datepicker form-control' id='d4' value='".$row['date']."' name='eventDate_U' data-date-format='yyyy-mm-dd' />
                                 <span class='input-group-addon'>
                                     <span class='glyphicon glyphicon-calendar'></span>
                                 </span>
@@ -700,8 +855,8 @@ echo "<div id='myModal' class='modal fade'>
                         <div class='col-xs-6 col-sm-3 form-group'>
                             <label for='time'>Time:</label>
                             <span class='error'>* <?php echo $eventTimeErr; ?></span>
-                            <div class='input-group input-ammend' id='time'>
-                                <input type='text' value = '".$row['time']."' class='form-control input-small bootstrap-timepicker timepicker' placeholder='Enter Time' name='eventTime' required>
+                            <div class='input-group input-ammend' id='time-u'>
+                                <input type='text' value = '".$row['time']."' class='form-control input-small bootstrap-timepicker timepicker' placeholder='Enter Time' name='eventTime_U' required>
                                 <span class='input-group-addon'>
                                     <span class='glyphicon glyphicon-time'></span>
                                 </span>
@@ -710,12 +865,12 @@ echo "<div id='myModal' class='modal fade'>
                         <div class='col-xs-6 col-sm-3 form-group'>
                             <label for='price'>Price:</label>
                             <span class='error'>* <?php echo $eventPriceErr; ?></span>
-                            <input type='text' value= '".$row['price']."' class='form-control' id='price' placeholder='Enter Price' name='eventPrice' required>
+                            <input type='text' value= '".$row['price']."' class='form-control' id='price-u' placeholder='Enter Price' name='eventPrice_U' required>
                         </div>
                         <div class='col-xs-6 col-sm-3 form-group'>
                             <label for='ticket-amount'>Ticket Quantity:</label>
                             <span class='error'>* <?php echo $ticketQuantityErr; ?></span>
-                            <input type='number' value = '".$row['ticket_qty']."' class='form-control' id='ticket-amount' placeholder='Ticket Quantity' name='ticketQuantity' required>
+                            <input type='number' value = '".$row['ticket_qty']."' class='form-control' id='ticket-amount-u' placeholder='Ticket Quantity' name='ticketQuantity_U' required>
                         </div>
                     </div>
                     <div class='row'>
@@ -724,19 +879,19 @@ echo "<div id='myModal' class='modal fade'>
                         <div class='col-md-6 form-group'>
                             <label for='location'>Location:</label>
                             <span class='error'>* <?php echo $eventLocationErr; ?></span>
-                            <input type='text' value = '".$row['location']."' class='form-control' id='location' placeholder='Enter Location' name='eventLocation'required>
+                            <input type='text' value = '".$row['location']."' class='form-control' id='location-u' placeholder='Enter Location' name='eventLocation_U'required>
                         </div>
                         <div class='col-xs-6 form-group'>
                             <label for='venue'>Venue:</label>
                             <span class='error'>* <?php echo $eventVenueErr; ?></span>
-                            <input type='text' value = '".$row['venue']."' class='form-control' id='venue' placeholder='Enter Venue' name='eventVenue' required>
+                            <input type='text' value = '".$row['venue']."' class='form-control' id='venue-u' placeholder='Enter Venue' name='eventVenue_U' required>
                         </div>
                     </div>
                     <div class='row'>
                         <div class='col-md-6 form-group'>
                             <label for='event-img'>Event Image:</label>
                             <span class='error'>* <?php echo $eventImgErr; ?></span>
-                            <input type='file' value = 'data:image/jpeg;base64," . base64_encode($row['img']) ."' id='event-img' name='eventImg' required>
+                            <input type='file' value = 'data:image/jpeg;base64," . base64_encode($row['img']) ."' id='event-img-u' name='eventImg_U' required>
                         </div>
                         <a name='addEvent'><div class='col-md-6 form-group' id='button-div' style='margin-top: 5px;'>
                         </div></a>
