@@ -242,7 +242,7 @@
         </ol>
         <div class="carousel-inner" role="listbox">
             <div class="item active">
-                <img src="http://p1.pichost.me/i/59/1835974.jpg" alt="First slide" id="img1">
+                <img src="dist/images/1835974.jpg" alt="First slide" id="img1">
                 <div class="container">
                     <div class="carousel-caption">
                         <h1>All The Tickets You Need!</h1>
@@ -252,7 +252,7 @@
                 </div>
             </div>
             <div class="item">
-                <img src="http://www.foxsports.com/content/dam/fsdigital/fscom/nfl/images/2014/01/14/011414-NFL-Seattle-Seahawks-Fans-HF-PI.jpg" alt="Second slide">
+                <img src="dist/images/011414-NFL-Seattle-Seahawks-Fans-HF-PI.jpg" alt="Second slide">
                 <div class="container">
                     <div class="carousel-caption">
                         <h1>Save Money!</h1>
@@ -262,7 +262,7 @@
                 </div>
             </div>
             <div class="item">
-                <img src="http://www.hdwallpapersinn.com/wp-content/uploads/2014/08/2013-nascar-wallpaper-hd.jpg" alt="Third slide">
+                <img src="dist/images/2013-nascar-wallpaper-hd.jpg" alt="Third slide">
                 <div class="container">
                     <div class="carousel-caption">
                         <h1>Get Your Tickets Fast!</h1>
@@ -272,7 +272,7 @@
                 </div>
             </div>
             <div class="item">
-                <img src="http://1.bp.blogspot.com/-CJoL1b3qBR8/Ubw5sbzHU4I/AAAAAAAAYjE/-jW-Ch3inyU/s1600/Disney+World+HD+Wallpapers21.jpg" alt="Third slide">
+                <img src="dist/images/Disney World HD Wallpapers21.jpg" alt="Third slide">
                 <div class="container">
                     <div class="carousel-caption">
                         <h1>All of your favorite places!</h1>
@@ -281,7 +281,7 @@
                 </div>
             </div>
             <div class="item">
-                <img src="http://i2.cdnds.net/14/37/618x411/otr_paris_02.jpg" alt="fifth slide">
+                <img src="dist/images/otr_paris_02.jpg" alt="fifth slide">
                 <div class="container">
                     <div class="carousel-caption">
                         <h1>Events you can't miss!</h1>
@@ -290,7 +290,7 @@
                 </div>
             </div>
             <div class="item">
-                <img src="http://cdn.caughtoffside.com/wp-content/uploads/2014/03/Lionel-Messi-Barcelona3.jpg" alt="sixth slide">
+                <img src="dist/images/Lionel-Messi-Barcelona3.jpg" alt="sixth slide">
                 <div class="container">
                     <div class="carousel-caption">
                         <h1>Sign up and receive the best deal out.</h1>
@@ -399,7 +399,7 @@
 				</div>
 
 				</div>
-    		</div>-->
+    		</div>
     <div class="container" id="browse" style="height: 50px;"></div>		
     <div class="panel panel-default marketing">
         <div class="panel-heading">
