@@ -112,9 +112,9 @@
 						<li class="active">
 							<a href="homepage.php">Home</a>
 						</li>
-						<li>
+                        <!--<li>
 							<a href="#about">About</a>
-						</li>
+						</li>-->
 						<li>
 							<a href="getContactUsForm.php">Contact</a>
 						</li>
