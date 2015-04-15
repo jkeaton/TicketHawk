@@ -134,12 +134,17 @@
     		}*/
 				#menuPics {
 					border: solid 3px black;
-					width: 550px;
+					width: 540px;
 					height: 350px;
 					margin: auto;
 					margin-top: 40px;
 					overflow: hidden;
 					background-color: #000;
+				}
+				#search-results{
+					border: solid 3px black;
+					width: 540px;
+					height:300px;
 				}
     	</style>
     </head>
@@ -340,7 +345,7 @@
     			<div class="row" style="padding: 10px;">
     			<div class="col-md-5" style="">
     			<div style="padding-top: 30px;">
-				<form>
+				<form method="post">
                     <div class="input-group custom-search-form">
                         <input type="text" class="form-control" placeholder="Search..." name="search_events"> 
                         <span class="input-group-btn">
@@ -369,11 +374,27 @@
                     	<a href="#" class="btn btn-primary btn-xs">Event 6</a>
                     </p> 
 				</div>
-				<div class="col-md-5" style="margin-left: 120px;" id="menuPics">
-						<img src="dist/images/images.jpeg"  width="550px" height = "400px" />
+				<div class="col-md-5" style="margin-left: 120px;" id="search-results">
+					<?php
+						if(isset($_POST['srch']) && isset($_POST['search_events'])){
+							$srch_event = $_POST['search_events']; 
+							$query = "SELECT * FROM EVENT WHERE eventname ='$srch_event'";
+							$results = mysqli_query($cxn, $query);
+							while($row = mysqli_fetch_assoc($results)){
+							if(empty($row)){
+								echo "<h1 style='color:red;'> Event Not found</h1>";
+							}
+							else {
+								echo "<h3>".$row['eventname']."</h3>";
+							}
+						}
+					}
+					
+					?>
+						<!-- <img src="dist/images/images.jpeg"  width="660px" height = "400px" />
 						<img src="dist/images/katWilliams.jpeg" width="550px" height = "400px" />
 						<img src="dist/images/lebron-james-dunkman-kings.jpg"  width="550px" height = "400px" />
-						<img src="dist/images/on-the-run-650.jpg" width="550px" height = "400px" />
+						<img src="dist/images/on-the-run-650.jpg" width="550px" height = "400px" /> -->
 				</div>
 
 				</div>

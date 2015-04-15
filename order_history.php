@@ -275,7 +275,7 @@
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-sm-3 col-sm-offset-9 text-right">
-                            <h4>Total Spent: <?php echo sprintf('$%06.2f',$price_total);?></h4>
+                            <h4>Total Spent: <?php echo sprintf('$%6.2f',$price_total);?></h4>
                         </div>
                     </div>
                 </div>

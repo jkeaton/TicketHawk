@@ -36,8 +36,8 @@
             validateFields();
         }
 		elseif (isset($_POST['savechanges'])) {
-			//echo "<script> alert('Save Changes clicked'); </script>";
-			//echo "<script> alert('Post Value id = ".$_POST['tmpid']."'); </script>";
+			echo "<script> alert('Save Changes clicked'); </script>";
+			echo "<script> alert('Post Value date = ".$_POST['eventDate_U']."'); </script>";
 			validateFields_U();
 		}
         // Handle logout attempt
@@ -46,7 +46,7 @@
         }
     }
 		function validateFields_U(){
-			//echo "<script> alert('validateFields_U'); </script>";
+			//echo "<script> alert($_POST['eventDate_U']); </script>";
 			global $tmpid;
         global $cxn;
         global $eventNameErr, $eventDateErr, $eventTimeErr, $eventLocationErr, $eventVenueErr, $eventPriceErr, $ticketQuantityErr, $eventImgErr, $maxSizeBlob;
@@ -62,30 +62,33 @@
                 $eventNameErr = "Only letters, numbers and spaces allowed";
             }
         }
-        if (empty($_POST["eventDate_U"])) {
-        	echo "<script> alert('empty date'); </script>";
-            ++$errCount;
-            $eventDateErr = "Event date is required";
-        } else {
-            $eventDate = test_input($_POST["eventDate_U"]);
-            $eventDate = DateTime::createFromFormat('m/d/Y', $eventDate);
-            if (!$eventDate){
+        // if (empty($_POST["eventDate_U"])) {
+        	// echo "<script> alert('empty date'); </script>";
+            // ++$errCount;
+            // $eventDateErr = "Event date is required";
+        // } else {
+            // $eventDate = $_POST["eventDate_U"];
+			// echo "<script> alert($eventDate);</script>";
+            // $eventDate = DateTime::createFromFormat('m/d/Y', $eventDate);
+// 			
+            // if (!$eventDate){
                // ++$errCount;
-                $eventDateErr = "Invalid Date";
-				//echo "<script> alert('date error 1'); </script>";
-            }
-            else {
-                $dateToDB = $eventDate->format("Y-m-d");
-                $year = (int) ($eventDate->format("Y"));
-                $month = (int) ($eventDate->format("m"));
-                $day = (int) ($eventDate->format("d"));
-                if (!checkdate ($month , $day , $year )){
-                    //++$errCount;
-                    $eventDateErr = "Invalid Date";
-					//echo "<script> alert('date error 2'); </script>";
-                }
-            }
-        }
+                // $eventDateErr = "Invalid Date";
+				// echo "<script> alert('date error 1'); </script>";
+            // }
+            // else {
+                // $dateToDB = $eventDateU->format("Y-m-d");
+				// echo "<script> alert($dateToDB);</script>";
+                // $year = (int) ($eventDateU->format("Y"));
+                // $month = (int) ($eventDateU->format("m"));
+                // $day = (int) ($eventDateU->format("d"));
+                // if (!checkdate ($month , $day , $year )){
+                    // //++$errCount;
+                    // $eventDateErr = "Invalid Date";
+					// echo "<script> alert('date error 2'); </script>";
+                // }
+            // }
+        // }
 
         if (empty($_POST["eventTime_U"])) {
             ++$errCount;
@@ -188,8 +191,9 @@
 		}
 
         if ($errCount == 0) {
+        	
         	echo "<script> alert('error count 0'); </script>";
-            updateEvent($eventName, $dateToDB, $timeToDB, $eventLocation, $eventVenue, $eventPrice, $ticketQuantity, $eventImg, $id);
+            updateEvent($eventName, $timeToDB, $eventLocation, $eventVenue, $eventPrice, $ticketQuantity, $eventImg, $id);
             /* Clear the POST array so we don't insert duplicate events */
             $_POST = array();
             header('Location: http://localhost/TicketHawk/admin_page.php');
@@ -223,6 +227,7 @@
                 $eventDateErr = "Invalid Date";
             }
             else {
+            	
                 $dateToDB = $eventDate->format("Y-m-d");
                 $year = (int) ($eventDate->format("Y"));
                 $month = (int) ($eventDate->format("m"));
@@ -338,9 +343,9 @@
             VALUES('$_eventName', '$_eventDate', '$_eventTime', '$_eventLocation', '$_eventVenue', '$_eventPrice', '$_ticketQuantity', '$_eventImg')";
         $results = mysqli_query($cxn, $query) or die("Could not perform request");
     }
-	function updateEvent($_eventName, $_eventDate, $_eventTime, $_eventLocation, $_eventVenue, $_eventPrice, $_ticketQuantity, $_eventImg) {
+	function updateEvent($_eventName,  $_eventTime, $_eventLocation, $_eventVenue, $_eventPrice, $_ticketQuantity, $_eventImg) {
         global $cxn, $tmpid;
-        $query = "UPDATE EVENT SET eventname ='$_eventName', date ='$_eventDate', time = '$_eventTime', 
+        $query = "UPDATE EVENT SET eventname ='$_eventName', date ='".$_POST['eventDate_U']."', time = '$_eventTime', 
         location = '$_eventLocation', venue =  '$_eventVenue', price = '$_eventPrice', ticket_qty = '$_ticketQuantity', img = '$_eventImg' 
         WHERE eventid = ".$_POST['tmpid'];
         $results = mysqli_query($cxn, $query) or die("Could not perform request");
@@ -645,8 +650,9 @@
         </script>
                 <script>
         	function showModal(){
-        		
-				 document.getElementById("modal_button").click();	
+        		setInterval(function(){  document.getElementById("modal_button").click(); }, 5000);
+				 //document.getElementById("modal_button").click();
+				 //alert('modal button clicked');	
         	}
         </script>
         
@@ -660,7 +666,7 @@
                 <table class="table">
                     <tbody>
                     <?php
-				   echo "<form method='post' action ='' id='myForm' onsubmit=''>";
+				   echo "<form method='post' action ='' id='myForm' onsubmit='return showModal()'>";
 				    echo "<input type='hidden' name ='eventNum'  id ='eventNum'>";
 					echo "<button name = 'the_button' id='the_button' type='submit' onclick='showModal()' style='visibility: hidden;'></button>";
                         while ($row = mysqli_fetch_assoc($results)) {
@@ -670,7 +676,7 @@
 							echo "<td class='td_name'>".$row['eventname']."";
 							echo "<br/>";
 							echo "<input type='button' value='Set' id='edit_button' class='btn btn-primary' onclick ='myFunction(".$row['eventid'].")'/>";
-							echo "<input type='button'value='edit' href='#myModal' id='modal_button' style='' class='btn btn-warning' data-toggle='modal'/>";		
+							echo "<input type='button'value='edit' href='#myModal' id='modal_button' style='visibility: hidden;' class='btn btn-warning' data-toggle='modal'/>";		
 							echo "</td>";
 							echo "<td class='td_date'>".$row['date']."</td>";
 							echo '<td class="td_time">' . $row['time'] . "</td>";
@@ -710,7 +716,7 @@
                             <label for=event-"date">Date:</label>
                             <span class="error"><?php echo $eventDateErr; ?></span>
                             <div class='input-group input-ammend' id='event-date'>
-                                <input type='text' class="datepicker form-control" placeholder="Event Date" name='eventDate' required/>
+                                <input type='text' class="datepicker form-control" placeholder='Event Date' name='eventDate' required/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -854,10 +860,10 @@ echo "<div id='myModal' class='modal fade'>
                     </div>
                     <div class='row'>
                         <div class='col-xs-6 col-sm-3 form-group'>
-                            <label for=event-'date'>Date:</label>
+                            <label for='event-date'>Date:</label>
                             <span class='error'>* <?php echo $eventDateErr; ?></span>
-                            <div class='input-group input-ammend' id='event-date-u'>
-                                <input type='text' class='datepicker form-control' id='d4' value='".$row['date']."' name='eventDate_U' data-date-format='yyyy-mm-dd' />
+                            <div class='input-group input-ammend' id='event-date_u'>
+                                <input type='text' class='datepicker form-control' value='".$row['date']."'  placeholder='Event Date' name='eventDate_U' required/>
                                 <span class='input-group-addon'>
                                     <span class='glyphicon glyphicon-calendar'></span>
                                 </span>
