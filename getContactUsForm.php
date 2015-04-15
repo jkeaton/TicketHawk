@@ -199,9 +199,9 @@
                 ?>
             </div>
             <div class="validationDiv">
-                <label for="name">Enter the code below:</label>
+                <label for="CaptchaCode">Enter the code below:</label>
             <span class="error">* <?php echo $CaptchaCodeErr; ?></span>
-            <input name="CaptchaCode" type="text" id="CaptchaCode" />
+            <input name="CaptchaCode" class="form-control" type="text" id="CaptchaCode" />
           </div>
           <div id="button-div">
                  <button type="submit" class="btn btn-primary" name="submit">
