@@ -709,7 +709,7 @@
                     <div class="row">
                         <div class="form-group">
                             <label for="event-name">Event Name:</label>
-                            <span class="error">"<?php echo $eventNameErr; ?>"</span>
+                            <span class="error"><?php echo $eventNameErr; ?></span>
                             <input type="text" class="form-control" id="event-name" placeholder="Event Name" name="eventName" required>
                         </div>
                     </div>
