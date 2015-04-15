@@ -36,8 +36,8 @@
             validateFields();
         }
 		elseif (isset($_POST['savechanges'])) {
-			echo "<script> alert('Save Changes clicked'); </script>";
-			echo "<script> alert('Post Value date = ".$_POST['eventDate_U']."'); </script>";
+			//echo "<script> alert('Save Changes clicked'); </script>";
+			//echo "<script> alert('Post Value date = ".$_POST['eventDate_U']."'); </script>";
 			validateFields_U();
 		}
         // Handle logout attempt
@@ -181,18 +181,18 @@
         }
 		if(empty($_POST['tmpid'])){
 
-			echo "<script> alert('Test'); </script>";
+			//echo "<script> alert('Test'); </script>";
 			++$errCount;
 		}
 		else{
 
 			$id = test_input($_POST["tmpid"]);
-			echo "<script> alert('Variable id value = '$id); </script>";
+			//echo "<script> alert('Variable id value = '$id); </script>";
 		}
 
         if ($errCount == 0) {
         	
-        	echo "<script> alert('error count 0'); </script>";
+        	//echo "<script> alert('error count 0'); </script>";
             updateEvent($eventName, $timeToDB, $eventLocation, $eventVenue, $eventPrice, $ticketQuantity, $eventImg, $id);
             /* Clear the POST array so we don't insert duplicate events */
             $_POST = array();
@@ -433,14 +433,13 @@
                 $('.datepicker').datepicker()
             });
         </script>
-<script>
-$(document).ready(function(){
-    $("#myForm").click(function(event){
-        event.preventDefault();
-    });
-});
-</script>
-
+        <script>
+            $(document).ready(function(){
+                $("#myForm").click(function(event){
+                    event.preventDefault();
+                });
+            });
+        </script>
         <script type="text/javascript">
             $(function () {
                 $('.timepicker').timepicker()
@@ -622,8 +621,10 @@ $(document).ready(function(){
         	 <h3>Control Panel</h3>
         <div class="panel panel-default">
             <!-- Default panel contents -->
-            <div class="panel-heading">
-                <h3 class="panel-title">Listed Events</h3>
+            <div class="panel-heading"  style="padding: 20px;">
+            	<input type='button'value='Edit selected row' href='#myModal' id='modal_button' style='float: right; margin-top:-9px; margin-right: -13px; ' class='btn btn-warning' data-toggle='modal'/>
+                <h3 class="panel-title" style="width:200px;">Listed Events</h3>
+                
             </div>
             <div class="panel">
                 <!-- Table -->
@@ -652,9 +653,7 @@ $(document).ready(function(){
         </script>
                 <script>
         	function showModal(){
-                document.forms["myForm"].getElementsById("modal_button1").click();
-				//document.getElementById("modal_button1").click();
-				alert('modal button clicked');	
+			    document.getElementById("modal_button").click();
         	}
         </script>
         
@@ -673,28 +672,30 @@ $(document).ready(function(){
                         <?php
                         $counter = 0;
                         while ($row = mysqli_fetch_assoc($results)) {
-                        	    $ticketSold = ticketsAdmin($row['eventname']);
-							    echo "<tr>";
-							    echo "<td class='td_id'>".$row['eventid']."</td>";
-							    echo "<td class='td_name'>".$row['eventname']."";
-							    echo "<br/>";
-							    echo "<input type='button' value='Set' id='edit_button' class='btn btn-primary' onclick ='myFunction(".$row['eventid'].")'>";
-							    echo "<input type='button' value='edit' href='#myModal' id='modal_button".$counter++."' style='' class='btn btn-warning' data-toggle='modal'>";		
-							    echo "</td>";
-							    echo "<td class='td_date'>".$row['date']."</td>";
-    							echo '<td class="td_time">' . $row['time'] . "</td>";
-    							echo '<td class="td_loc">' . $row['location'] . "</td>";
-    							echo '<td class="td_venue">' . $row['venue'] . "</td>";
-    							echo '<td class="td_price">' . sprintf("%01.2f", $row['price']) . "</td>";
-    							echo '<td class="td_qty">' . $row['ticket_qty'] . "</td>";
-    							echo "<td class='td_purch'>$ticketSold</td>";
-    							echo '<td class="td_img"><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
-							    echo "</tr>";
-                            }
-	              	    ?>
-                        </tbody>
-                    </table>
-                </form>
+                        	$ticketSold = ticketsAdmin($row['eventname']);
+							echo "<tr>";
+							echo "<td class='td_id'>".$row['eventid']."</td>";
+							echo "<td class='td_name'>".$row['eventname']."";
+							echo "<br/>";
+							echo "<input type='button' value='Select' id='edit_button' class='btn btn-primary' onclick ='myFunction(".$row['eventid'].")'/>";
+							//echo "";		
+							echo "</td>";
+							echo "<td class='td_date'>".$row['date']."</td>";
+							echo '<td class="td_time">' . $row['time'] . "</td>";
+							echo '<td class="td_loc">' . $row['location'] . "</td>";
+							echo '<td class="td_venue">' . $row['venue'] . "</td>";
+							echo '<td class="td_price">' . sprintf("%01.2f", $row['price']) . "</td>";
+							echo '<td class="td_qty">' . $row['ticket_qty'] . "</td>";
+							echo "<td class='td_purch'>$ticketSold</td>";
+							echo '<td class="td_img"><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
+							echo "</tr>";
+							echo "</form>";
+							
+                        }
+	              	?>
+                    </tbody>
+                    </div>
+                </table>
             </div>
         </div>
         <div class="panel panel-default" id="events-in">
@@ -908,7 +909,10 @@ echo "<div id='myModal' class='modal fade'>
                     <div class='row'>
                         <div class='col-md-6 form-group'>
                             <label for='event-img'>Event Image:</label>
-                            <span class='error'>* <?php echo '$eventImgErr'; ?></span>
+                            <span class='error'>* <?php echo $eventImgErr; ?></span>
+                            <div>
+                            <img src='data:image/jpeg;base64," . base64_encode($row['img']) ."' width= '50' height ='50'/>
+                            </div>
                             <input type='file' value = 'data:image/jpeg;base64," . base64_encode($row['img']) ."' id='event-img-u' name='eventImg_U' required>
                         </div>
                         <a name='addEvent'><div class='col-md-6 form-group' id='button-div' style='margin-top: 5px;'>
