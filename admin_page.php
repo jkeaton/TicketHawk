@@ -416,6 +416,8 @@
 
         <!-- jquery js -->
    	    <script src="dist/js/main.js"></script>
+   	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+   	   
         <script src="dist/bootstrap/dist/js/bootstrap.min.js"></script>
         <!-- Missing -->
         <script type="text/javascript" src="dist/bootstrap/js/transition.js"></script>
@@ -431,6 +433,15 @@
                 $('.datepicker').datepicker()
             });
         </script>
+        </script>
+<script>
+$(document).ready(function(){
+    $("#myForm").click(function(event){
+        event.preventDefault();
+    });
+});
+</script>
+
         <script type="text/javascript">
             $(function () {
                 $('.timepicker').timepicker()
@@ -537,12 +548,7 @@
                 width: 10%;  
             }
         </style>
-        <script>
-            function myFunction(eventid){
-                document.getElementById("eventNum").setAttribute("value", eventid);
-				document.getElementById("the_button").click();
-        	}
-        </script>
+
     </head>
 
     <body role="document">
@@ -650,9 +656,9 @@
         </script>
                 <script>
         	function showModal(){
-        		setInterval(function(){  document.getElementById("modal_button").click(); }, 5000);
-				 //document.getElementById("modal_button").click();
-				 //alert('modal button clicked');	
+        		//setInterval(function(){  document.getElementById("modal_button").click(); }, 5000);
+				 document.getElementById("modal_button").click();
+				 alert('modal button clicked');	
         	}
         </script>
         
@@ -666,7 +672,7 @@
                 <table class="table">
                     <tbody>
                     <?php
-				   echo "<form method='post' action ='' id='myForm' onsubmit='return showModal()'>";
+				   echo "<form method='post' action ='' id='myForm'>";
 				    echo "<input type='hidden' name ='eventNum'  id ='eventNum'>";
 					echo "<button name = 'the_button' id='the_button' type='submit' onclick='showModal()' style='visibility: hidden;'></button>";
                         while ($row = mysqli_fetch_assoc($results)) {
@@ -676,7 +682,7 @@
 							echo "<td class='td_name'>".$row['eventname']."";
 							echo "<br/>";
 							echo "<input type='button' value='Set' id='edit_button' class='btn btn-primary' onclick ='myFunction(".$row['eventid'].")'/>";
-							echo "<input type='button'value='edit' href='#myModal' id='modal_button' style='visibility: hidden;' class='btn btn-warning' data-toggle='modal'/>";		
+							echo "<input type='button'value='edit' href='#myModal' id='modal_button' style='' class='btn btn-warning' data-toggle='modal'/>";		
 							echo "</td>";
 							echo "<td class='td_date'>".$row['date']."</td>";
 							echo '<td class="td_time">' . $row['time'] . "</td>";
@@ -916,7 +922,7 @@ echo "<div id='myModal' class='modal fade'>
                 </div>
                  <div class='modal-footer'>
                     <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
-                    <input type='submit' class='btn btn-primary' name ='savechanges'>Save changes</button>
+                    <input type='submit' class='btn btn-primary' name ='savechanges'></button>
                 </div>
             </form>
         </div>
