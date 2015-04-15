@@ -36,8 +36,8 @@
             validateFields();
         }
 		elseif (isset($_POST['savechanges'])) {
-			echo "<script> alert('Save Changes clicked'); </script>";
-			echo "<script> alert('$tmpid'); </script>";
+			//echo "<script> alert('Save Changes clicked'); </script>";
+			//echo "<script> alert('Post Value id = ".$_POST['tmpid']."'); </script>";
 			validateFields_U();
 		}
         // Handle logout attempt
@@ -46,7 +46,7 @@
         }
     }
 		function validateFields_U(){
-			echo "<script> alert('validateFields_U'); </script>";
+			//echo "<script> alert('validateFields_U'); </script>";
 			global $tmpid;
         global $cxn;
         global $eventNameErr, $eventDateErr, $eventTimeErr, $eventLocationErr, $eventVenueErr, $eventPriceErr, $ticketQuantityErr, $eventImgErr, $maxSizeBlob;
@@ -72,7 +72,7 @@
             if (!$eventDate){
                // ++$errCount;
                 $eventDateErr = "Invalid Date";
-				echo "<script> alert('date error 1'); </script>";
+				//echo "<script> alert('date error 1'); </script>";
             }
             else {
                 $dateToDB = $eventDate->format("Y-m-d");
@@ -80,9 +80,9 @@
                 $month = (int) ($eventDate->format("m"));
                 $day = (int) ($eventDate->format("d"));
                 if (!checkdate ($month , $day , $year )){
-                    ++$errCount;
+                    //++$errCount;
                     $eventDateErr = "Invalid Date";
-					echo "<script> alert('date error 2'); </script>";
+					//echo "<script> alert('date error 2'); </script>";
                 }
             }
         }
@@ -176,10 +176,20 @@
                 $eventImg = $imgData;    
             }
         }
+		if(empty($_POST['tmpid'])){
+
+			echo "<script> alert('Test'); </script>";
+			++$errCount;
+		}
+		else{
+
+			$id = test_input($_POST["tmpid"]);
+			echo "<script> alert('Variable id value = '$id); </script>";
+		}
 
         if ($errCount == 0) {
         	echo "<script> alert('error count 0'); </script>";
-            updateEvent($eventName, $dateToDB, $timeToDB, $eventLocation, $eventVenue, $eventPrice, $ticketQuantity, $eventImg);
+            updateEvent($eventName, $dateToDB, $timeToDB, $eventLocation, $eventVenue, $eventPrice, $ticketQuantity, $eventImg, $id);
             /* Clear the POST array so we don't insert duplicate events */
             $_POST = array();
             header('Location: http://localhost/TicketHawk/admin_page.php');
@@ -332,10 +342,10 @@
         global $cxn, $tmpid;
         $query = "UPDATE EVENT SET eventname ='$_eventName', date ='$_eventDate', time = '$_eventTime', 
         location = '$_eventLocation', venue =  '$_eventVenue', price = '$_eventPrice', ticket_qty = '$_ticketQuantity', img = '$_eventImg' 
-        WHERE eventid = 7";
+        WHERE eventid = ".$_POST['tmpid'];
         $results = mysqli_query($cxn, $query) or die("Could not perform request");
 		if($results){
-			echo "<h1>$tmpid</h1>";
+			//echo "<h1>$tmpid</h1>";
 		}
     }
 
@@ -659,7 +669,7 @@
 							echo "<td class='td_id'>".$row['eventid']."</td>";
 							echo "<td class='td_name'>".$row['eventname']."";
 							echo "<br/>";
-							echo "<input type='button' value='Edit' id='edit_button' class='btn btn-warning' onclick ='myFunction(".$row['eventid'].")'/>";
+							echo "<input type='button' value='Set' id='edit_button' class='btn btn-primary' onclick ='myFunction(".$row['eventid'].")'/>";
 							echo "<input type='button'value='edit' href='#myModal' id='modal_button' style='' class='btn btn-warning' data-toggle='modal'/>";		
 							echo "</td>";
 							echo "<td class='td_date'>".$row['date']."</td>";
@@ -833,6 +843,7 @@ echo "<div id='myModal' class='modal fade'>
             </div>
            
 			<form role='form'  method='post' action='".htmlspecialchars($_SERVER['PHP_SELF'])."' enctype='multipart/form-data'>
+			<input type='hidden' name = 'tmpid' value = '$tmpid' id = 'temp-id'/>
                 <div class='container-fluid'>
                     <div class='row'>
                         <div class='form-group'>
