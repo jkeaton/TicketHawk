@@ -309,101 +309,39 @@
         </a>
     </div><!-- /.carousel -->
     <div class="container-fluid" id="main-div">
-<script>
-	var count = 1;
+    <script>
+	    var count = 1;
 
-	$("#menuPics :nth-child(" + 1 + ")").click(function() {
-		$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=purses");
+	    $("#menuPics :nth-child(" + 1 + ")").click(function() {
+		    $(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=purses");
+    
+    	});
+    	$("#menuPics :nth-child(" + 2 + ")").click(function() {
+    		$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=kidzcorner");
+    
+    	});
+    
+    	$("#menuPics :nth-child(" + 3 + ")").click(function() {
+    		$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=Accessories");
 
-	});
-	$("#menuPics :nth-child(" + 2 + ")").click(function() {
-		$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=kidzcorner");
+	    });
 
-	});
+	    $("#menuPics :nth-child(" + 4 + ")").click(function() {
+	    	$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=ProductsForTravel");
 
-	$("#menuPics :nth-child(" + 3 + ")").click(function() {
-		$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=Accessories");
+	    });
 
-	});
+	    setInterval(function() {
+	    	count = ($("#menuPics :nth-child(" + count + ")").fadeOut().next().length == 0) ? 1 : count + 1;
+		    $("#menuPics :nth-child(" + count + ")").fadeIn();
 
-	$("#menuPics :nth-child(" + 4 + ")").click(function() {
-		$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=ProductsForTravel");
-
-	});
-
-	setInterval(function() {
-		count = ($("#menuPics :nth-child(" + count + ")").fadeOut().next().length == 0) ? 1 : count + 1;
-		$("#menuPics :nth-child(" + count + ")").fadeIn();
-
-	}, 3000);
-
-			</script>
-            <!--
-    		<div class="panel panel-default" id="search_div" style="margin-top:10px; solid 4px black;">
-                <div class="panel-heading">
-    				<h3>Search for Tickets</h3>
-                </div>
-    			<div class="row" style="padding: 10px;">
-    			<div class="col-md-5" style="">
-    			<div style="padding-top: 30px;">
-				<form method="post">
-                    <div class="input-group custom-search-form">
-                        <input type="text" class="form-control" placeholder="Search..." name="search_events"> 
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default" form_id="searchTrans"  type="button" name="srch">
-                          <span class="glyphicon glyphicon-search"></span>
-                           </button>          
-                       </span>
-                    </div>
-				</form>
-				</div>
-				<div style="padding-top: 10px;">
-				 <label>Trending</label>
-				 </div>
-                    <p>
-                        <a href="#" class="btn btn-primary btn-xs">Event 1</a>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 2</a>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 3</a>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 4</a>
-                    </p>
-                    <p>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 1</a>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 2</a>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 3</a>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 4</a>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 5</a>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 6</a>
-                    </p> 
-				</div>
-				<div class="col-md-5" style="margin-left: 120px;" id="search-results">
-					<?php
-						if(isset($_POST['srch']) && isset($_POST['search_events'])){
-							$srch_event = $_POST['search_events']; 
-							$query = "SELECT * FROM EVENT WHERE eventname ='$srch_event'";
-							$results = mysqli_query($cxn, $query);
-							while($row = mysqli_fetch_assoc($results)){
-							if(empty($row)){
-								echo "<h1 style='color:red;'> Event Not found</h1>";
-							}
-							else {
-								echo "<h3>".$row['eventname']."</h3>";
-							}
-						}
-					}
-					
-					?>
-						<!-- <img src="dist/images/images.jpeg"  width="660px" height = "400px" />
-						<img src="dist/images/katWilliams.jpeg" width="550px" height = "400px" />
-						<img src="dist/images/lebron-james-dunkman-kings.jpg"  width="550px" height = "400px" />
-						<img src="dist/images/on-the-run-650.jpg" width="550px" height = "400px" /> -->
-				</div>
-
-				</div>
-    		</div>
+	    }, 3000);
+    </script>
     <div class="container" id="browse" style="height: 50px;"></div>		
+    <div class="container">
     <div class="panel panel-default marketing">
         <div class="panel-heading">
-            <h3>Browse Event Tickets</h3>
+            <h4>Browse Event Tickets</h4>
         </div>
         <div class="panel-body">
             <!-- Here, display all the events in rows of 3 -->
@@ -425,6 +363,7 @@
         <div id="copy_right" style="text-align: center;">
             <p> &copy; 2015-2020 Ticket Hawk All rights reserved.</p>
         </div>
+    </div>
     </div>
 </body>
 </html>

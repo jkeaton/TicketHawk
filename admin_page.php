@@ -622,7 +622,7 @@
         <div class="panel panel-default">
             <!-- Default panel contents -->
             <div class="panel-heading"  style="padding: 20px;">
-            	<input type='button'value='Edit selected row' href='#myModal' id='modal_button' style='float: right; margin-top:-9px; margin-right: -13px; ' class='btn btn-warning' data-toggle='modal'/>
+            	<input type='button' value='Edit selected row' href='#myModal' id='modal_button' style='float: right; margin-top:-9px; margin-right: -13px; ' class='btn btn-warning' data-toggle='modal'/>
                 <h3 class="panel-title" style="width:200px;">Listed Events</h3>
                 
             </div>
@@ -663,40 +663,36 @@
         		
         	}
         </script>
-            <div class="panel" id="events-ready">
-		        <form method='post' action ='' id='myForm'>
-			        <input type='hidden' name ='eventNum'  id ='eventNum'>
-		            <button name = 'the_button' id='the_button' type='submit' style='visibility: hidden;'></button>
-                    <table class="table">
-                        <tbody>
-                        <?php
+        <div class="panel" id="events-ready">
+		    <form method='post' action ='' id='myForm'>
+			    <input type='hidden' name ='eventNum'  id ='eventNum'>
+		        <button name = 'the_button' id='the_button' type='submit' style='visibility: hidden;'></button>
+                <table class="table">
+                    <tbody>
+                    <?php
                         $counter = 0;
                         while ($row = mysqli_fetch_assoc($results)) {
-                        	$ticketSold = ticketsAdmin($row['eventname']);
-							echo "<tr>";
-							echo "<td class='td_id'>".$row['eventid']."</td>";
-							echo "<td class='td_name'>".$row['eventname']."";
-							echo "<br/>";
-							echo "<input type='button' value='Select' id='edit_button' class='btn btn-primary' onclick ='myFunction(".$row['eventid'].")'/>";
-							//echo "";		
-							echo "</td>";
-							echo "<td class='td_date'>".$row['date']."</td>";
-							echo '<td class="td_time">' . $row['time'] . "</td>";
-							echo '<td class="td_loc">' . $row['location'] . "</td>";
-							echo '<td class="td_venue">' . $row['venue'] . "</td>";
-							echo '<td class="td_price">' . sprintf("%01.2f", $row['price']) . "</td>";
-							echo '<td class="td_qty">' . $row['ticket_qty'] . "</td>";
-							echo "<td class='td_purch'>$ticketSold</td>";
-							echo '<td class="td_img"><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
-							echo "</tr>";
-							echo "</form>";
-							
+                       	    $ticketSold = ticketsAdmin($row['eventname']);
+    					    echo "<tr>";
+    						echo "<td class='td_id'>".$row['eventid']."</td>";
+    						echo "<td class='td_name'>".$row['eventname']."";
+    						echo "<br/>";
+    						echo "<input type='button' value='Select' id='edit_button' class='btn btn-primary' onclick ='myFunction(".$row['eventid'].")'/>";
+    						echo "</td>";
+    						echo "<td class='td_date'>".$row['date']."</td>";
+    						echo '<td class="td_time">' . $row['time'] . "</td>";
+    						echo '<td class="td_loc">' . $row['location'] . "</td>";
+    						echo '<td class="td_venue">' . $row['venue'] . "</td>";
+    						echo '<td class="td_price">' . sprintf("%01.2f", $row['price']) . "</td>";
+    						echo '<td class="td_qty">' . $row['ticket_qty'] . "</td>";
+    						echo "<td class='td_purch'>$ticketSold</td>";
+    						echo '<td class="td_img"><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
+    						echo "</tr>";
                         }
-	              	?>
+    	            ?>
                     </tbody>
-                    </div>
                 </table>
-            </div>
+            </form>
         </div>
         <div class="panel panel-default" id="events-in">
         	
