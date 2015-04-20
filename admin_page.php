@@ -403,6 +403,7 @@
         <link href="dist/css/custom.css" rel="stylesheet">
         <!-- Datepicker stylesheet -->
         <link href="dist/css/datepicker.css" rel="stylesheet">
+        <link href="dist/css/hint.css" rel="stylesheet">
         <link href="dist/css/bootstrap-timepicker.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
@@ -417,8 +418,11 @@
         <!-- jquery js -->
    	    <script src="dist/js/main.js"></script>
    	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+   	    
    	   
         <script src="dist/bootstrap/dist/js/bootstrap.min.js"></script>
+        <!-- <script src="dist/js/dropzone.min.js"></script> -->
+        <!-- <link href="dist/css/dropzone.css" /> -->
         <!-- Missing -->
         <script type="text/javascript" src="dist/bootstrap/js/transition.js"></script>
         <script type="text/javascript" src="dist/bootstrap/js/collapse.js"></script>
@@ -432,14 +436,8 @@
             $(function () {
                 $('.datepicker').datepicker()
             });
-        </script>
-        <script>
-            $(document).ready(function(){
-                $("#myForm").click(function(event){
-                    event.preventDefault();
-                });
-            });
-        </script>
+			</script>
+
         <script type="text/javascript">
             $(function () {
                 $('.timepicker').timepicker()
@@ -470,6 +468,14 @@
     	margin: 20px;
     }
 </style>
+                    <!-- <style>
+        #dz-area{
+            border: 2px dashed #0087F7;
+            border-radius: 5px;
+            background: white;
+            height:200px;
+        }
+    </style> -->
         
         
         <style>
@@ -622,7 +628,7 @@
         <div class="panel panel-default">
             <!-- Default panel contents -->
             <div class="panel-heading"  style="padding: 20px;">
-            	<input type='button'value='Edit selected row' href='#myModal' id='modal_button' style='float: right; margin-top:-9px; margin-right: -13px; ' class='btn btn-warning' data-toggle='modal'/>
+            	<input type='button' href='#myModal' id='modal_button' style='float: right; margin-top:-9px; margin-right: -13px; ' class='' data-toggle='modal'/>
                 <h3 class="panel-title" style="width:200px;">Listed Events</h3>
                 
             </div>
@@ -663,10 +669,21 @@
         		
         	}
         </script>
+        <style>
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+        </style>
             <div class="panel" id="events-ready">
-		        <form method='post' action ='' id='myForm'>
+		        <!-- <form method='post' action ='' id='myForm'>
 			        <input type='hidden' name ='eventNum'  id ='eventNum'>
-		            <button name = 'the_button' id='the_button' type='submit' style='visibility: hidden;'></button>
+		            <button name = 'the_button' id='the_button' type='submit' style='visibility: hidden;'></button> -->
                     <table class="table">
                         <tbody>
                         <?php
@@ -674,6 +691,9 @@
                         while ($row = mysqli_fetch_assoc($results)) {
                         	$ticketSold = ticketsAdmin($row['eventname']);
 							echo "<tr>";
+							echo "<form method='post' action ='#myModal' id='myForm'>";
+							echo "<input type='hidden' name ='eventNum'  id ='eventNum'>";
+							echo "<button name = 'the_button' id='the_button' type='submit' onclick='show_modal()' style='visibility: hidden;'></button>";
 							echo "<td class='td_id'>".$row['eventid']."</td>";
 							echo "<td class='td_name'>".$row['eventname']."";
 							echo "<br/>";
@@ -688,14 +708,16 @@
 							echo '<td class="td_qty">' . $row['ticket_qty'] . "</td>";
 							echo "<td class='td_purch'>$ticketSold</td>";
 							echo '<td class="td_img"><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
-							echo "</tr>";
 							echo "</form>";
+							echo "</tr>";
+							//echo "</form>";
 							
                         }
 	              	?>
                     </tbody>
-                    </div>
+                 
                 </table>
+                <!-- </form> -->
             </div>
         </div>
         <div class="panel panel-default" id="events-in">
@@ -710,7 +732,7 @@
                         <div class="form-group">
                             <label for="event-name">Event Name:</label>
                             <span class="error"><?php echo $eventNameErr; ?></span>
-                            <input type="text" class="form-control" id="event-name" placeholder="Event Name" name="eventName" required>
+                            <span class='hint-top' data-hint="Name of the event" style="display: inline;"><input type="text" class="form-control" id="event-name" placeholder="Event Name" name="eventName" required></span>
                         </div>
                     </div>
                     <div class="row">
@@ -718,8 +740,8 @@
                             <label for="event-date">Date:</label>
                             <span class="error"><?php echo $eventDateErr; ?></span>
                             <div class='input-group input-ammend' id='event-date'>
-                                <input type='text' class="datepicker form-control" placeholder='Event Date' name='eventDate' required/>
-                                <span class="input-group-addon">
+                                <span class='hint--top' data-hint="Event Date" style="display: inline;"><input type='text' class="datepicker form-control" placeholder='Event Date' name='eventDate' required/>
+                                </span><span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
                             </div>
@@ -728,8 +750,8 @@
                             <label for="time">Time:</label>
                             <span class="error"><?php echo $eventTimeErr; ?></span>
                             <div class="input-group input-ammend" id='time'>
-                                <input type="text" class="form-control timepicker bootstrap-timepicker" placeholder="Enter Time" name="eventTime" required>
-                                <span class="input-group-addon">
+                                <span class='hint--top' data-hint="Event time" style="display: inline;"><input type="text" class="form-control timepicker bootstrap-timepicker" placeholder="Enter Time" name="eventTime" required>
+                                </span><span class="input-group-addon">
                                     <span class="glyphicon glyphicon-time"></span>
                                 </span>
                             </div>
@@ -737,12 +759,13 @@
                         <div class="col-xs-6 col-sm-3 form-group">
                             <label for="price">Price:</label>
                             <span class="error"><?php echo $eventPriceErr; ?></span>
-                            <input type="text" class="form-control" id="price" placeholder="Enter Price" name="eventPrice" required>
+                            <span class='hint-left' data-hint="Name of the event" style="display: inline;"><input type="text" class="form-control" id="price" placeholder="Enter Price" name="eventPrice" required></span>
                         </div>
                         <div class="col-xs-6 col-sm-3 form-group">
                             <label for="ticket-amount">Ticket Quantity:</label>
                             <span class="error"><?php echo $ticketQuantityErr; ?></span>
-                            <input type="text" class="form-control" id="ticket-amount" placeholder="Ticket Quantity" name="ticketQuantity" required>
+                            <span class='hint-top' data-hint="Enter whole numbers" style="display: inline;"><input type="text" class="form-control" id="ticket-amount" placeholder="Ticket Quantity" name="ticketQuantity" required>
+                            	</span>
                         </div>
                     </div>
                     <div class="row">
@@ -759,21 +782,41 @@
                             <input type="text" class="form-control" id="venue" placeholder="Enter Venue" name="eventVenue" required>
                         </div>
                     </div>
+                    <style>
+                    	.dropzone{
+                    		width:300px;
+                    		height:300px;
+                    		border:2px dashed #ccc;
+                    		color:#ccc;
+                    		line-height: 300px;
+                    		text-align:center;
+                    	}
+                    	.dropzone.dragover{
+                    		color:black;
+                    		border-color:black;
+                    	}
+                    </style>
+
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="event-img">Event Image:</label>
+                            <div id "container"></div>
+                            <!-- <div class="dropzone" id ="dropzone"> Drop fole here to upload
                             <span class="error"><?php echo $eventImgErr; ?></span>
-                            <input type="file" id="event-img" name="eventImg" required>
-                        </div>
-                        <a name="addEvent"><div class="col-md-6 form-group" id="button-div" style="margin-top: 5px;">
+                            <input type="file" id="event-img" name="eventImg"  required>
+                           </div> -->
+                           <input type="file" id="event-img" name="eventImg"  required>
+                   		</div>
+                       <div class="col-md-6 form-group" id="button-div" style="margin-top: 5px;">
                             <button type="submit" class="btn btn-primary" name="submit">
                                 Submit
                             </button>
-                        </div></a>
-                    </div>
-                </div>
+                        </div>
+                	</div>
+
             </form>
-        </div>
+            </div>
+           </div>
 			
         <div class=" panel panel-default" id="second-panel">
             <div class="panel-heading">
@@ -936,6 +979,36 @@ echo "<div id='myModal' class='modal fade'>
 ?>
         
       </div>
+                      <script>
+                    	( function(){
+                    		var dropzone = document.getElementById("dropzone");
+                    		
+                    		var uploads = function(files){
+                    			var formData = new FormData(),
+                    			xhr = new XMLHttpRequest(),x;
+                    			for(x = 0; x < files.lenght; x++){
+                    				formData.append('files[]', files[x]);
+                    			}
+                    			xhr.open('post', 'uploads.php');
+                    			xhr.send(formData);
+                    		}
+                    		
+                    		dropzone.ondrop = function(){
+                    			event.preventDefault();
+                    			this.className = 'dropzone';
+                    			uploads(event.dataTransfer.files)
+                    		};
+                    		
+                    		dropzone.ondragover = function(){
+                    			this.className = 'dropzone dragover';
+                    			return false;
+                    		};
+                    		dropzone.ondragleave = function(){
+                    			this.className = 'dropzone';
+                    			return false;
+                    		};
+                    	}());
+                    </script>
    </body>
     
 </html>
