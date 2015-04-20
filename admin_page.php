@@ -628,7 +628,11 @@
         <div class="panel panel-default">
             <!-- Default panel contents -->
             <div class="panel-heading"  style="padding: 20px;">
+<<<<<<< HEAD
             	<input type='button' href='#myModal' id='modal_button' style='float: right; margin-top:-9px; margin-right: -13px; ' class='' data-toggle='modal'/>
+=======
+            	<input type='button' value='Edit selected row' href='#myModal' id='modal_button' style='float: right; margin-top:-9px; margin-right: -13px; ' class='btn btn-warning' data-toggle='modal'/>
+>>>>>>> 06d6909335003f172dba4b995de7929f79792d6f
                 <h3 class="panel-title" style="width:200px;">Listed Events</h3>
                 
             </div>
@@ -669,6 +673,7 @@
         		
         	}
         </script>
+
         <style>
 ::-webkit-scrollbar {
     -webkit-appearance: none;
@@ -712,9 +717,11 @@
 							echo "</tr>";
 							//echo "</form>";
 							
+
                         }
-	              	?>
+    	            ?>
                     </tbody>
+
                  
                 </table>
                 <!-- </form> -->

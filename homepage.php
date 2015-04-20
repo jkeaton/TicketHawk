@@ -309,22 +309,31 @@
         </a>
     </div><!-- /.carousel -->
     <div class="container-fluid" id="main-div">
-<script>
-	var count = 1;
+    <script>
+	    var count = 1;
 
-	$("#menuPics :nth-child(" + 1 + ")").click(function() {
-		$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=purses");
+	    $("#menuPics :nth-child(" + 1 + ")").click(function() {
+		    $(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=purses");
+    
+    	});
+    	$("#menuPics :nth-child(" + 2 + ")").click(function() {
+    		$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=kidzcorner");
+    
+    	});
+    
+    	$("#menuPics :nth-child(" + 3 + ")").click(function() {
+    		$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=Accessories");
 
-	});
-	$("#menuPics :nth-child(" + 2 + ")").click(function() {
-		$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=kidzcorner");
+	    });
 
-	});
+	    $("#menuPics :nth-child(" + 4 + ")").click(function() {
+	    	$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=ProductsForTravel");
 
-	$("#menuPics :nth-child(" + 3 + ")").click(function() {
-		$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=Accessories");
+	    });
 
-	});
+	    setInterval(function() {
+	    	count = ($("#menuPics :nth-child(" + count + ")").fadeOut().next().length == 0) ? 1 : count + 1;
+		    $("#menuPics :nth-child(" + count + ")").fadeIn();
 
 	$("#menuPics :nth-child(" + 4 + ")").click(function() {
 		$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=ProductsForTravel");
@@ -417,10 +426,12 @@ background-color: #840b2a;
     				
     			}
     		</style>
+
     <div class="container" id="browse" style="height: 50px;"></div>		
+    <div class="container">
     <div class="panel panel-default marketing">
         <div class="panel-heading">
-            <h3>Browse Event Tickets</h3>
+            <h4>Browse Event Tickets</h4>
         </div>
         <div class="panel-body" id="events-div">
             <!-- Here, display all the events in rows of 3 -->
@@ -442,6 +453,7 @@ background-color: #840b2a;
         <div id="copy_right" style="text-align: center;">
             <p> &copy; 2015-2020 Ticket Hawk All rights reserved.</p>
         </div>
+    </div>
     </div>
 </body>
 </html>
