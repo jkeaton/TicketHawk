@@ -272,7 +272,7 @@
                 </div>
             </div>
             <div class="item">
-                <img src="dist/images/free images/useDisney.jpg" alt="Third slide">
+                <img src="dist/images/free images/disney.jpg" alt="Third slide">
                 <div class="container">
                     <div class="carousel-caption">
                         <h1>All of your favorite places!</h1>
