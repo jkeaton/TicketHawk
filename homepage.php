@@ -410,6 +410,37 @@
 				</div>
     		</div>
 
+            <style>
+                #events-div{
+                    background: 
+                        radial-gradient(rgba(255,255,255,0) 0,
+                        rgba(255,255,255,.075) 30%, rgba(255,255,255,.15) 32%, rgba(255,255,255,0) 33%) 0 0,
+                        radial-gradient(rgba(255,255,255,0) 0,
+                        rgba(255,255,255,.05) 11%, rgba(255,255,255,.15) 13%, rgba(255,255,255,0) 14%) 0 0,
+                        radial-gradient(rgba(255,255,255,0) 0,
+                        rgba(255,255,255,.1) 17%, rgba(255,255,255,.215) 19%, rgba(255,255,255,0) 20%) 0 110px,
+                        radial-gradient(rgba(255,255,255,0) 0,
+                        rgba(255,255,255,.1) 11%, rgba(255,255,255,.2) 13%, rgba(255,255,255,0) 14%) -130px -170px,
+                        radial-gradient(rgba(255,255,255,0) 0,
+                        rgba(255,255,255,.1) 11%, rgba(255,255,255,.2) 13%, rgba(255,255,255,0) 14%) 130px 370px,
+                        radial-gradient(rgba(255,255,255,0) 0,
+                        rgba(255,255,255,.05) 11%, rgba(255,255,255,.1) 13%, rgba(255,255,255,0) 14%) 0 0,
+                        linear-gradient(45deg, rgba(52, 55, 2, .5) 0%, rgba(24,
+                        69, 0, 0.5) 20%, rgba(24, 117, 70, 0.5)
+                        30%, rgba(0, 103, 130, 0.5) 40%, rgba(11, 18, 132, 0.5)
+                        50%, rgba(118, 14, 161, 0.5) 60%, rgba(131, 9, 110, 0.5) 70%,
+                        rgba(132, 11, 42, 0.5) 80%, rgba(177, 62, 18, 0.5) 90%,
+                        rgba(226, 116, 18, 0.5) 100%
+                        );
+                    background-size: 470px 470px, 970px 970px, 410px 410px, 610px 610px, 530px 530px, 730px 730px, 100% 100%;
+                    /*background-color: #840b2a;*/
+                    background-opacity: 0.4;
+    	        }
+                #events-div h2{
+                    color: #2E2E2E;
+                }
+            </style>
+
     <div class="container" id="browse" style="height: 50px;"></div>		
     <div class="container">
     <div class="panel panel-default marketing">
