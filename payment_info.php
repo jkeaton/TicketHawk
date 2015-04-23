@@ -302,7 +302,8 @@
                     </div>
                     <div class="form-group col-sm-2">
                         <label>State: <span class="error">* <?php echo $stateErr; ?></span></label><br/>
-                        <select name="state" class="form-control" value="<?php if (isset($_SESSION['state'])) echo $_SESSION['state'];?>">
+                        <select name="state" class="form-control" value="">
+                        	<?php if (isset($_SESSION['state'])){echo "<option value='".$_SESSION['state']."'>".$_SESSION['state']."</option>";}?>
                             <option value="AL">AL</option>
                             <option value="AK">AK</option>
                             <option value="AZ">AZ</option>
