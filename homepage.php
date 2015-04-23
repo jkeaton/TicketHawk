@@ -242,59 +242,59 @@
         </ol>
         <div class="carousel-inner" role="listbox">
             <div class="item active">
-                <img src="dist/images/1835974.jpg" alt="First slide" id="img1">
+                <img src="dist/images/free images/Jordan.jpg" alt="First slide" id="img1">
                 <div class="container">
                     <div class="carousel-caption">
                         <h1>All The Tickets You Need!</h1>
                         <p>On Your Favorite Site.</p>
-                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
+                        <p><a rel="license" href="http://creativecommons.org/licenses/by/2.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/2.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution 2.0 Generic License</a>.<a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
                     </div>
                 </div>
             </div>
             <div class="item">
-                <img src="dist/images/011414-NFL-Seattle-Seahawks-Fans-HF-PI.jpg" alt="Second slide">
+                <img src="dist/images/free images/nfl.jpg" alt="Second slide">
                 <div class="container">
                     <div class="carousel-caption">
                         <h1>Save Money!</h1>
                         <p>The best seats for a lower price</p>
-                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
+                        <p><a rel="license" href="http://creativecommons.org/licenses/by/2.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/2.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution 2.0 Generic License</a>.<a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
                     </div>
                 </div>
             </div>
             <div class="item">
-                <img src="dist/images/2013-nascar-wallpaper-hd.jpg" alt="Third slide">
+                <img src="dist/images/free images/nascar.jpg" alt="Third slide">
                 <div class="container">
                     <div class="carousel-caption">
                         <h1>Get Your Tickets Fast!</h1>
                         <p>With our speedy checkout, you can order tickets fast!</p>
-                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
+                        <p><a rel="license" href="http://creativecommons.org/licenses/by/2.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/2.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution 2.0 Generic License</a>.<a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
                     </div>
                 </div>
             </div>
             <div class="item">
-                <img src="dist/images/Disney World HD Wallpapers21.jpg" alt="Third slide">
+                <img src="dist/images/free images/useDisney.jpg" alt="Third slide">
                 <div class="container">
                     <div class="carousel-caption">
                         <h1>All of your favorite places!</h1>
-                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
+                        <p><a rel="license" href="http://creativecommons.org/licenses/by/2.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/2.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution 2.0 Generic License</a>.<a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
                     </div>
                 </div>
             </div>
             <div class="item">
-                <img src="dist/images/otr_paris_02.jpg" alt="fifth slide">
+                <img src="dist/images/free images/jayandbey.jpg" alt="fifth slide">
                 <div class="container">
                     <div class="carousel-caption">
                         <h1>Events you can't miss!</h1>
-                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
+                        <p><a rel="license" href="http://creativecommons.org/licenses/by/2.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/2.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution 2.0 Generic License</a>.<a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
                     </div>
                 </div>
             </div>
             <div class="item">
-                <img src="dist/images/Lionel-Messi-Barcelona3.jpg" alt="sixth slide">
+                <img src="dist/images/free images/MLS.jpg" alt="sixth slide">
                 <div class="container">
                     <div class="carousel-caption">
                         <h1>Sign up and receive the best deal out.</h1>
-                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
+                        <p><a rel="license" href="http://creativecommons.org/licenses/by/2.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/2.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution 2.0 Generic License</a>.<a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
                     </div>
                 </div>
             </div>
@@ -409,42 +409,9 @@
 
 				</div>
     		</div>
-            <style>
-                #events-div{
-                    background: 
-                        radial-gradient(rgba(255,255,255,0) 0,
-                        rgba(255,255,255,.075) 30%, rgba(255,255,255,.15) 32%, rgba(255,255,255,0) 33%) 0 0,
-                        radial-gradient(rgba(255,255,255,0) 0,
-                        rgba(255,255,255,.05) 11%, rgba(255,255,255,.15) 13%, rgba(255,255,255,0) 14%) 0 0,
-                        radial-gradient(rgba(255,255,255,0) 0,
-                        rgba(255,255,255,.1) 17%, rgba(255,255,255,.215) 19%, rgba(255,255,255,0) 20%) 0 110px,
-                        radial-gradient(rgba(255,255,255,0) 0,
-                        rgba(255,255,255,.1) 11%, rgba(255,255,255,.2) 13%, rgba(255,255,255,0) 14%) -130px -170px,
-                        radial-gradient(rgba(255,255,255,0) 0,
-                        rgba(255,255,255,.1) 11%, rgba(255,255,255,.2) 13%, rgba(255,255,255,0) 14%) 130px 370px,
-                        radial-gradient(rgba(255,255,255,0) 0,
-                        rgba(255,255,255,.05) 11%, rgba(255,255,255,.1) 13%, rgba(255,255,255,0) 14%) 0 0,
-                        linear-gradient(45deg, rgba(52, 55, 2, .5) 0%, rgba(24,
-                        69, 0, 0.5) 20%, rgba(24, 117, 70, 0.5)
-                        30%, rgba(0, 103, 130, 0.5) 40%, rgba(11, 18, 132, 0.5)
-                        50%, rgba(118, 14, 161, 0.5) 60%, rgba(131, 9, 110, 0.5) 70%,
-                        rgba(132, 11, 42, 0.5) 80%, rgba(177, 62, 18, 0.5) 90%,
-                        rgba(226, 116, 18, 0.5) 100%
-                        );
-                    background-size: 470px 470px, 970px 970px, 410px 410px, 610px 610px, 530px 530px, 730px 730px, 100% 100%;
-                    /*background-color: #840b2a;*/
-                    background-opacity: 0.4;
-    	        }
-                #events-div h2{
-                    color: #2E2E2E;
-                }
-    			body{
-    				
-    			}
-    		</style>
 
     <div class="container" id="browse" style="height: 50px;"></div>		
-    <div class="container"">
+    <div class="container">
     <div class="panel panel-default marketing">
         <div class="panel-heading">
             <h4>Browse Event Tickets</h4>

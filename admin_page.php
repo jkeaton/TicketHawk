@@ -463,6 +463,32 @@
 		format : 'yyyy-mm-dd'
 	});
 		</script>
+		
+<script type="text/javascript">
+    function negDect(){
+		var i = document.getElementById("ticket-amount");
+    			if(isNaN(i.value)){
+    				i.value = "";
+    			}
+    			else{
+    				if(i.value === "0"){
+    					i.value = "";
+    				}
+    			}
+    		}
+
+</script>
+
+<script type="text/javascript">
+    function priceDect(){
+		var i = document.getElementById("price");
+    			if(isNaN(i.value)){
+    				i.value = "";
+    			}
+    		}
+
+</script>
+    
 		<style type="text/css">
     .bs-example{
     	margin: 20px;
@@ -730,7 +756,7 @@
                 <h3 class="panel-title">Add Events</h3>
             </div>
            
-			<form role="form"  method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
+			<form role="form"  method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" id="myForm">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="form-group">
@@ -763,12 +789,12 @@
                         <div class="col-xs-6 col-sm-3 form-group">
                             <label for="price">Price:</label>
                             <span class="error"><?php echo $eventPriceErr; ?></span>
-                            <span class='hint-left' data-hint="Name of the event" style="display: inline;"><input type="text" class="form-control" id="price" placeholder="Enter Price" name="eventPrice" required></span>
+                            <span class='hint-left' data-hint="Name of the event" style="display: inline;"><input type="text" onkeyup="priceDect()" class="form-control" id="price" placeholder="Enter Price" name="eventPrice" required></span>
                         </div>
                         <div class="col-xs-6 col-sm-3 form-group">
                             <label for="ticket-amount">Ticket Quantity:</label>
                             <span class="error"><?php echo $ticketQuantityErr; ?></span>
-                            <span class='hint-top' data-hint="Enter whole numbers" style="display: inline;"><input type="text" class="form-control" id="ticket-amount" placeholder="Ticket Quantity" name="ticketQuantity" required>
+                            <span class='hint-top' data-hint="Enter whole numbers" style="display: inline;"><input type="text" onkeyup="negDect()" class="form-control" id="ticket-amount" placeholder="Ticket Quantity" name="ticketQuantity" required>
                             	</span>
                         </div>
                     </div>
@@ -777,13 +803,13 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="location">Location:</label>
-                            <span class="error"><?php echo $eventLocationErr; ?></span>
-                            <input type="text" class="form-control" id="location" placeholder="Enter Location" name="eventLocation" required>
+                            <span class='hint-top' data-hint="Event Location" style="display: inline;"><span class="error"><?php echo $eventLocationErr; ?></span>
+                            <input type="text" class="form-control" id="location" placeholder="Enter Location" name="eventLocation" required></span>
                         </div>
                         <div class="col-xs-6 form-group">
                             <label for="venue">Venue:</label>
-                            <span class="error"><?php echo $eventVenueErr; ?></span>
-                            <input type="text" class="form-control" id="venue" placeholder="Enter Venue" name="eventVenue" required>
+                            <span class='hint-top' data-hint="Name of the facility" style="display: inline;"><span class="error"><?php echo $eventVenueErr; ?></span>
+                            <input type="text" class="form-control" id="venue" placeholder="Enter Venue" name="eventVenue" required></span>
                         </div>
                     </div>
                     <style>
@@ -805,11 +831,7 @@
                         <div class="col-md-6 form-group">
                             <label for="event-img">Event Image:</label>
                             <div id "container"></div>
-                            <!-- <div class="dropzone" id ="dropzone"> Drop fole here to upload
-                            <span class="error"><?php echo $eventImgErr; ?></span>
-                            <input type="file" id="event-img" name="eventImg"  required>
-                           </div> -->
-                           <input type="file" id="event-img" name="eventImg"  required>
+                           <span class='hint-top' data-hint="Event Image cannot be lager than 64KB" style="display: inline;"><input type="file" id="event-img" name="eventImg"  required></span>
                    		</div>
                        <div class="col-md-6 form-group" id="button-div" style="margin-top: 5px;">
                             <button type="submit" class="btn btn-primary" name="submit">
@@ -830,7 +852,7 @@
                 <form role="form" class="form-inline" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <div class="form-group">
                         <label for="id-num">Delete By ID:</label>
-                        <input type="number"  class="form-control" name="delete-by-id"/>
+                        <span class='hint--top' data-hint="Delete a single event" style="display: inline;"><input type="number"  class="form-control" name="delete-by-id"/></span>
                         <input type="submit" value="Delete" name="deleteById"  class="btn btn-danger"/>
                     </div>	
                 </form>
@@ -839,7 +861,7 @@
                 <form role="form" class="form-inline" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <div class="form-group" >
                         <label for="id-num">Delete By Date:</label>
-                        <input type="text"  class="datepicker form-control" name="delete-by-date" id="d3" data-date-format="yyyy-mm-dd"/>
+                        <span class='hint--top' data-hint="Delete one event or many events by date" style="display: inline;"><input type="text"  class="datepicker form-control" name="delete-by-date" id="d3" data-date-format="yyyy-mm-dd"/></span>
                         <button type="submit" name="deleteBydate"  class="btn btn-danger"/>Delete</button>
                     </div>	
                 </form>
