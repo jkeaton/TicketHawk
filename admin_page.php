@@ -358,12 +358,14 @@
         global $cxn;
         $query = "DELETE FROM EVENT WHERE date = '".$_POST['delete-by-date']."' ";
         $results = mysqli_query($cxn, $query);
+        header('Location: http://localhost/TicketHawk/admin_page.php');
     }
 
     function deleteById(){
         global $cxn;
         $query = "DELETE FROM EVENT WHERE eventid = '".$_POST['delete-by-id']."' ";
         $results = mysqli_query($cxn, $query);
+        header('Location: http://localhost/TicketHawk/admin_page.php');
     }
 
     function filterByDate(){
