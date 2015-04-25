@@ -81,5 +81,8 @@ body {
             rgba(126, 24, 237, 0.5) 90%,
             rgba(138, 0, 235, 0.5) 100% 
     );
-    /*background-opacity: 0.4;*/
+}
+#main-div {
+    padding-top: 50px;
+    margin-top: -50px;
 }

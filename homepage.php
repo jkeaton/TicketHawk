@@ -181,7 +181,10 @@
                 ?>
                 <!--<li><a href="#about">About</a></li>-->
                 <li><a href="getContactUsForm.php">Contact</a></li>
-                <li><a href="http://localhost/tickethawk/homepage.php#main-div">Events</a></li>
+                <!--<li><a
+                href="http://localhost/tickethawk/homepage.php#main-div"
+                id="events_link">Events</a></li>-->
+                <li><a href="#main-div" id="events_link">Events</a></li>
               </ul>
                 <?php
                     if (isset($_SESSION['user'])) {
@@ -309,7 +312,7 @@
             <span class="sr-only">Next</span>
         </a>
     </div><!-- /.carousel -->
-    <div class="container-fluid" id="main-div">
+    <div class="container-fluid" id="main-div" name="main-div">
     <script>
 	    var count = 1;
 
@@ -332,22 +335,23 @@
 
 	    });
 
+        /*
 	    setInterval(function() {
 	    	count = ($("#menuPics :nth-child(" + count + ")").fadeOut().next().length == 0) ? 1 : count + 1;
 		    $("#menuPics :nth-child(" + count + ")").fadeIn();
 
-	$("#menuPics :nth-child(" + 4 + ")").click(function() {
-		$(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=ProductsForTravel");
+	        $("#menuPics :nth-child(" + 4 + ")").click(function() {
+		        $(location).attr('href', "http://localhost/Tarsha's_Handbags/Handbag_Gallery.php?show=ProductsForTravel");
 
-	});
+	        });
 
-	setInterval(function() {
-		count = ($("#menuPics :nth-child(" + count + ")").fadeOut().next().length == 0) ? 1 : count + 1;
-		$("#menuPics :nth-child(" + count + ")").fadeIn();
+	    setInterval(function() {
+		    count = ($("#menuPics :nth-child(" + count + ")").fadeOut().next().length == 0) ? 1 : count + 1;
+		    $("#menuPics :nth-child(" + count + ")").fadeIn();
 
-	}, 3000);
+	    }, 3000);*/
 
-			</script>
+    </script>
             <!--
     		<div class="panel panel-default" id="search_div" style="margin-top:10px; solid 4px black;">
                 <div class="panel-heading">

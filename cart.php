@@ -194,7 +194,7 @@
                 ?>
                 <!--<li><a href="#about">About</a></li>-->
                 <li><a href="getContactUsForm.php">Contact</a></li>
-                <li><a href="http://localhost/tickethawk/homepage.php#browse">Events</a></li>
+                <li><a href="http://localhost/tickethawk/homepage.php#main-div">Events</a></li>
               </ul>
                 <?php
                     if (isset($_SESSION['user'])) {
@@ -272,7 +272,7 @@
                 <div class="panel-footer">
                     <div class="form-group row">
                         <div class="col-sm-3 text-left">
-                            <a class="btn btn-primary" href="http://localhost/tickethawk/homepage.php#browse" role="button">
+                            <a class="btn btn-primary" href="http://localhost/tickethawk/homepage.php#main-div" role="button">
                                 Add More Tickets
                             </a>
                         </div>

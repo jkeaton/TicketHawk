@@ -615,7 +615,7 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="homepage.php">Home</a></li>
-                        <li><a href="http://localhost/tickethawk/homepage.php#browse">Events</a></li>
+                        <li><a href="http://localhost/tickethawk/homepage.php#main-div">Events</a></li>
                         <!--<li><a href="other_admin.php">Users</a></li>-->
                     </ul>
                 <?php

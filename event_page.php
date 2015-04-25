@@ -231,7 +231,7 @@
                 ?>
                 <!--<li><a href="#about">About</a></li>-->
                 <li><a href="getContactUsForm.php">Contact</a></li>
-                <li><a href="http://localhost/tickethawk/homepage.php#browse">Events</a></li>
+                <li><a href="http://localhost/tickethawk/homepage.php#main-div">Events</a></li>
               </ul>
                 <?php
                     if (isset($_SESSION['user'])) {
