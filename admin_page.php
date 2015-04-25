@@ -524,11 +524,11 @@
 			}
             .td_id, .th_id {
                 overflow: hidden;
-                width: 3%;  
+                width: 5%;  
             }
             .td_name, .th_name {
                 overflow: hidden;
-                width: 17%;  
+                width: 15%;  
             }
             .td_date, .th_date {
                 overflow: hidden;
@@ -665,7 +665,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                        	<th class="th_id">ID</th>
+                        	<th class="th_id text-center">ID</th>
                             <th class="th_name">Name</th>
                             <th class="th_date">Date</th>
                             <th class="th_time">Time</th>
@@ -710,7 +710,7 @@
 }
         </style>
             <div class="panel" id="events-ready">
-		        <!-- <form method='post' action ='' id='myForm'>
+		        <!-- <form method='post' action='' id='myForm'>
 			        <input type='hidden' name ='eventNum'  id ='eventNum'>
 		            <button name = 'the_button' id='the_button' type='submit' style='visibility: hidden;'></button> -->
                     <table class="table">
@@ -720,20 +720,20 @@
                         while ($row = mysqli_fetch_assoc($results)) {
                         	$ticketSold = ticketsAdmin($row['eventname']);
 							echo "<tr>";
-							echo "<form method='post' action ='#myModal' id='myForm'>";
+							echo "<form method='post' action='#myModal' id='myForm'>";
 							echo "<input type='hidden' name ='eventNum'  id ='eventNum'>";
-							echo "<button name = 'the_button' id='the_button' type='submit' onclick='show_modal()' style='visibility: hidden;'></button>";
-							echo "<td class='td_id'><label>".$row['eventid']."</label></td>";
+							echo "<button name='the_button' id='the_button' type='submit' onclick='show_modal()' style='visibility: hidden;'></button>";
+							echo "<td class='td_id text-center'><label>".$row['eventid']."</label></td>";
 							echo "<td class='td_name'><label>".$row['eventname']."</label>";
 							echo "<br/>";
 							echo "<input type='button' value='Select' id='edit_button' class='btn btn-primary' onclick ='myFunction(".$row['eventid'].")'/>";
 							//echo "";		
 							echo "</td>";
 							echo "<td class='td_date'><label>".$row['date']."</label></td>";
-							echo '<td class="td_time"><label>' . $row['time'] . "</label></td>";
-							echo '<td class="td_loc"><label>' . $row['location'] . "</label></td>";
-							echo '<td class="td_venue"><label>' . $row['venue'] . "<label></td>";
-							echo '<td class="td_price"><label>' . sprintf("%01.2f", $row['price']) . "<label></td>";
+							echo '<td class="td_time"><label>' .$row['time'] . "</label></td>";
+							echo '<td class="td_loc"><label>' .$row['location'] . "</label></td>";
+							echo '<td class="td_venue"><label>' .$row['venue']. "</label></td>";
+							echo '<td class="td_price"><label>' .sprintf("%01.2f", $row['price']) . "</label></td>";
 							echo '<td class="td_qty"><label>' . $row['ticket_qty'] . "</label></td>";
 							echo "<td class='td_purch'><label>$ticketSold</label></td>";
 							echo '<td class="td_img"><img src = "data:image/jpeg;base64,' . base64_encode($row['img']) . '" width="80" height="80"/></td>';
@@ -831,7 +831,7 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label for="event-img">Event Image:</label>
-                            <div id "container"></div>
+                            <div class="container"></div>
                            <span class='hint-top' data-hint="Event Image cannot be lager than 64KB" style="display: inline;"><input type="file" id="event-img" name="eventImg"  required></span>
                    		</div>
                        <div class="col-md-6 form-group" id="button-div" style="margin-top: 5px;">
@@ -914,84 +914,82 @@ echo "<div id='myModal' class='modal fade'>
                     <h4 class='modal-title'>Confirmation</h4>
                 </div>
                 <div class='modal-body'>
-							 <div class='panel panel-default' id='events-in'>
-        	
-        	<div class='panel-heading'>
-                <h3 class='panel-title'>Modify Events</h3>
-            </div>
-           
-			<form role='form'  method='post' action='".htmlspecialchars($_SERVER['PHP_SELF'])."' enctype='multipart/form-data'>
-			<input type='hidden' name = 'tmpid' value = '$tmpid' id = 'temp-id'/>
-                <div class='container-fluid'>
-                    <div class='row'>
-                        <div class='form-group'>
-                            <label for='event-name'>Event Name:</label>
-                            <span class='error'>* $eventNameErr;</span>
-                            <input type='text' class='form-control' id='event-name-u' value='".$row['eventname']."' placeholder='Event Name' name='eventName_U' required>
+                    <div class='panel panel-default' id='events-in'>
+        	            <div class='panel-heading'>
+                            <h3 class='panel-title'>Modify Events</h3>
                         </div>
-                    </div>
-                    <div class='row'>
-                        <div class='col-xs-6 col-sm-3 form-group'>
-                            <label for='event-date'>Date:</label>
-                            <span class='error'>* <?php echo '$eventDateErr'; ?></span>
-                            <div class='input-group input-ammend' id='event-date_u'>
-                                <input type='text' class='datepicker form-control' value='".$row['date']."'  placeholder='Event Date' name='eventDate_U' required/>
-                                <span class='input-group-addon'>
-                                    <span class='glyphicon glyphicon-calendar'></span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class='col-xs-6 col-sm-3 form-group'>
-                            <label for='time'>Time:</label>
-                            <span class='error'>* <?php echo '$eventTimeErr'; ?></span>
-                            <div class='input-group input-ammend' id='time-u'>
-                                <input type='text' value = '".$row['time']."' class='form-control timepicker bootstrap-timepicker' placeholder='Enter Time' name='eventTime_U' required>
-                                <span class='input-group-addon'>
-                                    <span class='glyphicon glyphicon-time'></span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class='col-xs-6 col-sm-3 form-group'>
-                            <label for='price'>Price:</label>
-                            <span class='error'>* <?php echo '$eventPriceErr'; ?></span>
-                            <input type='text' value= '".$row['price']."' class='form-control' id='price-u' placeholder='Enter Price' name='eventPrice_U' required>
-                        </div>
-                        <div class='col-xs-6 col-sm-3 form-group'>
-                            <label for='ticket-amount'>Ticket Quantity:</label>
-                            <span class='error'>* <?php echo '$ticketQuantityErr'; ?></span>
-                            <input type='number' value = '".$row['ticket_qty']."' class='form-control' id='ticket-amount-u' placeholder='Ticket Quantity' name='ticketQuantity_U' required>
-                        </div>
-                    </div>
-                    <div class='row'>
-                    </div>
-                    <div class='row'>
-                        <div class='col-md-6 form-group'>
-                            <label for='location'>Location:</label>
-                            <span class='error'>* <?php echo '$eventLocationErr'; ?></span>
-                            <input type='text' value = '".$row['location']."' class='form-control' id='location-u' placeholder='Enter Location' name='eventLocation_U'required>
-                        </div>
-                        <div class='col-xs-6 form-group'>
-                            <label for='venue'>Venue:</label>
-                            <span class='error'>* <?php echo '$eventVenueErr'; ?></span>
-                            <input type='text' value = '".$row['venue']."' class='form-control' id='venue-u' placeholder='Enter Venue' name='eventVenue_U' required>
-                        </div>
-                    </div>
-                    <div class='row'>
-                        <div class='col-md-6 form-group'>
-                            <label for='event-img'>Event Image:</label>
-                            <span class='error'>* <?php echo $eventImgErr; ?></span>
-                            <div>
-                            <img src='data:image/jpeg;base64," . base64_encode($row['img']) ."' width= '50' height ='50'/>
-                            </div>
-                            <input type='file' value = 'data:image/jpeg;base64," . base64_encode($row['img']) ."' id='event-img-u' name='eventImg_U' required>
-                        </div>
-                        <a name='addEvent'><div class='col-md-6 form-group' id='button-div' style='margin-top: 5px;'>
-                        </div></a>
+			            <form role='form'  method='post' action='".htmlspecialchars($_SERVER['PHP_SELF'])."' enctype='multipart/form-data'>
+			                <input type='hidden' name = 'tmpid' value = '$tmpid' id = 'temp-id'/>
+                            <div class='container-fluid'>
+                                <div class='row'>
+                                    <div class='form-group'>
+                                        <label for='event-name'>Event Name:</label>
+                                        <span class='error'>* $eventNameErr;</span>
+                                        <input type='text' class='form-control' id='event-name-u' value='".$row['eventname']."' placeholder='Event Name' name='eventName_U' required>
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-xs-6 col-sm-3 form-group'>
+                                        <label for='event-date'>Date:</label>
+                                        <span class='error'>* <?php echo '$eventDateErr'; ?></span>
+                                        <div class='input-group input-ammend' id='event-date_u'>
+                                            <input type='text' class='datepicker form-control' value='".$row['date']."'  placeholder='Event Date' name='eventDate_U' required/>
+                                            <span class='input-group-addon'>
+                                                <span class='glyphicon glyphicon-calendar'></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class='col-xs-6 col-sm-3 form-group'>
+                                        <label for='time'>Time:</label>
+                                        <span class='error'>* <?php echo '$eventTimeErr'; ?></span>
+                                        <div class='input-group input-ammend' id='time-u'>
+                                            <input type='text' value = '".$row['time']."' class='form-control timepicker bootstrap-timepicker' placeholder='Enter Time' name='eventTime_U' required>
+                                            <span class='input-group-addon'>
+                                                <span class='glyphicon glyphicon-time'></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class='col-xs-6 col-sm-3 form-group'>
+                                        <label for='price'>Price:</label>
+                                        <span class='error'>* <?php echo '$eventPriceErr'; ?></span>
+                                        <input type='text' value= '".$row['price']."' class='form-control' id='price-u' placeholder='Enter Price' name='eventPrice_U' required>
+                                    </div>
+                                    <div class='col-xs-6 col-sm-3 form-group'>
+                                        <label for='ticket-amount'>Ticket Quantity:</label>
+                                        <span class='error'>* <?php echo '$ticketQuantityErr'; ?></span>
+                                        <input type='number' value = '".$row['ticket_qty']."' class='form-control' id='ticket-amount-u' placeholder='Ticket Quantity' name='ticketQuantity_U' required>
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-md-6 form-group'>
+                                        <label for='location'>Location:</label>
+                                        <span class='error'>* <?php echo '$eventLocationErr'; ?></span>
+                                        <input type='text' value = '".$row['location']."' class='form-control' id='location-u' placeholder='Enter Location' name='eventLocation_U'required>
+                                    </div>
+                                    <div class='col-xs-6 form-group'>
+                                        <label for='venue'>Venue:</label>
+                                        <span class='error'>* <?php echo '$eventVenueErr'; ?></span>
+                                        <input type='text' value = '".$row['venue']."' class='form-control' id='venue-u' placeholder='Enter Venue' name='eventVenue_U' required>
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                    <div class='col-md-6 form-group'>
+                                        <label for='event-img'>Event Image:</label>
+                                        <span class='error'>* <?php echo $eventImgErr; ?></span>
+                                        <div>
+                                            <img src='data:image/jpeg;base64," . base64_encode($row['img']) ."' width= '50' height ='50'/>
+                                        </div>
+                                        <input type='file' value = 'data:image/jpeg;base64," . base64_encode($row['img']) ."' id='event-img-u' name='eventImg_U' required>
+                                    </div>
+                                    <a name='addEvent'><div class='col-md-6 form-group' id='button-div' style='margin-top: 5px;'>
+                                </div></a>
                     </div>
                 </div>
                  <div class='modal-footer'>
                     <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
-                    <input type='submit' class='btn btn-primary' name ='savechanges'></button>
+                    <input type='submit' class='btn btn-primary' name='savechanges' value='Save Changes'/>
                 </div>
             </form>
         </div>
