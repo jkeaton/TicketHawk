@@ -141,9 +141,9 @@
                         // Clear Payment Info Array
                         $_SESSION['payment_info'] = array();
                     }
+                    header('Location: http://localhost/tickethawk/order_history.php');
                 }
             }
-            header('Location: http://localhost/tickethawk/order_history.php');
         }
 
         if (isset($_POST['confirm_as_guest'])){
@@ -223,17 +223,17 @@
                 '<div class="form-group col-sm-3">'
                 .'<label for="inputUsername">Username:</label>'
                 .'<span class="error">* '.$newunameErr.'</span>'
-                .'<input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username">'
+                .'<input type="text" class="form-control" value="" id="inputUsername" name="username" placeholder="Username">'
                 .'</div>'
                 .'<div class="form-group col-sm-3">'
-                .'<label for="inputPassword">Password</label>'
+                .'<label for="password">Password</label>'
                 .'<span class="error">* '.$newpassErr.'</span>'
-                .'<input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">'
+                .'<input type="password" name="password" value="" class="form-control" id="inputPassword" placeholder="Password">'
                 .'</div>'
                 .'<div class="form-group col-sm-3">'
-                .'<label for="inputPassword">Confirm Password</label>'
+                .'<label for="confirm_pass">Confirm Password</label>'
                 .'<span class="error">* '.$confirmPassErr.'</span>'
-                .'<input type="password" name="confirm_pass" class="form-control" id="inputPassword" placeholder="Password">'
+                .'<input type="password" name="confirm_pass" value="" class="form-control" id="confirmPassword" placeholder="Password">'
                 .'</div>');
         }
         return $output;
