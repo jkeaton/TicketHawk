@@ -908,6 +908,7 @@ if(isset($_POST['eventNum'])){
  
 echo "<div id='myModal' class='modal fade'>
         <div class='modal-dialog' style='width: 700px;'>
+	        <form role='form'  method='post' action='".htmlspecialchars($_SERVER['PHP_SELF'])."' enctype='multipart/form-data'>
             <div class='modal-content'>
                 <div class='modal-header'>
                     <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
@@ -918,13 +919,13 @@ echo "<div id='myModal' class='modal fade'>
         	            <div class='panel-heading'>
                             <h3 class='panel-title'>Modify Events</h3>
                         </div>
-			            <form role='form'  method='post' action='".htmlspecialchars($_SERVER['PHP_SELF'])."' enctype='multipart/form-data'>
+                        <div class='panel-body'>
 			                <input type='hidden' name = 'tmpid' value = '$tmpid' id = 'temp-id'/>
                             <div class='container-fluid'>
                                 <div class='row'>
                                     <div class='form-group'>
                                         <label for='event-name'>Event Name:</label>
-                                        <span class='error'>* $eventNameErr;</span>
+                                        <span class='error'>".$eventNameErr."</span>
                                         <input type='text' class='form-control' id='event-name-u' value='".$row['eventname']."' placeholder='Event Name' name='eventName_U' required>
                                     </div>
                                 </div>
@@ -966,7 +967,7 @@ echo "<div id='myModal' class='modal fade'>
                                     <div class='col-md-6 form-group'>
                                         <label for='location'>Location:</label>
                                         <span class='error'>* <?php echo '$eventLocationErr'; ?></span>
-                                        <input type='text' value = '".$row['location']."' class='form-control' id='location-u' placeholder='Enter Location' name='eventLocation_U'required>
+                                        <input type='text' value='".$row['location']."' class='form-control' id='location-u' placeholder='Enter Location' name='eventLocation_U' required>
                                     </div>
                                     <div class='col-xs-6 form-group'>
                                         <label for='venue'>Venue:</label>
@@ -984,26 +985,22 @@ echo "<div id='myModal' class='modal fade'>
                                         <input type='file' value = 'data:image/jpeg;base64," . base64_encode($row['img']) ."' id='event-img-u' name='eventImg_U' required>
                                     </div>
                                     <a name='addEvent'><div class='col-md-6 form-group' id='button-div' style='margin-top: 5px;'>
-                                </div></a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                 <div class='modal-footer'>
+                <div class='modal-footer'>
                     <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
                     <input type='submit' class='btn btn-primary' name='savechanges' value='Save Changes'/>
                 </div>
+            </div>
             </form>
         </div>
-          <p class='text-warning'><small>If you don't save, your changes will be lost.</small></p>
-       </div>
-
-            </div>
-        </div>
-    </div>
-</div>"; 
+        <p class='text-warning'><small>If you don't save, your changes will be lost.</small></p>
+    </div>";
   }	
 ?>
-        
-      </div>
                       <script>
                     	( function(){
                     		var dropzone = document.getElementById("dropzone");
