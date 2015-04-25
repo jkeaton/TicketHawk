@@ -15,6 +15,7 @@
     $results = mysqli_query($cxn, $query) or die("Connection could not be established");
     $events = array();
     $e_id = -1;
+    $t_qty = 0;
     storeEventRows();
     // Comment to add bootstrap in a commit
 
@@ -32,7 +33,7 @@
     }
     
     function generateEventDetails(){
-        global $events, $e_id;
+        global $events, $e_id, $t_qty;
         try {
             $id = ($_SERVER['QUERY_STRING']);
             $_SESSION['q_string'] = $id;
@@ -41,6 +42,7 @@
             $output = "";
             foreach ($events as $value) {
                 if ($value['eventid'] == $id){
+                    $t_qty = $value['ticket_qty'];
                     $output .= ('<div class="container">'
                                     .'<div class="row text-center">'
                                         .'<h3>'.$value['eventname'].'</h3>'
@@ -57,11 +59,12 @@
                                                 .'<tr><td><b>Location:</b></td><td>'.$value['location'].'</td></tr>'
                                                 .'<tr><td><b>Venue:</b></td><td>'.$value['venue'].'</td></tr>'
                                                 .'<tr><td><b>Ticket Price:</b></td><td>$'.$value['price'].'</td></tr>'
-                                                .'<tr><td><b>Tickets in Stock:</b></td><td>'.$value['ticket_qty'].'</td></tr>'
+                                                .'<tr><td><b>Tickets in
+                                                Stock:</b></td><td id="viewed_tqty">'.$value['ticket_qty'].'</td></tr>'
                                             .'</table>'
                                             .'<form role="form"  method="post" action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'" enctype="multipart/form-data">'
                                                 .'<div class="form-group">'
-                                                    .'<input type="number" name="qty" placeholder="Quantity" class="form-control small_form_control" required>'
+                                                    .'<input id="ticket_qty" onchange="verify_unsigned()" type="number" name="qty" placeholder="Quantity" class="form-control small_form_control" required>'
 					                                .'<button type="submit" class="form-control small_form_control btn btn-success" name="add">'
 						                                .'Add To Cart</button>'
                                                 .'</div>'
@@ -90,22 +93,24 @@
         // pressed "add to cart"
         if (isset($_POST['add'])){
             if (isset($_POST['qty'])){
-                $pos = strpos ($_SESSION['q_string'] , '=');
-                $id = substr($_SESSION['q_string'], $pos+1);
-                // Handle the case where we have a guest who hasn't yet logged
-                // in but still wants to purchase tickets
-                if (!isset($_SESSION['cart'])){
-                    $_SESSION['cart'] = array(); 
+                if ($_POST['qty'] >= $t_qty){
+                    $pos = strpos ($_SESSION['q_string'] , '=');
+                    $id = substr($_SESSION['q_string'], $pos+1);
+                    // Handle the case where we have a guest who hasn't yet logged
+                    // in but still wants to purchase tickets
+                    if (!isset($_SESSION['cart'])){
+                        $_SESSION['cart'] = array(); 
+                    }
+                    if (!isset($_SESSION['cart'][$id])){
+                        $_SESSION['cart'][$id] = $_POST['qty'];  
+                    }
+                    else{
+                        $_SESSION['cart'][$id] += $_POST['qty'];
+                    }
+                    // Redirect back to current page when finished adding item to cart
+                    $new_url = ('http://localhost/TicketHawk/event_page.php?'.$_SESSION['q_string']);
+                    header("Location: http://localhost/tickethawk/cart.php");
                 }
-                if (!isset($_SESSION['cart'][$id])){
-                    $_SESSION['cart'][$id] = $_POST['qty'];  
-                }
-                else{
-                    $_SESSION['cart'][$id] += $_POST['qty'];
-                }
-                // Redirect back to current page when finished adding item to cart
-                $new_url = ('http://localhost/TicketHawk/event_page.php?'.$_SESSION['q_string']);
-                header("Location: http://localhost/tickethawk/cart.php");
             }
         }
         // Handle logout attempt
@@ -167,12 +172,20 @@
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-    <!--
     <script type="text/javascript">
-	    function onLoad(){
-		    alert("Hello World");
-    	}
-    </script>-->
+        function verify_unsigned(){
+            var e = document.getElementById('ticket_qty');
+            var v = document.getElementById('viewed_tqty');
+            if(e.value < 0){
+                e.value = 0;
+            }
+            else{
+                if (e.value > parseInt(v.innerHTML)){
+                    e.value = parseInt(v.innerHTML);
+                }
+            }
+        }
+    </script>
     </head>
 
     <body role="document" onload="onLoad()">
@@ -219,7 +232,7 @@
                             . '<li class="navbar-left"><a href="http://localhost/tickethawk/order_history.php">'
                             . $welcome_msg
                             . '</a></li><form role="form" class="navbar-form navbar-right" method="post"'
-                            . 'action="'
+                            . ' action="'
                             . htmlspecialchars($_SERVER["PHP_SELF"])
                             . '"><button type="submit" class="btn btn-danger" name="logout">'
                             . "Log Out</button></form>"
