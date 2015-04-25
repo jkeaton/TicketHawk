@@ -149,7 +149,8 @@
     	</style>
     </head>
 
-    <body role="document" style="background-color: black;">
+    <!--<body role="document" style="background-color: black;">-->
+    <body role="document" class="bg-gradient">
 
         <!-- Fixed navbar -->
         <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -161,7 +162,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">Ticket Hawk</a>
+              <a class="navbar-brand" href="http://localhost/tickethawk/homepage.php">Ticket Hawk</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
@@ -180,7 +181,7 @@
                 ?>
                 <!--<li><a href="#about">About</a></li>-->
                 <li><a href="getContactUsForm.php">Contact</a></li>
-                <li><a href="http://localhost/tickethawk/homepage.php#browse">Events</a></li>
+                <li><a href="http://localhost/tickethawk/homepage.php#main-div">Events</a></li>
               </ul>
                 <?php
                     if (isset($_SESSION['user'])) {
@@ -354,61 +355,60 @@
                 </div>
     			<div class="row" style="padding: 10px;">
     			<div class="col-md-5" style="">
-    			<div style="padding-top: 30px;">
-				<form method="post">
-                    <div class="input-group custom-search-form">
-                        <input type="text" class="form-control" placeholder="Search..." name="search_events"> 
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-default" form_id="searchTrans"  type="button" name="srch">
-                          <span class="glyphicon glyphicon-search"></span>
-                           </button>          
-                       </span>
-                    </div>
-				</form>
-				</div>
-				<div style="padding-top: 10px;">
-				 <label>Trending</label>
-				 </div>
-                    <p>
-                        <a href="#" class="btn btn-primary btn-xs">Event 1</a>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 2</a>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 3</a>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 4</a>
-                    </p>
-                    <p>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 1</a>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 2</a>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 3</a>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 4</a>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 5</a>
-                    	<a href="#" class="btn btn-primary btn-xs">Event 6</a>
-                    </p> 
-				</div>
-				<div class="col-md-5" style="margin-left: 120px;" id="search-results">
-					<?php
-						if(isset($_POST['srch']) && isset($_POST['search_events'])){
-							$srch_event = $_POST['search_events']; 
-							$query = "SELECT * FROM EVENT WHERE eventname ='$srch_event'";
-							$results = mysqli_query($cxn, $query);
-							while($row = mysqli_fetch_assoc($results)){
-							if(empty($row)){
-								echo "<h1 style='color:red;'> Event Not found</h1>";
-							}
-							else {
-								echo "<h3>".$row['eventname']."</h3>";
-							}
-						}
-					}
-					
-					?>
-						<!-- <img src="dist/images/images.jpeg"  width="660px" height = "400px" />
+    			    <div style="padding-top: 30px;">
+				        <form method="post">
+                        <div class="input-group custom-search-form">
+                            <input type="text" class="form-control" placeholder="Search..." name="search_events"> 
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-default" form_id="searchTrans"  type="button" name="srch">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>          
+                            </span>
+                        </div>
+				        </form>
+				    </div>
+				    <div style="padding-top: 10px;">
+				        <label>Trending</label>
+				    </div>
+                        <p>
+                            <a href="#" class="btn btn-primary btn-xs">Event 1</a>
+                    	    <a href="#" class="btn btn-primary btn-xs">Event 2</a>
+                    	    <a href="#" class="btn btn-primary btn-xs">Event 3</a>
+                    	    <a href="#" class="btn btn-primary btn-xs">Event 4</a>
+                        </p>
+                        <p>
+                    	    <a href="#" class="btn btn-primary btn-xs">Event 1</a>
+                    	    <a href="#" class="btn btn-primary btn-xs">Event 2</a>
+                    	    <a href="#" class="btn btn-primary btn-xs">Event 3</a>
+                    	    <a href="#" class="btn btn-primary btn-xs">Event 4</a>
+                    	    <a href="#" class="btn btn-primary btn-xs">Event 5</a>
+                    	    <a href="#" class="btn btn-primary btn-xs">Event 6</a>
+                        </p> 
+				    </div>
+				    <div class="col-md-5" style="margin-left: 120px;" id="search-results">
+					    <\?php
+						    if(isset($_POST['srch']) && isset($_POST['search_events'])){
+							    $srch_event = $_POST['search_events']; 
+							    $query = "SELECT * FROM EVENT WHERE eventname ='$srch_event'";
+							    $results = mysqli_query($cxn, $query);
+							    while($row = mysqli_fetch_assoc($results)){
+							        if(empty($row)){
+								        echo "<h1 style='color:red;'> Event Not found</h1>";
+							        }
+							        else {
+								        echo "<h3>".$row['eventname']."</h3>";
+							        }
+						        }
+					        }
+					    ?>
+						<img src="dist/images/images.jpeg"  width="660px" height = "400px" />
 						<img src="dist/images/katWilliams.jpeg" width="550px" height = "400px" />
 						<img src="dist/images/lebron-james-dunkman-kings.jpg"  width="550px" height = "400px" />
-						<img src="dist/images/on-the-run-650.jpg" width="550px" height = "400px" /> -->
+						<img src="dist/images/on-the-run-650.jpg" width="550px" height = "400px" />
+				    </div>
 				</div>
-
-				</div>
-    		</div>
+    		    </div>
+            </div>-->
 
             <style>
                 #events-div{
@@ -440,7 +440,6 @@
                 }
             </style>
 
-    <div class="container" id="browse" style="height: 50px;"></div>		
     <div class="container">
     <div class="panel panel-default marketing">
         <div class="panel-heading">
