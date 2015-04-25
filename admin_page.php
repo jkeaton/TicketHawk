@@ -17,7 +17,6 @@
     $results = mysqli_query($cxn, $query) or die("Connection could not be established");
     $username = $_SESSION['user'];
     $welcome_msg = ("Welcome " . $username);
-
     $deleteDate="";
 	$tmpid="";
 
@@ -946,7 +945,7 @@ echo "<div id='myModal' class='modal fade'>
                             <label for='time'>Time:</label>
                             <span class='error'>* <?php echo '$eventTimeErr'; ?></span>
                             <div class='input-group input-ammend' id='time-u'>
-                                <input type='text' value = '".$row['time']."' class='form-control input-small bootstrap-timepicker timepicker' placeholder='Enter Time' name='eventTime_U' required>
+                                <input type='text' value = '".$row['time']."' class='form-control timepicker bootstrap-timepicker' placeholder='Enter Time' name='eventTime_U' required>
                                 <span class='input-group-addon'>
                                     <span class='glyphicon glyphicon-time'></span>
                                 </span>

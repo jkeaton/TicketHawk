@@ -44,3 +44,15 @@ body {
     text-decoration:underline;
     border-bottom: 1px solid #000;
 }
+.datepicker {
+    z-index:1151 !important;
+    border: 1px solid #ccc !important;
+    border-top-left-radius: 4px !important;
+    border-bottom-left-radius: 4px !important;
+}
+.timepicker {
+    z-index:1151 !important;
+    border: 1px solid #ccc !important;
+    border-top-left-radius: 4px !important;
+    border-bottom-left-radius: 4px !important;
+}
