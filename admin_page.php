@@ -497,6 +497,15 @@
     		}
 
 </script>
+<script type="text/javascript">
+    function editPrice(){
+		var i = document.getElementById("price-u");
+    			if(isNaN(i.value)){
+    				i.value = "";
+    			}
+    		}
+
+</script>
     
 		<style type="text/css">
     .bs-example{
@@ -943,7 +952,7 @@ echo "<div id='myModal' class='modal fade'>
                                         <label for='event-date'>Date:</label>
                                         <span class='error'>* <?php echo '$eventDateErr'; ?></span>
                                         <div class='input-group input-ammend' id='event-date_u'>
-                                            <input type='text' class='datepicker form-control' value='".$formatted_date."'  placeholder='Event Date' name='eventDate_U' required/>
+                                            <input type='text' class='datepicker form-control' value='".$formatted_date."' id = 'date-4' onkeyup = 'userEntry()'  placeholder='Event Date' name='eventDate_U' required/>
                                             <span class='input-group-addon'>
                                                 <span class='glyphicon glyphicon-calendar'></span>
                                             </span>
@@ -962,7 +971,7 @@ echo "<div id='myModal' class='modal fade'>
                                     <div class='col-xs-6 col-sm-3 form-group'>
                                         <label for='price'>Price:</label>
                                         <span class='error'>* <?php echo '$eventPriceErr'; ?></span>
-                                        <input type='text' value= '".$row['price']."' class='form-control' id='price-u' placeholder='Enter Price' name='eventPrice_U' required>
+                                        <input type='text' value= '".$row['price']."' class='form-control' id='price-u' onkeyup ='editPrice()' placeholder='Enter Price' name='eventPrice_U' required>
                                     </div>
                                     <div class='col-xs-6 col-sm-3 form-group'>
                                         <label for='ticket-amount'>Ticket Quantity:</label>
@@ -1010,6 +1019,12 @@ echo "<div id='myModal' class='modal fade'>
     </div>";
   }	
 ?>
+<script>
+	function userEntry(){
+		var entry = document.getElementById("date-4");
+		entry.value ="";
+	}
+</script>
                       <script>
                     	( function(){
                     		var dropzone = document.getElementById("dropzone");
