@@ -257,9 +257,9 @@
                         	    <th class="text-center">Event Name</th>
                                 <th class="text-center">Date</th>
                                 <th class="text-center">Time</th>
-                                <th class="text-center">Location</th>
-                                <th class="text-center">Venue</th>
-                                <th class="text-center">Price</th>
+                                <th class="text-left">Location</th>
+                                <th class="text-left">Venue</th>
+                                <th class="text-right">Price</th>
                                 <th class="text-center">Quantity</th>
                                 <th class="text-center">Action</th>
                             </tr>

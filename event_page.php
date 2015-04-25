@@ -31,6 +31,16 @@
             ++$index;
         }
     }
+
+    function get_cart_qty(){
+        global $e_id;
+        if (isset($_SESSION['cart'][$e_id])){
+            return $_SESSION['cart'][$e_id];  
+        }
+        else {
+            return 0;
+        }
+    }
     
     function generateEventDetails(){
         global $events, $e_id, $t_qty;
@@ -39,6 +49,7 @@
             $_SESSION['q_string'] = $id;
             $pos = strpos ($id , '=');
             $id = substr($id, $pos+1);
+            $e_id = $id;
             $output = "";
             foreach ($events as $value) {
                 if ($value['eventid'] == $id){
@@ -176,12 +187,13 @@
         function verify_unsigned(){
             var e = document.getElementById('ticket_qty');
             var v = document.getElementById('viewed_tqty');
+            var c = document.getElementById('cart_qty');
             if(e.value < 0){
                 e.value = 0;
             }
             else{
-                if (e.value > parseInt(v.innerHTML)){
-                    e.value = parseInt(v.innerHTML);
+                if (e.value > (parseInt(v.innerHTML) - parseInt(c.value))){
+                    e.value = (parseInt(v.innerHTML) - parseInt(c.value));
                 }
             }
         }
@@ -277,6 +289,7 @@
             <div class="panel">
                 <?php echo generateEventDetails(); ?>
             </div>
+			<input type='hidden' value='<?php echo get_cart_qty(); ?>' name ='cart_qty' id ='cart_qty'>
         </div>
     </div>
 </body>

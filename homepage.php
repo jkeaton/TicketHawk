@@ -442,7 +442,7 @@
 
     <div class="container" id="browse" style="height: 50px;"></div>		
     <div class="container">
-    <div class="panel panel-info marketing">
+    <div class="panel panel-default marketing">
         <div class="panel-heading">
             <h4>Browse Event Tickets</h4>
         </div>
