@@ -29,6 +29,14 @@
 
     $eventImg1 = FALSE;
 
+    function mysql_to_php_date($in){
+        return DateTime::createFromFormat('Y-m-d', $in)->format('m/d/Y');
+    }
+
+    function php_to_mysql_date($in){
+        return DateTime::createFromFormat('m/d/Y', $in)->format('Y-m-d');
+    }
+
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
         // Handle insert event attempt
         if (isset($_POST['submit'])) {
@@ -344,7 +352,7 @@
     }
 	function updateEvent($_eventName,  $_eventTime, $_eventLocation, $_eventVenue, $_eventPrice, $_ticketQuantity, $_eventImg) {
         global $cxn, $tmpid;
-        $query = "UPDATE EVENT SET eventname ='$_eventName', date ='".$_POST['eventDate_U']."', time = '$_eventTime', 
+        $query = "UPDATE EVENT SET eventname ='$_eventName', date ='".php_to_mysql_date($_POST['eventDate_U'])."', time = '$_eventTime', 
         location = '$_eventLocation', venue =  '$_eventVenue', price = '$_eventPrice', ticket_qty = '$_ticketQuantity', img = '$_eventImg' 
         WHERE eventid = ".$_POST['tmpid'];
         $results = mysqli_query($cxn, $query) or die("Could not perform request");
@@ -904,7 +912,8 @@ if(isset($_POST['eventNum'])){
 		$query = "SELECT * FROM EVENT WHERE eventid =". $tmpid;
 		$results = mysqli_query($cxn, $query)or die(mysqli_error($cxn));
 		$row  = mysqli_fetch_assoc($results);
-		//echo "<script>alert(".$tmpid.");</script>";
+        $mysqldate = DateTime::createFromFormat('Y-m-d', $row['date']);
+        $formatted_date = $mysqldate->format('m/d/Y');
  
 echo "<div id='myModal' class='modal fade'>
         <div class='modal-dialog' style='width: 700px;'>
@@ -934,7 +943,7 @@ echo "<div id='myModal' class='modal fade'>
                                         <label for='event-date'>Date:</label>
                                         <span class='error'>* <?php echo '$eventDateErr'; ?></span>
                                         <div class='input-group input-ammend' id='event-date_u'>
-                                            <input type='text' class='datepicker form-control' value='".$row['date']."'  placeholder='Event Date' name='eventDate_U' required/>
+                                            <input type='text' class='datepicker form-control' value='".$formatted_date."'  placeholder='Event Date' name='eventDate_U' required/>
                                             <span class='input-group-addon'>
                                                 <span class='glyphicon glyphicon-calendar'></span>
                                             </span>
