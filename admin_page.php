@@ -900,8 +900,8 @@
 						<label for="date-2">Date 2:</label>
 						<input type="text" class="datepicker form-control" id="d2" name="date-2" data-date-format="yyyy-mm-dd" />
 					</div>
-					<button type="submit" class="btn btn-default" name="filter">
-						Submit
+					<button type="submit" class="btn btn-warning" name="filter">
+						Filter
 					</button>
 			
 				</form>

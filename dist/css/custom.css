@@ -1,19 +1,15 @@
 html {
     height: 100%;
+    overflow: auto;
 }
 body {
-    min-height: 100% !important;
+    height: 100%;
     margin: 0;
-    background-size: auto !important;
-    /*
-    background-size: cover !important;
-    -webkit-background-size: cover !important;
-    -moz-background-size: cover !important;
-    -o-background-size: cover !important;*/
+    background-size: 100%
     background-repeat: no-repeat;
     padding-top: 50px;
     background-attachment: fixed;
-    overflow: auto;
+    overflow: scroll;
 }
 #button-div {
     margin-top: 5px;
