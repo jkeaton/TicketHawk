@@ -433,7 +433,6 @@
                         rgba(226, 116, 18, 0.5) 100%
                         );
                     background-size: 470px 470px, 970px 970px, 410px 410px, 610px 610px, 530px 530px, 730px 730px, 100% 100%;
-                    /*background-color: #840b2a;*/
                     background-opacity: 0.4;
     	        }
                 #events-div h2{
@@ -443,7 +442,7 @@
 
     <div class="container" id="browse" style="height: 50px;"></div>		
     <div class="container">
-    <div class="panel panel-default marketing">
+    <div class="panel panel-info marketing">
         <div class="panel-heading">
             <h4>Browse Event Tickets</h4>
         </div>

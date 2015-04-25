@@ -1,5 +1,17 @@
-body { 
-    padding-top: 50px; 
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+    margin: 0;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    padding-top: 50px;
+    overflow: auto;
 }
 #button-div {
     margin-top: 5px;
@@ -55,4 +67,21 @@ body {
     border: 1px solid #ccc !important;
     border-top-left-radius: 4px !important;
     border-bottom-left-radius: 4px !important;
+}
+.bg-gradient{
+    background: 
+        linear-gradient(180deg, 
+            rgba(26, 244, 255, 0.5) 0%,
+            rgba(37, 219, 253, 0.5) 10%,
+            rgba(48, 195, 251, 0.5) 20%,
+            rgba(59, 170, 249, 0.5) 30%,
+            rgba(70, 146, 247, 0.5) 40%,
+            rgba(82, 122, 245, 0.5) 50%,
+            rgba(93, 97, 243, 0.5) 60%,
+            rgba(104, 73, 241, 0.5) 70%,
+            rgba(115, 48, 239, 0.5) 80%,
+            rgba(126, 24, 237, 0.5) 90%,
+            rgba(138, 0, 235, 0.5) 100% 
+    );
+    /*background-opacity: 0.4;*/
 }

@@ -96,6 +96,7 @@
     <script src="dist/js/bootstrap.min.js"></script>
     <script src="dist/js/docs.min.js"></script>
 </head>
+<body class="bg-gradient">
 <nav class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container">
 				<div class="navbar-header">
@@ -212,3 +213,4 @@
         </form>
     </div>
 </div>
+</body>

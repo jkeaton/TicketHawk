@@ -234,7 +234,7 @@
 		<![endif]-->
 	</head>
 
-	<body role="document">
+	<body role="document" class="bg-gradient">
 		<!-- Fixed navbar -->
 		<nav class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container">

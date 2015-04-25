@@ -188,7 +188,7 @@
     </script>
     </head>
 
-    <body role="document" onload="onLoad()">
+    <body role="document" class="bg-gradient" onload="onLoad()">
 
         <!-- Fixed navbar -->
         <nav class="navbar navbar-inverse navbar-fixed-top">

@@ -590,7 +590,7 @@
 
     </head>
 
-    <body role="document">
+    <body role="document" class="bg-gradient">
         <!-- Fixed navbar -->
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
@@ -607,7 +607,7 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="homepage.php">Home</a></li>
                         <li><a href="http://localhost/tickethawk/homepage.php#browse">Events</a></li>
-                        <li><a href="other_admin.php">Users</a></li>
+                        <!--<li><a href="other_admin.php">Users</a></li>-->
                     </ul>
                 <?php
                     if (isset($_SESSION['user'])) {
