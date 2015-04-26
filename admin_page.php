@@ -1080,6 +1080,11 @@ echo "<div id='myModal' class='modal fade'>
 
                     	}
                     </script>
+                    <style>
+                    	.bootstrap-timepicker-widget {
+ z-index: 100000;
+ }
+                    </style>
                     
    </body>
     
