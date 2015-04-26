@@ -209,7 +209,8 @@
             }
             // If there are no line items, get me out of here
             if ($price_total == 0){
-                header('Location: http://localhost/tickethawk/homepage.php#browse');
+                header('Location:
+                http://localhost/tickethawk/homepage.php#main-div');
             }
         }
         return $output;
@@ -325,7 +326,7 @@
 						<li>
 							<a href="getContactUsForm.php">Contact</a>
 						</li>
-                        <li><a href="http://localhost/tickethawk/homepage.php#browse">Events</a></li>
+                        <li><a href="http://localhost/tickethawk/homepage.php#main-div">Events</a></li>
 					</ul>
                 <?php
                     if (isset($_SESSION['user'])) {
