@@ -6,7 +6,6 @@
 
     // Create the connection to the database to be reused
     global $dbhost, $dbname;
-	//$results = NULL;
     $creds = db_admin();
     $dbuser = array_values($creds)[0];
     $dbpass = array_values($creds)[1];
