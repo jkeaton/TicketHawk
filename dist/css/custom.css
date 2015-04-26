@@ -61,7 +61,7 @@ body {
     border-bottom-left-radius: 4px !important;
 }
 .timepicker {
-    z-index:1000000 !important;
+    z-index:1152 !important;
     border: 1px solid #ccc !important;
     border-top-left-radius: 4px !important;
     border-bottom-left-radius: 4px !important;
@@ -85,4 +85,7 @@ body {
 #main-div {
     padding-top: 50px;
     margin-top: -50px;
+}
+nav {
+    z-index:1200 !important;
 }

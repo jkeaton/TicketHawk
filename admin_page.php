@@ -13,7 +13,7 @@
     $cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
     // Fetch the Events from the database
-    $query = "SELECT * FROM EVENT";
+    $query = "SELECT * FROM EVENT WHERE ACTIVE = 1";
     $results = mysqli_query($cxn, $query) or die("Connection could not be established");
     $username = $_SESSION['user'];
     $welcome_msg = ("Welcome " . $username);
@@ -363,21 +363,23 @@
 
     function deleteByDate(){
         global $cxn;
-        $query = "DELETE FROM EVENT WHERE date = '".$_POST['delete-by-date']."' ";
+        $query = "UPDATE EVENT SET ACTIVE = 0 WHERE DATE = '".$_POST['delete-by-date']."'";
         $results = mysqli_query($cxn, $query);
         header('Location: http://localhost/TicketHawk/admin_page.php');
     }
 
     function deleteById(){
         global $cxn;
-        $query = "DELETE FROM EVENT WHERE eventid = '".$_POST['delete-by-id']."' ";
+        $query = "UPDATE EVENT SET ACTIVE = 0 WHERE eventid = '".$_POST['delete-by-id']."' ";
         $results = mysqli_query($cxn, $query);
         header('Location: http://localhost/TicketHawk/admin_page.php');
     }
 
     function filterByDate(){
 		global $cxn, $results;
-        $query = "SELECT * FROM EVENT WHERE date BETWEEN '".$_POST['date-1']."' AND '".$_POST['date-2']."'";
+        $query = ("SELECT * FROM EVENT WHERE date BETWEEN '"
+            .$_POST['date-1']
+            ."' AND '".$_POST['date-2']."' AND ACTIVE = 1");
         $results = mysqli_query($cxn, $query)or die(mysqli_error($cxn));
     }
 	
@@ -918,7 +920,7 @@
 	
 if(isset($_POST['eventNum'])){
 		$tmpid = $_POST['eventNum'];
-		$query = "SELECT * FROM EVENT WHERE eventid =". $tmpid;
+		$query = "SELECT * FROM EVENT WHERE ACTIVE = 1 AND eventid =". $tmpid;
 		$results = mysqli_query($cxn, $query)or die(mysqli_error($cxn));
 		$row  = mysqli_fetch_assoc($results);
         $mysqldate = DateTime::createFromFormat('Y-m-d', $row['date']);
