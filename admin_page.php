@@ -485,37 +485,14 @@
 		</script>
 		
 <script type="text/javascript">
-    function negDect(){
-		var i = document.getElementById("ticket-amount");
-    			if(isNaN(i.value)){
-    				i.value = "";
-    			}
-    			else{
-    				if(i.value === "0"){
-    					i.value = "";
-    				}
-    			}
-    		}
-
-</script>
-
-<script type="text/javascript">
-    function priceDect(){
-		var i = document.getElementById("price");
-    			if(isNaN(i.value)){
-    				i.value = "";
-    			}
-    		}
-
-</script>
-<script type="text/javascript">
-    function editPrice(){
-		var i = document.getElementById("price-u");
-    			if(isNaN(i.value)){
-    				i.value = "";
-    			}
-    		}
-
+	function editPrice(elem){
+		var entry = document.getElementById(elem);
+        var patt = /^[0-9]*\.{0,1}[0-9]*$/;
+        if (!patt.test(entry.value)){
+            entry.value = "";
+            return 0;
+        }
+	}
 </script>
     
 		<style type="text/css">
@@ -821,12 +798,12 @@
                         <div class="col-xs-6 col-sm-3 form-group">
                             <label for="price">Price:</label>
                             <span class="error"><?php echo $eventPriceErr; ?></span>
-                            <span class='hint-left' data-hint="Name of the event" style="display: inline;"><input type="text" onkeyup="priceDect()" class="form-control" id="price" placeholder="Enter Price" name="eventPrice" required></span>
+                            <span class='hint-left' data-hint="Price of one ticket" style="display: inline;"><input type="text" onkeyup="editPrice('price')" class="form-control" id="price" placeholder="Enter Price" name="eventPrice" required></span>
                         </div>
                         <div class="col-xs-6 col-sm-3 form-group">
                             <label for="ticket-amount">Ticket Quantity:</label>
                             <span class="error"><?php echo $ticketQuantityErr; ?></span>
-                            <span class='hint-top' data-hint="Enter whole numbers" style="display: inline;"><input type="text" onkeyup="negDect()" class="form-control" id="ticket-amount" placeholder="Ticket Quantity" name="ticketQuantity" required>
+                            <span class='hint-top' data-hint="Enter whole numbers" style="display: inline;"><input type="text" onkeyup="ticketEntry('ticket-amount')" class="form-control" id="ticket-amount" placeholder="Ticket Quantity" name="ticketQuantity" required>
                             	</span>
                         </div>
                     </div>
@@ -863,7 +840,7 @@
                         <div class="col-md-6 form-group">
                             <label for="event-img">Event Image:</label>
                             <div class="container"></div>
-                           <span class='hint-top' data-hint="Event Image cannot be lager than 64KB" style="display: inline;"><input type="file" id="event-img" name="eventImg"  required></span>
+                           <span class='hint-top' data-hint="Event Image cannot be larger than 64KB" style="display: inline;"><input type="file" id="event-img" name="eventImg"  required></span>
                    		</div>
                        <div class="col-md-6 form-group" id="button-div" style="margin-top: 5px;">
                             <button type="submit" class="btn btn-primary" name="submit">
@@ -985,12 +962,12 @@ echo "<div id='myModal' class='modal fade'>
                                     <div class='col-xs-6 col-sm-3 form-group'>
                                         <label for='price'>Price:</label>
                                         <span class='error'>*</span>
-                                        <input type='text' value= '".$row['price']."' class='form-control' id='price-u' onkeyup ='editPrice()' placeholder='Enter Price' name='eventPrice_U' required>
+                                        <input type='text' value='".$row['price']."' class='form-control' id='price-u' onkeyup='editPrice(\"price-u\")' placeholder='Enter Price' name='eventPrice_U' required>
                                     </div>
                                     <div class='col-xs-6 col-sm-3 form-group'>
                                         <label for='ticket-amount'>Ticket Quantity:</label>
                                         <span class='error'>*</span>
-                                        <input type='number' value = '".$row['ticket_qty']."' class='form-control' id='ticket-amount-u' onchange = 'ticketEntry()' placeholder='Ticket Quantity' name='ticketQuantity_U' required>
+                                        <input type='text' value='".$row['ticket_qty']."' class='form-control' id='ticket-amount-u' onkeyup='ticketEntry(\"ticket-amount-u\")' placeholder='Ticket Quantity' name='ticketQuantity_U' required>
                                     </div>
                                 </div>
                                 <div class='row'>
@@ -1042,12 +1019,13 @@ echo "<div id='myModal' class='modal fade'>
 </script>
 
 <script>
-	function ticketEntry(){
-		var entry = document.getElementById("ticket-amount-u");
-		if(entry.value < 0){
-			entry.value = 0;
-		}
-		
+	function ticketEntry(elem){
+		var entry = document.getElementById(elem);
+        var patt = /^[0-9]*$/;
+        if (!patt.test(entry.value)){
+            entry.value = "";
+            return 0;
+        }
 	}
 </script>
                       <script>
