@@ -793,7 +793,7 @@
                             <label for="event-date">Date:</label>
                             <span class="error"><?php echo $eventDateErr; ?></span>
                             <div class='input-group input-ammend' id='event-date'>
-                                <span class='hint--top' data-hint="Event Date" style="display: inline;"><input type='text' class="datepicker form-control" placeholder='Event Date' name='eventDate' required/>
+                                <span class='hint--top' data-hint="Use datepicker widget" style="display: inline;"><input type='text' class="datepicker form-control" placeholder='Event Date' name='eventDate' required/>
                                 </span><span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -803,7 +803,7 @@
                             <label for="time">Time:</label>
                             <span class="error"><?php echo $eventTimeErr; ?></span>
                             <div class="input-group input-ammend" id='time'>
-                                <span class='hint--top' data-hint="Event time" style="display: inline;"><input type="text" class="form-control timepicker bootstrap-timepicker" placeholder="Enter Time" name="eventTime" required>
+                                <span class='hint--top' data-hint="Use timepicker widget" style="display: inline;"><input type="text" class="form-control timepicker bootstrap-timepicker" placeholder="Enter Time" name="eventTime" required>
                                 </span><span class="input-group-addon">
                                     <span class="glyphicon glyphicon-time"></span>
                                 </span>
@@ -1043,7 +1043,6 @@ echo "<div id='myModal' class='modal fade'>
 </script>
                       <script>
                     	function validate(){
-                    		alert("Test");
                     		var name = document.getElementById("event-name-u");
                     		var date = document.getElementById("date-4");
                     		var time = document.getElementById("timeEdit");
@@ -1081,9 +1080,7 @@ echo "<div id='myModal' class='modal fade'>
                     	}
                     </script>
                     <style>
-                    	.bootstrap-timepicker-widget {
- z-index: 100000;
- }
+                    	.bootstrap-timepicker-widget {z-index: 100000;}
                     </style>
                     
    </body>
