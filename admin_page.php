@@ -12,7 +12,14 @@
     $cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
     // Fetch the Events from the database
-    $query = "SELECT * FROM EVENT WHERE ACTIVE = 1";
+    if (!isset($_SESSION['filter_1']) || !isset($_SESSION['filter_2'])){
+        $query = "SELECT * FROM EVENT WHERE ACTIVE = 1";
+    }
+    else {
+        $query = ("SELECT * FROM EVENT WHERE date BETWEEN '"
+            .$_SESSION['filter_1']
+            ."' AND '".$_SESSION['filter_2']."' AND ACTIVE = 1");
+    }
     $results = mysqli_query($cxn, $query) or die("Connection could not be established");
     $username = $_SESSION['user'];
     $welcome_msg = ("Welcome " . $username);
@@ -372,6 +379,8 @@
 
     function filterByDate(){
 		global $cxn, $results;
+        $_SESSION['filter_1'] = $_POST['date-1'];
+        $_SESSION['filter_2'] = $_POST['date-2'];
         $query = ("SELECT * FROM EVENT WHERE date BETWEEN '"
             .$_POST['date-1']
             ."' AND '".$_POST['date-2']."' AND ACTIVE = 1");
@@ -386,6 +395,11 @@
     }
     if (isset($_POST['filter']) && isset($_POST['date-1']) && isset($_POST['date-2'])) {
         filterByDate();
+    }
+    if (isset($_POST['clear_filter'])) {
+        unset($_SESSION['filter_1']);
+        unset($_SESSION['filter_2']);
+        header('Location: http://localhost/TicketHawk/admin_page.php');
     }
 	
     
@@ -903,7 +917,9 @@
 					<button type="submit" class="btn btn-warning" name="filter">
 						Filter
 					</button>
-			
+					<button type="submit" class="btn btn-danger" name="clear_filter">
+						Clear Filter
+					</button>
 				</form>
 
 				
