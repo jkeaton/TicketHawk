@@ -11,7 +11,7 @@
     $dbuser = array_values($creds)[0];
     $dbpass = array_values($creds)[1];
     $cxn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-    $query = "SELECT * FROM EVENT";
+    $query = "SELECT * FROM EVENT WHERE ACTIVE = 1";
     $results = mysqli_query($cxn, $query) or die("Connection could not be established");
     $events = array();
     storeEventRows();
