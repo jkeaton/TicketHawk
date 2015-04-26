@@ -751,7 +751,7 @@
                         while ($row = mysqli_fetch_assoc($results)) {
                         	$ticketSold = ticketsAdmin($row['eventname']);
 							echo "<tr>";
-							echo "<form method='GET' action='#myModal' id='myForm'>";
+							echo "<form method='post' action='#myModal' id='myForm'>";
 							echo "<input type='hidden' name ='eventNum'  id ='eventNum'>";
 							echo "<button name='the_button' id='the_button' type='submit' onclick='show_modal()' style='visibility: hidden;'></button>";
 							echo "<td class='td_id text-center'><label>".$row['eventid']."</label></td>";
@@ -930,10 +930,8 @@
             
     <!-- Modal HTML -->
     <?php 
-
-	
-{
-		$tmpid = $_GET['eventNum'];
+    if(isset($_POST['eventNum'])){
+		$tmpid = $_POST['eventNum'];
 		$query = "SELECT * FROM EVENT WHERE ACTIVE = 1 AND eventid =". $tmpid;
 		$results = mysqli_query($cxn, $query)or die(mysqli_error($cxn));
 		$row  = mysqli_fetch_assoc($results);
