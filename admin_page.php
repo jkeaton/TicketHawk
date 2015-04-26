@@ -523,6 +523,9 @@
         
         
         <style>
+        .error{
+        	color:red;
+        }
 			#events-ready {
 				overflow-y: scroll;
 				height: 380px;
@@ -926,7 +929,7 @@ if(isset($_POST['eventNum'])){
  
 echo "<div id='myModal' class='modal fade'>
         <div class='modal-dialog' style='width: 700px;'>
-	        <form role='form'  method='post' action='".htmlspecialchars($_SERVER['PHP_SELF'])."' enctype='multipart/form-data'>
+	        <form role='form'  method='post' action='".htmlspecialchars($_SERVER['PHP_SELF'])."' onsubmit = ' return validate()' id = 'editForm' enctype='multipart/form-data'>
             <div class='modal-content'>
                 <div class='modal-header'>
                     <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
@@ -943,16 +946,16 @@ echo "<div id='myModal' class='modal fade'>
                                 <div class='row'>
                                     <div class='form-group'>
                                         <label for='event-name'>Event Name:</label>
-                                        <span class='error'>".$eventNameErr."</span>
-                                        <input type='text' class='form-control' id='event-name-u' value='".$row['eventname']."' placeholder='Event Name' name='eventName_U' required>
+                                        <span class='error' id = 'errorName'>*</span>
+                                        <input type='text' class='form-control' id='event-name-u' value='".$row['eventname']."' placeholder='Event Name' name='eventName_U' />
                                     </div>
                                 </div>
                                 <div class='row'>
                                     <div class='col-xs-6 col-sm-3 form-group'>
                                         <label for='event-date'>Date:</label>
-                                        <span class='error'>* <?php echo '$eventDateErr'; ?></span>
+                                        <span class='error' id = 'errorDate'>*</span>
                                         <div class='input-group input-ammend' id='event-date_u'>
-                                            <input type='text' class='datepicker form-control' value='".$formatted_date."' id = 'date-4' onkeyup = 'userEntry()'  placeholder='Event Date' name='eventDate_U' required/>
+                                            <input type='text' class='datepicker form-control' value='".$formatted_date."' id = 'date-4' onkeyup = 'userEntry()'  placeholder='Event Date' name='eventDate_U' />
                                             <span class='input-group-addon'>
                                                 <span class='glyphicon glyphicon-calendar'></span>
                                             </span>
@@ -960,9 +963,9 @@ echo "<div id='myModal' class='modal fade'>
                                     </div>
                                     <div class='col-xs-6 col-sm-3 form-group'>
                                         <label for='time'>Time:</label>
-                                        <span class='error'>* <?php echo '$eventTimeErr'; ?></span>
+                                        <span class='error' id = 'errorTime'>*</span>
                                         <div class='input-group input-ammend' id='time-u'>
-                                            <input type='text' value = '".$row['time']."' class='form-control timepicker bootstrap-timepicker' placeholder='Enter Time' name='eventTime_U' required>
+                                            <input type='text' value = '".$row['time']."' class='form-control timepicker bootstrap-timepicker' placeholder='Enter Time' name='eventTime_U' id = 'timeEdit' required>
                                             <span class='input-group-addon'>
                                                 <span class='glyphicon glyphicon-time'></span>
                                             </span>
@@ -970,13 +973,13 @@ echo "<div id='myModal' class='modal fade'>
                                     </div>
                                     <div class='col-xs-6 col-sm-3 form-group'>
                                         <label for='price'>Price:</label>
-                                        <span class='error'>* <?php echo '$eventPriceErr'; ?></span>
+                                        <span class='error'>*</span>
                                         <input type='text' value= '".$row['price']."' class='form-control' id='price-u' onkeyup ='editPrice()' placeholder='Enter Price' name='eventPrice_U' required>
                                     </div>
                                     <div class='col-xs-6 col-sm-3 form-group'>
                                         <label for='ticket-amount'>Ticket Quantity:</label>
-                                        <span class='error'>* <?php echo '$ticketQuantityErr'; ?></span>
-                                        <input type='number' value = '".$row['ticket_qty']."' class='form-control' id='ticket-amount-u' placeholder='Ticket Quantity' name='ticketQuantity_U' required>
+                                        <span class='error'>*</span>
+                                        <input type='number' value = '".$row['ticket_qty']."' class='form-control' id='ticket-amount-u' onchange = 'ticketEntry()' placeholder='Ticket Quantity' name='ticketQuantity_U' required>
                                     </div>
                                 </div>
                                 <div class='row'>
@@ -984,19 +987,19 @@ echo "<div id='myModal' class='modal fade'>
                                 <div class='row'>
                                     <div class='col-md-6 form-group'>
                                         <label for='location'>Location:</label>
-                                        <span class='error'>* <?php echo '$eventLocationErr'; ?></span>
+                                        <span class='error'>*</span>
                                         <input type='text' value='".$row['location']."' class='form-control' id='location-u' placeholder='Enter Location' name='eventLocation_U' required>
                                     </div>
                                     <div class='col-xs-6 form-group'>
                                         <label for='venue'>Venue:</label>
-                                        <span class='error'>* <?php echo '$eventVenueErr'; ?></span>
+                                        <span class='error'>*</span>
                                         <input type='text' value = '".$row['venue']."' class='form-control' id='venue-u' placeholder='Enter Venue' name='eventVenue_U' required>
                                     </div>
                                 </div>
                                 <div class='row'>
                                     <div class='col-md-6 form-group'>
                                         <label for='event-img'>Event Image:</label>
-                                        <span class='error'>* <?php echo $eventImgErr; ?></span>
+                                        <span class='error'>*</span>
                                         <div>
                                             <img src='data:image/jpeg;base64," . base64_encode($row['img']) ."' width= '50' height ='50'/>
                                         </div>
@@ -1019,42 +1022,63 @@ echo "<div id='myModal' class='modal fade'>
     </div>";
   }	
 ?>
+
 <script>
 	function userEntry(){
 		var entry = document.getElementById("date-4");
 		entry.value ="";
 	}
 </script>
+
+<script>
+	function ticketEntry(){
+		var entry = document.getElementById("ticket-amount-u");
+		if(entry.value < 0){
+			entry.value = 0;
+		}
+		
+	}
+</script>
                       <script>
-                    	( function(){
-                    		var dropzone = document.getElementById("dropzone");
-                    		
-                    		var uploads = function(files){
-                    			var formData = new FormData(),
-                    			xhr = new XMLHttpRequest(),x;
-                    			for(x = 0; x < files.lenght; x++){
-                    				formData.append('files[]', files[x]);
-                    			}
-                    			xhr.open('post', 'uploads.php');
-                    			xhr.send(formData);
+                    	function validate(){
+                    		alert("Test");
+                    		var name = document.getElementById("event-name-u");
+                    		var date = document.getElementById("date-4");
+                    		var time = document.getElementById("timeEdit");
+                    		if(name.value === ""){
+                    			document.getElementById("errorName").innerHTML = "Please enter the selected field";
+                    			name.style.borderColor = "red";
+                    			return false;
                     		}
-                    		
-                    		dropzone.ondrop = function(){
-                    			event.preventDefault();
-                    			this.className = 'dropzone';
-                    			uploads(event.dataTransfer.files)
-                    		};
-                    		
-                    		dropzone.ondragover = function(){
-                    			this.className = 'dropzone dragover';
+                    		else{
+                    			name.style.borderColor = "none";
+                    		}
+                    		if(date.value === ""){
+                    			document.getElementById("errorDate").innerHTML = "Please enter the selected field";
+                    			date.style.borderColor = "red";
                     			return false;
-                    		};
-                    		dropzone.ondragleave = function(){
-                    			this.className = 'dropzone';
-                    			return false;
-                    		};
-                    	}());
+                    		}
+                    		else{
+                    			date.style.borderColor = "none";
+                    		}
+                    		if(time.value != ""){
+                    			var x = parseFloat(time.value);
+                    			    var str = x.value;
+   									var patt1 = /[0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]/g;
+    								var result = str.match(patt1);
+                    			if( result === null){
+                    				document.getElementById("errorDate").innerHTML = "Please enter a valid time";
+                    				return false;
+                    			}
+                    		}
+                    		else{
+                    			document.getElementById("errorDate").innerHTML = "Please enter the selected field";
+                    			time.style.borderColor = "red";
+                    		}
+
+                    	}
                     </script>
+                    
    </body>
     
 </html>
