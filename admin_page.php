@@ -37,14 +37,41 @@
         return DateTime::createFromFormat('m/d/Y', $in)->format('Y-m-d');
     }
 
+    function mysql_time_to_timepicker($in){
+        if (!preg_match("/^[0-9]{2}:[0-9]{2}:[0-9]{2}$/",$in)) {
+            return "-1";
+        }
+        else{
+            $hour = intval(substr($in, 0, 2));  
+            $minute = intval(substr($in, 3, 2));
+            $meridiem = '';
+            if ($hour > 11){
+                $meridiem = 'PM';
+            }
+            else{
+                $meridiem = 'AM';
+            }
+            $modified_hr = 0;
+            if ($hour == 0){
+                $modified_hr = 12;
+            }
+            elseif ($hour > 0 && $hour < 13){
+                $modified_hr = $hour;
+            }
+            elseif ($hour >= 13){
+                $modified_hr = $hour % 12;
+            }
+            $format = "%d:%02d %s";
+            return sprintf($format, $modified_hr, $minute, $meridiem);
+        }
+    }
+
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
         // Handle insert event attempt
         if (isset($_POST['submit'])) {
             validateFields();
         }
 		elseif (isset($_POST['savechanges'])) {
-			//echo "<script> alert('Save Changes clicked'); </script>";
-			//echo "<script> alert('Post Value date = ".$_POST['eventDate_U']."'); </script>";
 			validateFields_U();
 		}
         // Handle logout attempt
@@ -53,8 +80,7 @@
         }
     }
 		function validateFields_U(){
-			//echo "<script> alert($_POST['eventDate_U']); </script>";
-			global $tmpid;
+	    global $tmpid;
         global $cxn;
         global $eventNameErr, $eventDateErr, $eventTimeErr, $eventLocationErr, $eventVenueErr, $eventPriceErr, $ticketQuantityErr, $eventImgErr, $maxSizeBlob;
         $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "*";
@@ -69,33 +95,6 @@
                 $eventNameErr = "Only letters, numbers and spaces allowed";
             }
         }
-        // if (empty($_POST["eventDate_U"])) {
-        	// echo "<script> alert('empty date'); </script>";
-            // ++$errCount;
-            // $eventDateErr = "Event date is required";
-        // } else {
-            // $eventDate = $_POST["eventDate_U"];
-			// echo "<script> alert($eventDate);</script>";
-            // $eventDate = DateTime::createFromFormat('m/d/Y', $eventDate);
-// 			
-            // if (!$eventDate){
-               // ++$errCount;
-                // $eventDateErr = "Invalid Date";
-				// echo "<script> alert('date error 1'); </script>";
-            // }
-            // else {
-                // $dateToDB = $eventDateU->format("Y-m-d");
-				// echo "<script> alert($dateToDB);</script>";
-                // $year = (int) ($eventDateU->format("Y"));
-                // $month = (int) ($eventDateU->format("m"));
-                // $day = (int) ($eventDateU->format("d"));
-                // if (!checkdate ($month , $day , $year )){
-                    // //++$errCount;
-                    // $eventDateErr = "Invalid Date";
-					// echo "<script> alert('date error 2'); </script>";
-                // }
-            // }
-        // }
 
         if (empty($_POST["eventTime_U"])) {
             ++$errCount;
@@ -188,18 +187,15 @@
         }
 		if(empty($_POST['tmpid'])){
 
-			//echo "<script> alert('Test'); </script>";
 			++$errCount;
 		}
 		else{
 
 			$id = test_input($_POST["tmpid"]);
-			//echo "<script> alert('Variable id value = '$id); </script>";
 		}
 
         if ($errCount == 0) {
         	
-        	//echo "<script> alert('error count 0'); </script>";
             updateEvent($eventName, $timeToDB, $eventLocation, $eventVenue, $eventPrice, $ticketQuantity, $eventImg, $id);
             /* Clear the POST array so we don't insert duplicate events */
             $_POST = array();
@@ -967,7 +963,7 @@ echo "<div id='myModal' class='modal fade'>
                                         <label for='time'>Time:</label>
                                         <span class='error' id = 'errorTime'>*</span>
                                         <div class='input-group input-ammend' id='time-u'>
-                                            <input type='text' value = '".$row['time']."' class='form-control timepicker bootstrap-timepicker' placeholder='Enter Time' name='eventTime_U' id = 'timeEdit' required>
+                                            <input type='text' value='".mysql_time_to_timepicker(strval($row['time']))."' class='form-control timepicker bootstrap-timepicker' placeholder='Enter Time' name='eventTime_U' id='timeEdit' required>
                                             <span class='input-group-addon'>
                                                 <span class='glyphicon glyphicon-time'></span>
                                             </span>
