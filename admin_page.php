@@ -802,7 +802,7 @@
                             <label for="event-date">Date:</label>
                             <span class="error"><?php echo $eventDateErr; ?></span>
                             <div class='input-group input-ammend' id='event-date'>
-                                <span class='hint--top' data-hint="Use datepicker widget" style="display: inline;"><input type='text' class="datepicker form-control" placeholder='Event Date' name='eventDate' required/>
+                                <span class='hint--top' data-hint="Use datepicker widget" style="display: inline;"><input type='text' id="added_e_date" onkeyup='userEntry("added_e_date")' class="datepicker form-control" placeholder='Event Date' name='eventDate' required/>
                                 </span><span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -966,7 +966,7 @@ echo "<div id='myModal' class='modal fade'>
                                         <label for='event-date'>Date:</label>
                                         <span class='error' id = 'errorDate'>*</span>
                                         <div class='input-group input-ammend' id='event-date_u'>
-                                            <input type='text' class='datepicker form-control' value='".$formatted_date."' id = 'date-4' onkeyup = 'userEntry()'  placeholder='Event Date' name='eventDate_U' />
+                                            <input type='text' class='datepicker form-control' value='".$formatted_date."' id='date-4' onkeyup='userEntry(\"date-4\")'  placeholder='Event Date' name='eventDate_U' />
                                             <span class='input-group-addon'>
                                                 <span class='glyphicon glyphicon-calendar'></span>
                                             </span>
@@ -1035,8 +1035,8 @@ echo "<div id='myModal' class='modal fade'>
 ?>
 
 <script>
-	function userEntry(){
-		var entry = document.getElementById("date-4");
+	function userEntry(elem){
+		var entry = document.getElementById(elem);
 		entry.value ="";
 	}
 </script>
