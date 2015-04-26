@@ -967,7 +967,7 @@ echo "<div id='myModal' class='modal fade'>
                                         <label for='time'>Time:</label>
                                         <span class='error' id = 'errorTime'>*</span>
                                         <div class='input-group input-ammend' id='time-u'>
-                                            <input type='text' value = '".$row['time']."' class='form-control timepicker bootstrap-timepicker' placeholder='Enter Time' name='eventTime_U' id = 'timeEdit' required>
+                                            <input type='text' value = '".$row['time']."' class='form-control timepicker bootstrap-timepicker' placeholder='Enter Time' name='eventTime_U' id='timeEdit' required>
                                             <span class='input-group-addon'>
                                                 <span class='glyphicon glyphicon-time'></span>
                                             </span>
