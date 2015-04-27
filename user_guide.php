@@ -198,6 +198,7 @@ Customer</a></li>
 <li><a href="#s4_5">4.5 Clearing Filters</a></li>
 </ul>
 </li>
+<li><a href="#s5"><strong>References</strong></a></li>
 </ol>
 
 
@@ -602,6 +603,169 @@ for a user, but creating an account is the only way a customer can see his past
     </ul>
     </li>
     </ol>
+
+    <h3>5. References <a class="h_link" id="s5"></a></h3>
+    <a href="user_guide.php">Return to top</a>
+    <ol>
+        <li>
+            <a href="https://farm6.staticflickr.com/5018/5575566075_72b0ddc727_o.jpg">
+                Sedona Hot Air Balloon Ride
+            </a>
+            <p><a href="https://creativecommons.org/licenses/by/2.0/legalcode">
+                License
+            </a></p>
+            Changes:
+            <ul>
+                <li>Resized</li>
+                <li>Cropped</li>
+            </ul>
+        </li>
+        <li>
+            <a href="http://www.allbum.it/images/phantom-of-the-opera-1.jpg">
+                The Phantom of the Opera
+            </a>
+            <p><a href="https://creativecommons.org/licenses/by/2.0/legalcode">
+                License
+            </a></p>
+            Changes:
+            <ul>
+                <li>Resized</li>
+                <li>Cropped</li>
+                <li>Text At Top Removed</li>
+            </ul>
+        </li>
+        <li>
+            <a href="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTbMiW2iNHmwZZYS-pjuMDWQqeaj9IKljnTGAAlj91uJ52LwOLH">
+                World Cup Qatar
+            </a>
+            <p><a href="https://creativecommons.org/licenses/by/2.0/legalcode">
+                License
+            </a></p>
+            Changes:
+            <ul>
+                <li>Resized</li>
+                <li>Cropped</li>
+            </ul>
+        </li>
+        <li>
+            <a href="http://www.luckymountainhome.com/images/neighborhoods/breckenridge_rafting_colorado_whitewater.jpg">
+                Rafting Photo
+            </a>
+            <p><a href="https://creativecommons.org/licenses/by/2.0/legalcode">
+                License
+            </a></p>
+            Changes:
+            <ul>
+                <li>Resized</li>
+                <li>Cropped</li>
+            </ul>
+        </li>
+        <li>
+            <a href="http://upload.wikimedia.org/wikipedia/commons/c/ce/Zipline.JPG">
+                Ziplines Photo
+            </a>
+            <p><a href="https://creativecommons.org/licenses/by/2.0/legalcode">
+                License
+            </a></p>
+            Changes:
+            <ul>
+                <li>Resized</li>
+                <li>Cropped</li>
+            </ul>
+        </li>
+        <li>
+            <a href="http://upload.wikimedia.org/wikipedia/commons/c/ce/Waterfalls-rocks-landscape_-_Virginia_-_ForestWander.jpg">
+                Waterfall Photo
+            </a>
+            <p><a href="https://creativecommons.org/licenses/by/2.0/legalcode">
+                License
+            </a></p>
+            Changes:
+            <ul>
+                <li>Resized</li>
+                <li>Cropped</li>
+            </ul>
+        </li>
+        <li>
+            <a href="http://upload.wikimedia.org/wikipedia/commons/0/06/BuschSeriesFieldAtTexasApril2007.jpg">
+                Nascar
+            </a>
+            <p><a href="https://creativecommons.org/licenses/by/2.0/legalcode">
+                License
+            </a></p>
+            Changes:
+            <ul>
+                <li>Resized</li>
+                <li>Cropped</li>
+            </ul>
+        </li>
+        <li>
+            <a href="https://farm5.staticflickr.com/4083/4950349054_aa1e70136d_o_d.jpg">
+                Jordan
+            </a>
+            <p><a href="https://creativecommons.org/licenses/by/2.0/legalcode">
+                License
+            </a></p>
+            Changes:
+            <ul>
+                <li>Resized</li>
+                <li>Cropped</li>
+            </ul>
+        </li>
+        <li>
+            <a href="http://pixabay.com/static/uploads/photo/2012/11/27/16/43/american-football-67439_640.jpg">
+                NFL  
+            </a>
+            <p><a href="https://creativecommons.org/licenses/by/2.0/legalcode">
+                License
+            </a></p>
+            Changes:
+            <ul>
+                <li>Resized</li>
+                <li>Cropped</li>
+            </ul>
+        </li>
+        <li>
+            <a href="http://mediad.publicbroadcasting.net/p/shared/npr/201302/171057967.jpg">
+                Jay-Z and Beyonce
+            </a>
+            <p><a href="https://creativecommons.org/licenses/by/2.0/legalcode">
+                License
+            </a></p>
+            Changes:
+            <ul>
+                <li>Resized</li>
+                <li>Cropped</li>
+            </ul>
+        </li>
+        <li>
+            <a href="http://upload.wikimedia.org/wikipedia/commons/6/68/Disney_Orlando_castle_at_night.JPG">
+                Disney
+            </a>
+            <p><a href="https://creativecommons.org/licenses/by/2.0/legalcode">
+                License
+            </a></p>
+            Changes:
+            <ul>
+                <li>Resized</li>
+                <li>Cropped</li>
+            </ul>
+        </li>
+        <li>
+            <a href="https://farm6.staticflickr.com/5003/5202784642_fa299904ef_o.jpg">
+                MLS
+            </a>
+            <p><a href="https://creativecommons.org/licenses/by/2.0/legalcode">
+                License
+            </a></p>
+            Changes:
+            <ul>
+                <li>Resized</li>
+                <li>Cropped</li>
+            </ul>
+        </li>
+    </ol>
+    <a href="user_guide.php">Return to top</a>
     </div>
 </body>
 </html>
