@@ -607,6 +607,11 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="homepage.php">Home</a></li>
                         <li><a href="http://localhost/tickethawk/homepage.php#main-div">Events</a></li>
+                        <li>
+                            <a href="http://localhost/tickethawk/user_guide.php" id="guide_link">
+                                <i class="glyphicon glyphicon-question-sign"></i>
+                            </a>
+                        </li>
                         <!--<li><a href="other_admin.php">Users</a></li>-->
                     </ul>
                 <?php

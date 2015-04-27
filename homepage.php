@@ -185,6 +185,11 @@
                 href="http://localhost/tickethawk/homepage.php#main-div"
                 id="events_link">Events</a></li>-->
                 <li><a href="#main-div" id="events_link">Events</a></li>
+                <li>
+                    <a href="http://localhost/tickethawk/user_guide.php" id="guide_link">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+                </li>
               </ul>
                 <?php
                     if (isset($_SESSION['user'])) {

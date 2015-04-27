@@ -89,6 +89,10 @@ body {
     padding-top: 50px;
     margin-top: -50px;
 }
+.h_link {
+    padding-top: 60px;
+    margin-top: -60px;
+}
 nav {
     z-index:1200 !important;
 }
