@@ -474,7 +474,7 @@ for a user, but creating an account is the only way a customer can see his past
     <h3>4. Administrator Guide <a class="h_link" id="s4"></a></h3>
     <a href="user_guide.php">Return to top</a>
 
-    <p>The administrator is a limited account only accessible to Ticket Hawk
+    <p>The administrator account is accessible only by Ticket Hawk
     employees. The main functions of an administrator are adding events, editing
     events, and deleting events. Once the administrator is logged into her
     account, she is redirected to the administrator homepage, which provides a
@@ -483,8 +483,7 @@ for a user, but creating an account is the only way a customer can see his past
     <h4>4.1 Adding Events <a class="h_link" id="s4_1"></a></h4>
 
     <ol>
-    <li>Sign in with username <strong>admin</strong> and password
-    <strong>balloonrides</strong></li>
+    <li>Sign in with your admin username and password at the top of the page</li>
     <li>Scroll down to the <strong>Add Events</strong> panel</li>
     <li>Enter Event Name</li>
     <li>Choose Date and Time</li>
