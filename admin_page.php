@@ -30,7 +30,7 @@
     $maxSizeBlob = 65535;
 
     $eventName = $eventDate = $eventTime = $eventLocation = $eventVenue = $eventPrice = $ticketQuantity = $eventImg = $target_dir = $dateToDB = $timeToDB = "";
-    $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = "*";
+    $eventNameErr = $eventDateErr = $eventTimeErr = $eventLocationErr = $eventVenueErr = $eventPriceErr = $ticketQuantityErr = $eventImgErr = $filterErr = "*";
 	
 
     $eventImg1 = FALSE;
@@ -379,11 +379,9 @@
 
     function filterByDate(){
 		global $cxn, $results;
-        $_SESSION['filter_1'] = $_POST['date-1'];
-        $_SESSION['filter_2'] = $_POST['date-2'];
         $query = ("SELECT * FROM EVENT WHERE date BETWEEN '"
-            .$_POST['date-1']
-            ."' AND '".$_POST['date-2']."' AND ACTIVE = 1");
+            .$_SESSION['filter_1']
+            ."' AND '".$_SESSION['filter_2']."' AND ACTIVE = 1");
         $results = mysqli_query($cxn, $query)or die(mysqli_error($cxn));
     }
 	
@@ -393,8 +391,37 @@
     if (isset($_POST['deleteById'])) {
         deleteById();
     }
-    if (isset($_POST['filter']) && isset($_POST['date-1']) && isset($_POST['date-2'])) {
-        filterByDate();
+    if (isset($_POST['filter'])){
+        $filterErr = '*';
+        if ($_POST['date-1'] && $_POST['date-2']) {
+            $_SESSION['filter_1'] = php_to_mysql_date($_POST['date-1']);
+            $_SESSION['filter_2'] = php_to_mysql_date($_POST['date-2']);
+            $d1 = DateTime::createFromFormat('m/d/Y', $_POST['date-1']);
+            $d2 = DateTime::createFromFormat('m/d/Y', $_POST['date-2']);
+            if ($d2 >= $d1){
+                filterByDate();
+            }
+            else{
+                $filterErr .= " Date 2 must be greater than or equal to Date 1";
+            }
+            $_POST = array();
+        }
+        else {
+            if (!$_POST['date-1']){
+                $_SESSION['filter_1'] = "1970-01-01";
+            }
+            else {
+                $_SESSION['filter_1'] = php_to_mysql_date($_POST['date-1']);
+            }
+            if (!$_POST['date-2']){
+                $_SESSION['filter_2'] = "2200-01-01";
+            }
+            else {
+                $_SESSION['filter_2'] = php_to_mysql_date($_POST['date-2']);
+            }
+            filterByDate();
+            $_POST = array();
+        }
     }
     if (isset($_POST['clear_filter'])) {
         unset($_SESSION['filter_1']);
@@ -890,11 +917,11 @@
 			<form class="form-inline" role="form" method="post">
 					<div class="form-group">
 						<label for="date-1">Date 1:</label>
-						<input type="text" onkeyup="userEntry('d1')" class="datepicker form-control" id="d1" name="date-1" data-date-format="yyyy-mm-dd" />
+						<input type="text" onkeyup="userEntry('d1')" class="datepicker form-control" id="d1" name="date-1"/>
 					</div>
 					<div class="form-group">
 						<label for="date-2">Date 2:</label>
-						<input type="text" onkeyup="userEntry('d2')" class="datepicker form-control" id="d2" name="date-2" data-date-format="yyyy-mm-dd" />
+						<input type="text" onkeyup="userEntry('d2')" class="datepicker form-control" id="d2" name="date-2"/>
 					</div>
 					<button type="submit" class="btn btn-primary" name="filter">
 						Filter
@@ -902,11 +929,8 @@
 					<button type="submit" class="btn btn-danger" name="clear_filter">
 						Clear Filter
 					</button>
+                    <label class='error'><?php echo $filterErr; ?></label>
 				</form>
-
-				
-				
-				
         </div>
 
             

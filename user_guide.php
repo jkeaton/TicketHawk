@@ -569,20 +569,18 @@ for a user, but creating an account is the only way a customer can see his past
     <ol>
     <li>Scroll to the bottom of the administrator page.</li>
     <li>Enter a date in the <strong>Date 1</strong> field
-
-    <ul>
-    <li><strong>OR</strong></li>
-    </ul>
+        <ul>
+            <li>OR</li>
+        </ul>
     </li>
     <li>Enter a date in the <strong>Date 2</strong> field
-
-    <ul>
-    <li><strong>OR</strong></li>
-    </ul>
+        <ul>
+            <li>OR</li>
+        </ul>
     </li>
     <li>Enter dates in both the <strong>Date 1</strong> and <strong>Date
     2</strong> fields</li>
-    <li>Click out of the datepicker widget</li>
+    <li>Click out of the datepicker widgets</li>
     <li>Click <strong>Filter</strong>
 
     <ul>
