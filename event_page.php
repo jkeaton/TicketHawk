@@ -75,7 +75,7 @@
                                             .'</table>'
                                             .'<form role="form"  method="post" action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'" enctype="multipart/form-data">'
                                                 .'<div class="form-group">'
-                                                    .'<input id="ticket_qty" onchange="verify_unsigned()" type="number" name="qty" placeholder="Quantity" class="form-control small_form_control" required>'
+                                                    .'<input id="ticket_qty" onkeyup="ticketEntry(\'ticket_qty\')" type="text" name="qty" placeholder="Quantity" class="form-control small_form_control" required>'
 					                                .'<button type="submit" class="form-control small_form_control btn btn-success" name="add">'
 						                                .'Add To Cart</button>'
                                                 .'</div>'
@@ -184,19 +184,28 @@
         <![endif]-->
 
     <script type="text/javascript">
-        function verify_unsigned(){
-            var e = document.getElementById('ticket_qty');
-            var v = document.getElementById('viewed_tqty');
-            var c = document.getElementById('cart_qty');
-            if(e.value < 0){
-                e.value = 0;
+	    function ticketEntry(elem){
+		    var entry = document.getElementById(elem);
+            var patt = /^[0-9]*$/;
+            if (!patt.test(entry.value)){
+                entry.value = "";
+                return 0;
             }
-            else{
-                if (e.value > (parseInt(v.innerHTML) - parseInt(c.value))){
-                    e.value = (parseInt(v.innerHTML) - parseInt(c.value));
+            else {
+                var e = document.getElementById('ticket_qty');
+                var e_val = parseInt(e.value);
+                var v = document.getElementById('viewed_tqty');
+                var c = document.getElementById('cart_qty');
+                if(e_val < 0){
+                    e_val = 0;
+                }
+                else{
+                    if (e_val > (parseInt(v.innerHTML) - parseInt(c.value))){
+                        e.value = (parseInt(v.innerHTML) - parseInt(c.value));
+                    }
                 }
             }
-        }
+	    }
     </script>
     </head>
 
