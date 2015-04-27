@@ -606,6 +606,7 @@ for a user, but creating an account is the only way a customer can see his past
 
     <h3>5. References <a class="h_link" id="s5"></a></h3>
     <a href="user_guide.php">Return to top</a>
+    <p>All of our referenced photographs were Labeled for reuse with modification. Therefore, below we have provided the license for each referenced image and listed the modifications that were made to each.</p>
     <ol>
         <li>
             <a href="https://farm6.staticflickr.com/5018/5575566075_72b0ddc727_o.jpg">
@@ -632,6 +633,7 @@ for a user, but creating an account is the only way a customer can see his past
                 <li>Resized</li>
                 <li>Cropped</li>
                 <li>Text At Top Removed</li>
+                <li>Watermark Removed</li>
             </ul>
         </li>
         <li>
@@ -727,7 +729,7 @@ for a user, but creating an account is the only way a customer can see his past
         </li>
         <li>
             <a href="http://mediad.publicbroadcasting.net/p/shared/npr/201302/171057967.jpg">
-                Jay-Z and Beyonce
+                Beyonce
             </a>
             <p><a href="https://creativecommons.org/licenses/by/2.0/legalcode">
                 License
