@@ -251,59 +251,59 @@
         </ol>
         <div class="carousel-inner" role="listbox">
             <div class="item active">
-                <img src="dist/images/free images/Jordan.jpg" alt="First slide" id="img1">
+                <img src="dist/images/free images/jordan.jpg" alt="First slide" id="img1">
                 <div class="container">
-                    <div class="carousel-caption">
+                    <div class="carousel-caption panel" style="background-color:rgba(0, 0, 0, 0.3)">
                         <h1>All The Tickets You Need!</h1>
                         <p>On Your Favorite Site.</p>
-                        <p><a rel="license" href="http://creativecommons.org/licenses/by/2.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/2.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution 2.0 Generic License</a>.<a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
+                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
                     </div>
                 </div>
             </div>
             <div class="item">
                 <img src="dist/images/free images/nfl.jpg" alt="Second slide">
                 <div class="container">
-                    <div class="carousel-caption">
+                    <div class="carousel-caption panel" style="background-color:rgba(0, 0, 0, 0.3)">
                         <h1>Save Money!</h1>
                         <p>The best seats for a lower price</p>
-                        <p><a rel="license" href="http://creativecommons.org/licenses/by/2.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/2.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution 2.0 Generic License</a>.<a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
+                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
                     </div>
                 </div>
             </div>
             <div class="item">
                 <img src="dist/images/free images/nascar.jpg" alt="Third slide">
                 <div class="container">
-                    <div class="carousel-caption">
+                    <div class="carousel-caption panel" style="background-color:rgba(0, 0, 0, 0.2)">
                         <h1>Get Your Tickets Fast!</h1>
                         <p>With our speedy checkout, you can order tickets fast!</p>
-                        <p><a rel="license" href="http://creativecommons.org/licenses/by/2.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/2.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution 2.0 Generic License</a>.<a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
+                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
                     </div>
                 </div>
             </div>
             <div class="item">
                 <img src="dist/images/free images/disney.jpg" alt="Third slide">
                 <div class="container">
-                    <div class="carousel-caption">
+                    <div class="carousel-caption panel" style="background-color:rgba(0, 0, 0, 0.2)">
                         <h1>All of your favorite places!</h1>
-                        <p><a rel="license" href="http://creativecommons.org/licenses/by/2.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/2.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution 2.0 Generic License</a>.<a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
+                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
                     </div>
                 </div>
             </div>
             <div class="item">
-                <img src="dist/images/free images/jayandbey.jpg" alt="fifth slide">
+                <img src="dist/images/free images/beyonce.jpg" alt="fifth slide">
                 <div class="container">
-                    <div class="carousel-caption">
+                    <div class="carousel-caption panel" style="background-color:rgba(0, 0, 0, 0.3)">
                         <h1>Events you can't miss!</h1>
-                        <p><a rel="license" href="http://creativecommons.org/licenses/by/2.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/2.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution 2.0 Generic License</a>.<a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
+                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
                     </div>
                 </div>
             </div>
             <div class="item">
-                <img src="dist/images/free images/MLS.jpg" alt="sixth slide">
+                <img src="dist/images/free images/mls.jpg" alt="sixth slide">
                 <div class="container">
-                    <div class="carousel-caption">
+                    <div class="carousel-caption panel" style="background-color:rgba(0, 0, 0, 0.2)">
                         <h1>Sign up and receive the best deal out.</h1>
-                        <p><a rel="license" href="http://creativecommons.org/licenses/by/2.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/2.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution 2.0 Generic License</a>.<a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
+                        <p><a class="btn btn-lg btn-primary" href="sign_up.php" role="button">Sign up today</a></p>
                     </div>
                 </div>
             </div>
