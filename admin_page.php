@@ -633,6 +633,9 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="homepage.php">Home</a></li>
+						<li>
+							<a href="getContactUsForm.php">Contact</a>
+						</li>
                         <li><a href="http://localhost/tickethawk/homepage.php#main-div">Events</a></li>
                         <li>
                             <a href="http://localhost/tickethawk/user_guide.php" id="guide_link">
@@ -964,7 +967,7 @@ echo "<div id='myModal' class='modal fade'>
                                     <div class='form-group'>
                                         <label for='event-name'>Event Name:</label>
                                         <span class='error' id = 'errorName'>*</span>
-                                        <input type='text' class='form-control' id='event-name-u' value='".$row['eventname']."' placeholder='Event Name' name='eventName_U' />
+                                        <input type='text' class='form-control' id='event-name-u' value='".$row['eventname']."' placeholder='Event Name' name='eventName_U' required/>
                                     </div>
                                 </div>
                                 <div class='row'>
@@ -972,7 +975,7 @@ echo "<div id='myModal' class='modal fade'>
                                         <label for='event-date'>Date:</label>
                                         <span class='error' id = 'errorDate'>*</span>
                                         <div class='input-group input-ammend' id='event-date_u'>
-                                            <input type='text' class='datepicker form-control' value='".$formatted_date."' id='date-4' onkeyup='userEntry(\"date-4\")'  placeholder='Event Date' name='eventDate_U' />
+                                            <input type='text' class='datepicker form-control' value='".$formatted_date."' id='date-4' onkeyup='userEntry(\"date-4\")' placeholder='Event Date' name='eventDate_U' required/>
                                             <span class='input-group-addon'>
                                                 <span class='glyphicon glyphicon-calendar'></span>
                                             </span>

@@ -179,7 +179,7 @@
 <div class="container">
     <div id="main-container">
         <h2>Contact us</h2>
-        <form role="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" target="_self">
+        <form role="form" class="well" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" target="_self">
             <div class="form-group">
                 <label for="name">Name:</label>
                 <span class="error">* <?php echo $nameErr; ?></span>
