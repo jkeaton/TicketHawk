@@ -875,7 +875,7 @@
                 <form role="form" class="form-inline" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <div class="form-group" >
                         <label for="id-num">Delete By Date:</label>
-                        <span class='hint--top' data-hint="Delete one event or many events by date" style="display: inline;"><input type="text"  class="datepicker form-control" name="delete-by-date" id="d3" data-date-format="yyyy-mm-dd"/></span>
+                        <span class='hint--top' data-hint="Delete one event or many events by date" style="display: inline;"><input type="text"  onkeyup="userEntry('d3')" class="datepicker form-control" name="delete-by-date" id="d3" data-date-format="yyyy-mm-dd"/></span>
                         <button type="submit" name="deleteBydate"  class="btn btn-danger"/>Delete</button>
                     </div>	
                 </form>
@@ -890,11 +890,11 @@
 			<form class="form-inline" role="form" method="post">
 					<div class="form-group">
 						<label for="date-1">Date 1:</label>
-						<input type="text" class="datepicker form-control" id="d1" name="date-1" data-date-format="yyyy-mm-dd" />
+						<input type="text" onkeyup="userEntry('d1')" class="datepicker form-control" id="d1" name="date-1" data-date-format="yyyy-mm-dd" />
 					</div>
 					<div class="form-group">
 						<label for="date-2">Date 2:</label>
-						<input type="text" class="datepicker form-control" id="d2" name="date-2" data-date-format="yyyy-mm-dd" />
+						<input type="text" onkeyup="userEntry('d2')" class="datepicker form-control" id="d2" name="date-2" data-date-format="yyyy-mm-dd" />
 					</div>
 					<button type="submit" class="btn btn-primary" name="filter">
 						Filter
