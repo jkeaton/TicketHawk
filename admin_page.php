@@ -893,7 +893,7 @@
                 <form role="form" class="form-inline" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <div class="form-group">
                         <label for="id-num">Delete By ID:</label>
-                        <span class='hint--top' data-hint="Delete a single event" style="display: inline;"><input type="number"  class="form-control" name="delete-by-id"/></span>
+                        <span class='hint--top' data-hint="Delete a single event" style="display: inline;"><input type="text" id="delete_by_id" onkeyup="ticketEntry('delete_by_id')" class="form-control" name="delete-by-id"/></span>
                         <input type="submit" value="Delete" name="deleteById"  class="btn btn-danger"/>
                     </div>	
                 </form>
